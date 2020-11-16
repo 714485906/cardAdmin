@@ -60,19 +60,31 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/admin/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    meta: { title: '系统管理', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'table',
         name: 'Table',
-        component: () => import('@/views/admin/complex-table'),
-        meta: { title: 'Table', icon: 'table' }
+        component: () => import('@/views/admin/admin-roleList'),
+        meta: { title: '角色列表', icon: 'table' }
       },
       {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: { title: '用户列表', icon: 'tree' }
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '用户组', icon: 'tree' }
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '投放渠道', icon: 'tree' }
       }
     ]
   },

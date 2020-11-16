@@ -9,8 +9,10 @@
       :filter-node-method="filterNode"
       class="filter-tree"
       default-expand-all
+      show-checkbox
+      node-key="id"
     />
-
+    <el-button type="primary" @click="dialogPvVisible">Confirm</el-button>
   </div>
 </template>
 
@@ -71,6 +73,9 @@ export default {
     filterNode(value, data) {
       if (!value) return true
       return data.label.indexOf(value) !== -1
+    },
+    dialogPvVisible() {
+      console.log(this.$refs.tree2.getCheckedKeys())
     }
   }
 }
