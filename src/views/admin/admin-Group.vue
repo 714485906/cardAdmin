@@ -1,12 +1,19 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <el-input v-model="listQuery.groupName" placeholder="用户组名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.groupStatus" placeholder="状态" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
+      </el-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        搜索
+      </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加
+        添加用户组
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        导出
-      </el-button>
+<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+<!--        导出-->
+<!--      </el-button>-->
     </div>
     <div style="margin-bottom: 15px"></div>
     <el-table
@@ -19,17 +26,16 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="roleId" prop="id" sortable="custom" align="center" width="100">
+      <el-table-column label="groupId" prop="id" sortable="custom" align="center" width="100">
         <template slot-scope="{row}">
-          <span>{{ row.roleId }}</span>
+          <span>{{ row.groupId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="角色名称"min-width="120px" align="center">
+      <el-table-column label="用户组"min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.roleName }}</span>
+          <span class="link-type">{{ row.groupName }}</span>
         </template>
       </el-table-column>
-
       <el-table-column label="创建时间" width="260px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
@@ -37,8 +43,8 @@
       </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag :type="row.roleStatus | statusFilter">
-            <div v-if="row.roleStatus == 1">正常</div>
+          <el-tag>
+            <div v-if="row.groupStatus == 1">正常</div>
           </el-tag>
         </template>
       </el-table-column>
@@ -57,21 +63,9 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="temp.roleName" />
-        </el-form-item>
-
-        <el-form-item label="角色权限" prop="privilegeIds">
-          <el-tree
-            ref="tree2"
-            :data="data2"
-            :props="defaultProps"
-            class="filter-tree"
-            default-expand-all
-            show-checkbox
-            node-key="privilegeId"
-          />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="130px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="用户组名称" prop="groupName">
+          <el-input v-model="temp.groupName" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -97,25 +91,29 @@
 </template>
 
 <script>
-import { getRoleList, getgetPrivileges, getCreateRole, getDeleteRole } from '@/api/admin'
+import { getGroupList, PostCreateGroup, getDeleteGroup, PostModifyGroup } from '@/api/admin'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+
+const calendarTypeOptions = [
+  { key: 'CN', display_name: 'China' },
+  { key: 'US', display_name: 'USA' },
+  { key: 'JP', display_name: 'Japan' },
+  { key: 'EU', display_name: 'Eurozone' }
+]
+
+// arr to obj, such as { CN : "China", US : "USA" }
+const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+  acc[cur.key] = cur.display_name
+  return acc
+}, {})
 
 export default {
   name: 'ComplexTable',
   components: { Pagination },
   directives: { waves },
   filters: {
-    statusFilter(status) {
-      console.log(status)
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    },
     typeFilter(type) {
       return calendarTypeKeyValue[type]
     },
@@ -132,49 +130,44 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id'
+        groupName: undefined,
+        groupStatus: undefined
       },
       importanceOptions: [1, 2, 3],
+      calendarTypeOptions,
+      Rolelist: '',
+      groupList: '',
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
-        roleName: '',
-        privilegeIds: []
+        groupName: '',
+        groupId: '',
+        groupStatus: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑角色',
-        create: '添加角色'
+        update: '编辑用户组',
+        create: '添加用户组'
       },
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
+        groupName: [{ required: true, message: '请输入用户组名称', trigger: 'blur' },
+          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }]
       },
       downloadLoading: false,
-      data2: [],
-      defaultProps: {
-        children: 'childPrivileges',
-        label: 'privilegeName'
-      }
+      data2: []
     }
   },
   created() {
     this.getList()
-
-    getgetPrivileges().then(response => {
-      this.data2 = response.data
-    })
   },
   methods: {
     getList() {
       this.listLoading = true
-      getRoleList(this.listQuery).then(response => {
+      getGroupList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.page.total
         // Just to simulate the time of the request
@@ -182,6 +175,33 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+    },
+    getrole() {
+      getRoleList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.Rolelist = response.data
+      })
+    },
+    getGroup() {
+      getGroupList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.groupList = response.data
+      })
+    },
+    handleFilter() {
+      this.listQuery.pageNo = 1
+      this.getList()
+    },
+    handleModifyStatus(row, status) {
+      this.$message({
+        message: '操作Success',
+        type: 'success'
+      })
+      row.status = status
     },
     sortChange(data) {
       const { prop, order } = data
@@ -199,8 +219,9 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        roleName: '',
-        privilegeIds: []
+        groupName: undefined,
+        groupId: undefined,
+        groupStatus: undefined
       }
     },
     handleCreate() {
@@ -214,12 +235,9 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          console.log(this.temp.roleName)
-          getCreateRole({
-            roleName: this.temp.roleName,
-            privilegeIds: this.$refs.tree2.getCheckedKeys()
-          }).then(() => {
-            this.list.unshift(this.temp)
+
+          PostCreateGroup(this.temp.groupName).then(() => {
+            this.getList()
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -233,9 +251,8 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
       this.dialogFormVisible = true
-      console.log(row.roleId)
-
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -245,17 +262,16 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           console.log(tempData)
-          // getModifyRole(tempData).then(() => {
-          //   const index = this.list.findIndex(v => v.id === this.temp.id)
-          //   this.list.splice(index, 1, this.temp)
-          //   this.dialogFormVisible = false
-          //   this.$notify({
-          //     title: 'Success',
-          //     message: 'Update Successfully',
-          //     type: 'success',
-          //     duration: 2000
-          //   })
-          // })
+          PostModifyGroup(tempData).then(() => {
+            this.getList() // 重新请求刷新数据
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
         }
       })
     },
@@ -265,7 +281,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        getDeleteRole(row.roleId).then(() => {
+        getDeleteGroup(row.groupId).then(() => {
           this.$notify({
             title: '成功',
             message: '操作成功',
@@ -287,28 +303,36 @@ export default {
       //   this.dialogPvVisible = true
       // })
     },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['ID', '角色名称', '创建时间', '状态']
-        const filterVal = ['roleId', 'roleName', 'createTime', 'roleStatus']
-        const data = this.formatJson(filterVal)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
-      })
+    // handleDownload() {
+    //   this.downloadLoading = true
+    //   import('@/vendor/Export2Excel').then(excel => {
+    //     const tHeader = ['ID', '角色名称', '创建时间', '状态']
+    //     const filterVal = ['roleId', 'roleName', 'createTime', 'roleStatus']
+    //     const data = this.formatJson(filterVal)
+    //     excel.export_json_to_excel({
+    //       header: tHeader,
+    //       data,
+    //       filename: 'table-list'
+    //     })
+    //     this.downloadLoading = false
+    //   })
+    // },
+    // formatJson(filterVal) {
+    //   return this.list.map(v => filterVal.map(j => {
+    //     if (j === 'timestamp') {
+    //       return parseTime(v[j])
+    //     } else {
+    //       return v[j]
+    //     }
+    //   }))
+    // },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
     },
-    formatJson(filterVal) {
-      return this.list.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+    filterNode(value, data) {
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
     }
   }
 }

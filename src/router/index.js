@@ -63,28 +63,34 @@ export const constantRoutes = [
     meta: { title: '系统管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
+        path: '/roleList',
+        name: 'roleList',
         component: () => import('@/views/admin/admin-roleList'),
         meta: { title: '角色列表', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        path: '/userList',
+        name: 'userList',
+        component: () => import('@/views/admin/admin-userList'),
         meta: { title: '用户列表', icon: 'tree' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '用户组', icon: 'tree' }
+        path: '/Group',
+        name: 'Group',
+        component: () => import('@/views/admin/admin-Group'),
+        meta: { title: '用户组', icon: 'people' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '投放渠道', icon: 'tree' }
+        path: '/channel',
+        name: 'channel',
+        component: () => import('@/views/404'),
+        meta: { title: '投放渠道', icon: 'people' }
+      },
+      {
+        path: '/Operator',
+        name: 'Operator',
+        component: () => import('@/views/404'),
+        meta: { title: '运营商', icon: 'people' }
       }
     ]
   },
