@@ -10,7 +10,7 @@
         <el-option v-for="item in Rolelist" :key="item.roleId" :label="item.roleName" :value="item.roleId" />
       </el-select>
       <el-select v-model="listQuery.userStatus" placeholder="状态" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
+        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
@@ -63,11 +63,16 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="用户类型" class-name="status-col" width="120" align="center">
+        <template slot-scope="{row}">
+            <el-tag type="success" v-if="row.userType == 1">普通用户</el-tag>
+            <el-tag type="warning" v-else-if="row.userType == 2">管理员</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag>
-            <div v-if="row.userStatus == 1">正常</div>
-          </el-tag>
+            <el-tag type="success" v-if="row.userStatus == 1">正常</el-tag>
+            <el-tag type="danger" v-else-if="row.userStatus == 0">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="280px" class-name="small-padding fixed-width">
@@ -75,9 +80,9 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-            删除
-          </el-button>
+<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
+<!--            删除-->
+<!--          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -104,6 +109,12 @@
           <el-select v-model="temp.groupId" placeholder="用户组" clearable class="filter-item" >
             <el-option v-for="item in groupList" :key="item.groupId" :label="item.groupName" :value="item.groupId"  />
           </el-select>
+        </el-form-item>
+        <el-form-item label="权限状态" prop="roleStatus">
+          <el-radio-group v-model="temp.userStatus">
+            <el-radio :label="1" :value="1">正常</el-radio>
+            <el-radio :label="0" :value="0">禁用</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -135,10 +146,8 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JP', display_name: 'Japan' },
-  { key: 'EU', display_name: 'Eurozone' }
+  { key: '1', display_name: '正常' },
+  { key: '0', display_name: '禁用' }
 ]
 
 // arr to obj, such as { CN : "China", US : "USA" }
@@ -187,7 +196,7 @@ export default {
         username: undefined,
         phone: undefined,
         password: undefined,
-        userStatus: 1
+        userStatus: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -277,7 +286,8 @@ export default {
         username: undefined,
         phone: undefined,
         password: undefined,
-        userId: ''
+        userId: '',
+        userStatus: undefined
       }
     },
     handleCreate() {
@@ -325,9 +335,9 @@ export default {
             username: tempData.username,
             phone: tempData.phone,
             password: tempData.password,
-            userStatus: 1
+            userStatus: tempData.userStatus
           }
-          console.log(tempEditData)
+          console.log(tempData)
           PostModifyUser(tempEditData).then(() => {
             // const index = this.list.findIndex(v => v.id === this.temp.id)
             // this.list.splice(index, 1, this.temp)
@@ -343,34 +353,34 @@ export default {
         }
       })
     },
-    handleDelete(row, index) {
-      this.$confirm('没有删除用户接口 此删除为假的删除', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // getDeleteRole(row.roleId).then(() => {
-        //   this.$notify({
-        //     title: '成功',
-        //     message: '操作成功',
-        //     type: 'success',
-        //     duration: 2000
-        //   })
-        // })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-      this.list.splice(index, 1)
-    },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    },
+    // handleDelete(row, index) {
+    //   this.$confirm('没有删除用户接口 此删除为假的删除', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning'
+    //   }).then(() => {
+    //     getDeleteRole(row.roleId).then(() => {
+    //       this.$notify({
+    //         title: '成功',
+    //         message: '操作成功',
+    //         type: 'success',
+    //         duration: 2000
+    //       })
+    //     })
+    //   }).catch(() => {
+    //     this.$message({
+    //       type: 'info',
+    //       message: '已取消删除'
+    //     })
+    //   })
+    //   this.list.splice(index, 1)
+    // },
+    // handleFetchPv(pv) {
+    //   fetchPv(pv).then(response => {
+    //     this.pvData = response.data.pvData
+    //     this.dialogPvVisible = true
+    //   })
+    // },
     // handleDownload() {
     //   this.downloadLoading = true
     //   import('@/vendor/Export2Excel').then(excel => {

@@ -79,22 +79,36 @@ export const constantRoutes = [
         name: 'Group',
         component: () => import('@/views/admin/admin-Group'),
         meta: { title: '用户组', icon: 'people' }
-      },
-      {
-        path: '/channel',
-        name: 'channel',
-        component: () => import('@/views/404'),
-        meta: { title: '投放渠道', icon: 'people' }
-      },
-      {
-        path: '/Operator',
-        name: 'Operator',
-        component: () => import('@/views/404'),
-        meta: { title: '运营商', icon: 'people' }
       }
     ]
   },
-
+  {
+    path: '/admin',
+    component: Layout,
+    redirect: '/admin/table',
+    name: 'Example',
+    meta: { title: '渠道管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: '/channelList',
+        name: 'channelList',
+        component: () => import('@/views/channel/channel-List'),
+        meta: { title: '渠道列表', icon: 'table' }
+      },
+      {
+        path: '/channelUser',
+        name: 'channelUser',
+        component: () => import('@/views/404'),
+        meta: { title: '渠道账号列表', icon: 'tree' }
+      },
+      {
+        path: '/platform',
+        name: 'platform',
+        component: () => import('@/views/platform/platform-List'),
+        meta: { title: '投放平台', icon: 'tree' }
+      }
+    ]
+  },
   // {
   //   path: '/form',
   //   component: Layout,

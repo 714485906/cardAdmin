@@ -16,6 +16,14 @@ export function getgetPrivileges(params) {
   })
 }
 
+export function getRolePrivilegeIds(params) {
+  return request({
+    url: 'role/getRolePrivilegeIds', // 根据roleId 获取权限列表
+    method: 'get',
+    params
+  })
+}
+
 export function getCreateRole(data) {
   return request({
     url: 'role/createRole', // 添加角色
@@ -25,7 +33,7 @@ export function getCreateRole(data) {
 }
 export function getModifyRole(data) {
   return request({
-    url: 'role/modifyRole', // 修改
+    url: 'role/modifyRole', // 修改角色
     method: 'post',
     data
   })

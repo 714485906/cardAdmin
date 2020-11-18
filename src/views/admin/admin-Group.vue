@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-input v-model="listQuery.groupName" placeholder="用户组名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.groupStatus" placeholder="状态" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
+        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
@@ -43,9 +43,8 @@
       </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag>
-            <div v-if="row.groupStatus == 1">正常</div>
-          </el-tag>
+          <el-tag type="success" v-if="row.groupStatus == 1">正常</el-tag>
+          <el-tag type="danger" v-if="row.groupStatus == 0">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="280px" class-name="small-padding fixed-width">
@@ -66,6 +65,12 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="130px" style="width: 400px; margin-left:50px;">
         <el-form-item label="用户组名称" prop="groupName">
           <el-input v-model="temp.groupName" />
+        </el-form-item>
+        <el-form-item label="权限状态" prop="groupStatus">
+          <el-radio-group v-model="temp.groupStatus">
+            <el-radio :label="1">正常</el-radio>
+            <el-radio :label="0">禁用</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -97,10 +102,8 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JP', display_name: 'Japan' },
-  { key: 'EU', display_name: 'Eurozone' }
+  { key: '1', display_name: '正常' },
+  { key: '0', display_name: '禁用' }
 ]
 
 // arr to obj, such as { CN : "China", US : "USA" }
@@ -155,7 +158,8 @@ export default {
       pvData: [],
       rules: {
         groupName: [{ required: true, message: '请输入用户组名称', trigger: 'blur' },
-          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }]
+          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
+        groupStatus: [{ required: true, message: '请选择用户组状态', trigger: 'blur' }]
       },
       downloadLoading: false,
       data2: []
@@ -176,14 +180,14 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    getrole() {
-      getRoleList({
-        pageNo: 1,
-        pageSize: 10000
-      }).then(response => {
-        this.Rolelist = response.data
-      })
-    },
+    // getrole() {
+    //   getRoleList({
+    //     pageNo: 1,
+    //     pageSize: 10000
+    //   }).then(response => {
+    //     this.Rolelist = response.data
+    //   })
+    // },
     getGroup() {
       getGroupList({
         pageNo: 1,
@@ -235,7 +239,6 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-
           PostCreateGroup(this.temp.groupName).then(() => {
             this.getList()
             this.dialogFormVisible = false
