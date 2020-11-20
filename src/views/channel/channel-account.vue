@@ -1,17 +1,12 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.platformName" placeholder="请输入平台名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.platformStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in platformStatusData" :key="item.key" :label="item.platformStatusName" :value="item.key" />
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加用户
+        添加
       </el-button>
-
+<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+<!--        导出-->
+<!--      </el-button>-->
     </div>
     <div style="margin-bottom: 15px"></div>
     <el-table
@@ -24,30 +19,37 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="platformId" prop="platformId" sortable="custom" align="center" width="140">
+      <el-table-column label="accountId" prop="id" sortable="custom" align="center" width="120">
         <template slot-scope="{row}">
-          <span>{{ row.platformId }}</span>
+          <span>{{ row.accountId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平台名称"min-width="120px" align="center">
+      <el-table-column label="渠道账号" min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.platformName }}</span>
+          <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="渠道名称" min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.channelName }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="创建时间" width="260px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户类型" class-name="status-col" width="120" align="center">
+
+      <el-table-column label="账号状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-            <el-tag type="success" v-if="row.platformStatus == 1">正常</el-tag>
-            <el-tag type="warning" v-else-if="row.platformStatus == 0">不可用</el-tag>
+          <el-tag type="warning" v-if="row.channelStatus == 0">不可用</el-tag>
+          <el-tag type="success" v-if="row.channelStatus == 1">正常</el-tag>
+
         </template>
       </el-table-column>
-
-      <el-table-column label="操作" align="center" width="150px" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
+      <el-table-column label="操作" align="center" width="130px" class-name="small-padding fixed-width">
+        <template slot-scope="{row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
@@ -62,13 +64,13 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="平台名称" prop="platformName">
-          <el-input v-model="temp.platformName" />
+        <el-form-item label="渠道名称" prop="accountName">
+          <el-input v-model="temp.accountName" />
         </el-form-item>
-        <el-form-item label="平台状态" prop="platformStatus">
-          <el-radio-group v-model="temp.platformStatus">
-            <el-radio :label="1" :value="1">正常</el-radio>
+        <el-form-item label="账号状态" prop="accountStatus">
+          <el-radio-group v-model="temp.accountStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
+            <el-radio :label="1" :value="1">正常</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -95,17 +97,16 @@
 </template>
 
 <script>
-import { getPlatformList, PostCreatePlatform, PostModifyPlatform } from '@/api/platform'
+import { getgetAccounts, PostCreateAccount, PostModifyAccount } from '@/api/channel'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 // arr to obj, such as { CN : "China", US : "USA" }
-const platformStatusData = [
-  { key: '1', platformStatusName: '可用' },
-  { key: '0', platformStatusName: '不可用' }
-
-]
+// const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+//   acc[cur.key] = cur.display_name
+//   return acc
+// }, {})
 
 export default {
   name: 'ComplexTable',
@@ -125,71 +126,63 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        platformName: undefined,
-        platformStatus: undefined
+        channelId: undefined
       },
       importanceOptions: [1, 2, 3],
+      channelStatusData: [
+        { channelStatus: '0', channelStatusName: '待审核' },
+        { channelStatus: '1', channelStatusName: '审核成功' },
+        { channelStatus: '2', channelStatusName: '审核失败' }
+      ],
+      channelTypeData: [
+        { channelType: '1', channelTypeName: '自运营' },
+        { channelType: '2', channelTypeName: '代运营' }
+
+      ],
+      getUserListData: '',
+      platformData: '',
       Rolelist: '',
       groupList: '',
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
-        platformName: undefined,
-        platformStatus: undefined
+        accountId: undefined,
+        accountName: undefined,
+        accountStatus: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
-      platformStatusData,
       textMap: {
-        update: '编辑投放平台',
-        create: '添加投放平台'
+        update: '编辑渠道账号',
+        create: '添加渠道账号'
       },
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        platformName: [{ required: true, message: '请输入角色名称', trigger: 'blur' },
-          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }],
-        platformStatus: [{ required: true, message: '请选择角色', trigger: 'change' }]
+        accountName: [{ required: true, message: '账号名称', trigger: 'blur' },
+          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
+        accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
       downloadLoading: false,
       data2: []
     }
   },
   created() {
+    this.listQuery.channelId = this.$route.params.channelId
     this.getList()
   },
   methods: {
     getList() {
       this.listLoading = true
-      getPlatformList(this.listQuery).then(response => {
+      getgetAccounts(this.listQuery).then(response => {
         this.list = response.data
-        this.total = response.page.total
+        // this.total = response.page.total
+        this.total = 10
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-    },
-    // getrole() {
-    //   getRoleList({
-    //     pageNo: 1,
-    //     pageSize: 10000
-    //   }).then(response => {
-    //     this.Rolelist = response.data
-    //   })
-    // },
-    // getGroup() {
-    //   getGroupList({
-    //     pageNo: 1,
-    //     pageSize: 10000
-    //   }).then(response => {
-    //     this.groupList = response.data
-    //   })
-    // },
-    handleFilter() {
-      this.listQuery.pageNo = 1
-      this.getList()
     },
     handleModifyStatus(row, status) {
       this.$message({
@@ -204,18 +197,11 @@ export default {
         this.sortByID(order)
       }
     },
-    sortByID(order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = '+id'
-      } else {
-        this.listQuery.sort = '-id'
-      }
-      this.handleFilter()
-    },
     resetTemp() {
       this.temp = {
-        platformName: undefined,
-        platformStatus: undefined
+        channelId: this.listQuery.channelId,
+        accountName: undefined,
+        accountStatus: undefined
       }
     },
     handleCreate() {
@@ -230,7 +216,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           console.log(this.temp)
-          PostCreatePlatform(this.temp).then(() => {
+          PostCreateAccount(this.temp).then(() => {
             // this.list.unshift(this.temp)
             this.getList()
             this.dialogFormVisible = false
@@ -257,7 +243,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           console.log(tempData)
-          PostModifyPlatform(tempData).then(() => {
+          PostModifyAccount(tempData).then(() => {
             // const index = this.list.findIndex(v => v.id === this.temp.id)
             // this.list.splice(index, 1, this.temp)
             this.getList() // 重新请求刷新数据

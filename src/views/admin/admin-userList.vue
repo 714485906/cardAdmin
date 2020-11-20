@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { getUserList, getRoleList, getGroupList, PostCreateUser, PostModifyUser } from '@/api/admin'
+import { getUserList, PostCreateUser, PostModifyUser } from '@/api/admin'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -223,8 +223,7 @@ export default {
   },
   created() {
     this.getList()
-    this.getrole()
-    this.getGroup()
+    // this.getGroup()
   },
   methods: {
     getList() {
@@ -238,22 +237,14 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    getrole() {
-      getRoleList({
-        pageNo: 1,
-        pageSize: 10000
-      }).then(response => {
-        this.Rolelist = response.data
-      })
-    },
-    getGroup() {
-      getGroupList({
-        pageNo: 1,
-        pageSize: 10000
-      }).then(response => {
-        this.groupList = response.data
-      })
-    },
+    // getGroup() {
+    //   getGroupList({
+    //     pageNo: 1,
+    //     pageSize: 10000
+    //   }).then(response => {
+    //     this.groupList = response.data
+    //   })
+    // },
     handleFilter() {
       this.listQuery.pageNo = 1
       this.getList()

@@ -96,10 +96,11 @@ export const constantRoutes = [
         meta: { title: '渠道列表', icon: 'table' }
       },
       {
-        path: '/channelUser',
-        name: 'channelUser',
-        component: () => import('@/views/404'),
-        meta: { title: '渠道账号列表', icon: 'tree' }
+        path: '/channelAccount/:channelId(\\d+)',
+        name: 'channelAccount',
+        component: () => import('@/views/channel/channel-account'),
+        meta: { title: '渠道账号列表', icon: 'tree' },
+        hidden: true
       },
       {
         path: '/platform',

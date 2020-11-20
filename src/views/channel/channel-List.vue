@@ -73,11 +73,16 @@
           <el-tag type="danger" v-if="row.channelStatus == 2">审核失败</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="130px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
+            <el-button type="primary" size="mini" >
+              <router-link :to="'/channelAccount/'+row.channelId">
+                查看账号
+              </router-link>
+            </el-button>
 <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
 <!--            删除-->
 <!--          </el-button>-->
@@ -325,6 +330,14 @@ export default {
             })
           })
         }
+      })
+    },
+    handleaccount(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
       })
     },
     getUserListFun() { // 获取用户列表
