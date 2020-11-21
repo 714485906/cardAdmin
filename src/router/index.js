@@ -58,8 +58,7 @@ export const constantRoutes = [
   {
     path: '/admin',
     component: Layout,
-    redirect: '/admin/table',
-    name: 'Example',
+    name: 'Admin',
     meta: { title: '系统管理', icon: 'el-icon-s-help' },
     children: [
       {
@@ -83,10 +82,9 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/admin',
+    path: '/Channel',
     component: Layout,
-    redirect: '/admin/table',
-    name: 'Example',
+    name: 'Channel',
     meta: { title: '渠道管理', icon: 'el-icon-s-help' },
     children: [
       {
@@ -107,6 +105,27 @@ export const constantRoutes = [
         name: 'platform',
         component: () => import('@/views/platform/platform-List'),
         meta: { title: '投放平台', icon: 'tree' }
+      }
+    ]
+  }, {
+    path: '/operator',
+    component: Layout,
+    name: 'operator',
+    meta: { title: '运营商管理', icon: 'el-icon-s-help' },
+    alwaysShow: true,
+    children: [
+      {
+        path: '/productlist',
+        name: 'productlist',
+        component: () => import('@/views/operator/index'),
+        meta: { title: '运营商列表', icon: 'table' }
+      },
+      {
+        path: '/getTouches/:operatorId(\\d+)',
+        name: 'getTouches',
+        component: () => import('@/views/operator/getTouches-list'),
+        meta: { title: '触点码列表', icon: 'table' },
+        hidden: true
       }
     ]
   },
