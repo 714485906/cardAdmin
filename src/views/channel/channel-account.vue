@@ -236,7 +236,7 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
-      })
+      })gi
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
