@@ -68,6 +68,12 @@ export const constantRoutes = [
         meta: { title: '角色列表', icon: 'table' }
       },
       {
+        path: '/roleList1',
+        name: 'roleList1',
+        component: () => import('@/views/admin/admin-roleList1'),
+        meta: { title: '角色列表1123', icon: 'table' }
+      },
+      {
         path: '/userList',
         name: 'userList',
         component: () => import('@/views/admin/admin-userList'),
@@ -115,8 +121,8 @@ export const constantRoutes = [
     alwaysShow: true,
     children: [
       {
-        path: '/productlist',
-        name: 'productlist',
+        path: '/operatorTab',
+        name: 'operatorTab',
         component: () => import('@/views/operator/index'),
         meta: { title: '运营商列表', icon: 'table' }
       },
@@ -126,6 +132,41 @@ export const constantRoutes = [
         component: () => import('@/views/operator/getTouches-list'),
         meta: { title: '触点码列表', icon: 'table' },
         hidden: true
+      }
+    ]
+  }, {
+    path: '/product',
+    component: Layout,
+    name: 'product',
+    meta: { title: '商品管理', icon: 'el-icon-s-help' },
+    alwaysShow: true,
+    children: [
+      {
+        path: '/productlist',
+        name: 'productlist',
+        component: () => import('@/views/product/product-list'),
+        meta: { title: '商品列表', icon: 'table' }
+      },
+      {
+        path: '/productTemp',
+        name: 'productTemp',
+        component: () => import('@/views/product/productTemp-list'),
+        meta: { title: '商品模板列表', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/landing',
+    component: Layout,
+    name: 'landing',
+    meta: { title: '落地页', icon: 'el-icon-s-help' },
+    alwaysShow: true,
+    children: [
+      {
+        path: '/landinglist',
+        name: 'landinglist',
+        component: () => import('@/views/landing/landing-list'),
+        meta: { title: '落地页列表', icon: 'table' }
       }
     ]
   },

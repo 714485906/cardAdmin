@@ -69,12 +69,12 @@
         <el-form-item label="角色权限" prop="privilegeIds">
           <el-tree
             ref="tree2"
+            :check-strictly="checkStrictly"
             :data="data2"
             :props="defaultProps"
-            class="filter-tree"
-            default-expand-all
             show-checkbox
-            node-key="privilegeId"
+            node-key="path"
+            class="permission-tree"
           />
         </el-form-item>
       </el-form>
@@ -200,7 +200,11 @@ export default {
       }
     },
     handleCreate() {
-      this.getRolePrivilegeIds = []
+      this.resetTemp()
+      // this.role = Object.assign({}, defaultRole)
+      if (this.$refs.tree2) {
+        this.$refs.tree2.setCheckedNodes([])
+      }
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       console.log(this.temp)

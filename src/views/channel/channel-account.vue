@@ -17,7 +17,6 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
     >
       <el-table-column label="accountId" prop="id" sortable="custom" align="center" width="120">
         <template slot-scope="{row}">
@@ -29,12 +28,6 @@
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道名称" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.channelName }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column label="创建时间" width="260px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
@@ -43,9 +36,8 @@
 
       <el-table-column label="账号状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="warning" v-if="row.channelStatus == 0">不可用</el-tag>
-          <el-tag type="success" v-if="row.channelStatus == 1">正常</el-tag>
-
+          <el-tag type="warning" v-if="row.accountStatus == 0">不可用</el-tag>
+          <el-tag type="success" v-if="row.accountStatus == 1">正常</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="130px" class-name="small-padding fixed-width">
@@ -133,7 +125,6 @@ export default {
       platformData: '',
       Rolelist: '',
       groupList: '',
-      statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
         accountId: undefined,
@@ -166,8 +157,7 @@ export default {
       this.listLoading = true
       getgetAccounts(this.listQuery).then(response => {
         this.list = response.data
-        // this.total = response.page.total
-        this.total = 1000
+        this.total = response.page.total
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -180,12 +170,6 @@ export default {
         type: 'success'
       })
       row.status = status
-    },
-    sortChange(data) {
-      const { prop, order } = data
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
     },
     resetTemp() {
       this.temp = {
