@@ -60,6 +60,7 @@ export const constantRoutes = [
     component: Layout,
     name: 'Admin',
     meta: { title: '系统管理', icon: 'el-icon-s-help' },
+    affix: true,
     children: [
       {
         path: '/roleList',
@@ -91,13 +92,13 @@ export const constantRoutes = [
     path: '/Channel',
     component: Layout,
     name: 'Channel',
-    meta: { title: '渠道管理', icon: 'el-icon-s-help' },
+    meta: { title: '渠道管理', icon: 'el-icon-s-unfold' },
     children: [
       {
         path: '/channelList',
         name: 'channelList',
         component: () => import('@/views/channel/channel-List'),
-        meta: { title: '渠道列表', icon: 'table' }
+        meta: { title: '渠道列表', icon: 'el-icon-attract' }
       },
       {
         path: '/channelAccount/:channelId(\\d+)',
@@ -110,21 +111,21 @@ export const constantRoutes = [
         path: '/platform',
         name: 'platform',
         component: () => import('@/views/platform/platform-List'),
-        meta: { title: '投放平台', icon: 'tree' }
+        meta: { title: '投放平台', icon: 'el-icon-share' }
       }
     ]
   }, {
     path: '/operator',
     component: Layout,
     name: 'operator',
-    meta: { title: '运营商管理', icon: 'el-icon-s-help' },
+    meta: { title: '运营商管理', icon: 'el-icon-phone-outline' },
     alwaysShow: true,
     children: [
       {
         path: '/operatorTab',
         name: 'operatorTab',
         component: () => import('@/views/operator/index'),
-        meta: { title: '运营商列表', icon: 'table' }
+        meta: { title: '运营商列表', icon: 'el-icon-s-operation' }
       },
       {
         path: '/getTouches/:operatorId(\\d+)',
@@ -138,20 +139,20 @@ export const constantRoutes = [
     path: '/product',
     component: Layout,
     name: 'product',
-    meta: { title: '商品管理', icon: 'el-icon-s-help' },
+    meta: { title: '商品管理', icon: 'el-icon-s-shop' },
     alwaysShow: true,
     children: [
       {
         path: '/productlist',
         name: 'productlist',
         component: () => import('@/views/product/product-list'),
-        meta: { title: '商品列表', icon: 'table' }
+        meta: { title: '商品列表', icon: 'el-icon-attract' }
       },
       {
         path: '/productTemp',
         name: 'productTemp',
         component: () => import('@/views/product/productTemp-list'),
-        meta: { title: '商品模板列表', icon: 'table' }
+        meta: { title: '商品模板列表', icon: 'el-icon-tickets' }
       }
     ]
   },
@@ -159,14 +160,14 @@ export const constantRoutes = [
     path: '/landing',
     component: Layout,
     name: 'landing',
-    meta: { title: '落地页', icon: 'el-icon-s-help' },
+    meta: { title: '落地页', icon: 'el-icon-receiving' },
     alwaysShow: true,
     children: [
       {
         path: '/landinglist',
         name: 'landinglist',
         component: () => import('@/views/landing/landing-list'),
-        meta: { title: '落地页列表', icon: 'table' }
+        meta: { title: '落地页列表', icon: 'el-icon-coin' }
       }
     ]
   },

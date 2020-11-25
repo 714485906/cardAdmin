@@ -102,7 +102,7 @@
           <el-tag type="danger" v-if="row.landingStatus == 0">不可用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作"  fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作"  fixed="right" align="center" width="130px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
@@ -118,28 +118,28 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;" >
-        <el-form-item label="渠道名称" prop="channelName">
-          <el-input v-model="temp.channelName" />
+        <el-form-item label="落地页名称" prop="landingName">
+          <el-input v-model="temp.landingName" />
         </el-form-item>
-        <el-form-item label="用户名称" prop="userId">
-          <el-cascader :options="queryData.userIdData" clearable></el-cascader>
-        </el-form-item>
-        <el-form-item label="平台名称" prop="platformId">
-          <el-select v-model="temp.platformId" placeholder="平台名称" clearable class="filter-item" >
-            <el-option v-for="item in platformData" :key="item.platformId" :label="item.platformName" :value="item.platformId"  />
+        <el-form-item label="渠道账号" prop="accountId">
+          <el-select v-model="temp.accountId" placeholder="平台名称" clearable class="filter-item" >
+            <el-option v-for="item in queryData.accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="渠道类型" prop="channelType">
-          <el-radio-group v-model="temp.channelType">
-            <el-radio :label="1" :value="1">自运营</el-radio>
-            <el-radio :label="2" :value="2">代运营</el-radio>
-          </el-radio-group>
+        <el-form-item label="触点码" prop="touchId">
+          <el-select v-model="temp.touchId" placeholder="平台名称" clearable class="filter-item" >
+            <el-option v-for="item in queryData.touchIdData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
+          </el-select>
         </el-form-item>
-        <el-form-item label="渠道类型" prop="channelStatus">
-          <el-radio-group v-model="temp.channelStatus">
-            <el-radio :label="0" :value="0">待审核</el-radio>
-            <el-radio :label="1" :value="1">审核成功</el-radio>
-            <el-radio :label="2" :value="2">审核失败</el-radio>
+        <el-form-item label="商品模板" prop="templateId">
+          <el-select v-model="temp.templateId" placeholder="平台名称" clearable class="filter-item" >
+            <el-option v-for="item in queryData.templateIdData" :key="item.templateId" :label="item.templateName" :value="item.templateId"  />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态" prop="landingStatus">
+          <el-radio-group v-model="temp.landingStatus">
+            <el-radio :label="0" :value="0">不可用</el-radio>
+            <el-radio :label="1" :value="1">正常</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -167,11 +167,11 @@
 
 <script>
 import { getLandingList, PostCreateLanding, PostModifyLanding } from '@/api/landing'
-import { getgetAccounts, getChannelList } from '@/api/channel'
+import { getgetAccounts } from '@/api/channel'
 import { getPlatformList } from '@/api/platform'
 import { getProductList, getproductTemplateList } from '@/api/product'
-import { getGetTouches, getOperatorList } from '@/api/operator'
-import { getUserList  } from '@/api/admin'
+import { getGetTouches } from '@/api/operator'
+import { getUserList } from '@/api/admin'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -216,11 +216,11 @@ export default {
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
-        userId: undefined,
-        platformId: undefined,
-        channelName: undefined,
-        channelType: undefined,
-        channelStatus: undefined
+        landingName: undefined,
+        templateId: undefined,
+        touchId: undefined,
+        accountId: undefined,
+        landingStatus: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -293,14 +293,7 @@ export default {
       this.handleFilter()
     },
     resetTemp() {
-      this.temp = {
-        userId: undefined,
-        platformId: undefined,
-        channelName: undefined,
-        channelType: undefined,
-        channelStatus: undefined
-
-      }
+      this.temp = {}
     },
     handleCreate() {
       this.resetTemp()
@@ -365,17 +358,11 @@ export default {
       })
     },
     queryDataFun() {
-      // getgetAccounts({
-      //   pageNo: 1,
-      //   pageSize: 10000
-      // }).then(response => {
-      //   this.queryData.accountIdData = response.data // 渠道账号
-      // })
-      getChannelList({
+      getgetAccounts({
         pageNo: 1,
         pageSize: 10000
       }).then(response => {
-        this.queryData.channelIdData = response.data // 渠道
+        this.queryData.accountIdData = response.data // 渠道账号
       })
       getPlatformList({
         pageNo: 1,
@@ -395,17 +382,11 @@ export default {
       }).then(response => {
         this.queryData.templateIdData = response.data // 模板
       })
-      // getGetTouches({
-      //   pageNo: 1,
-      //   pageSize: 10000
-      // }).then(response => {
-      //   this.queryData.touchIdData = response.data // 触点码
-      // })
-      getOperatorList({
+      getGetTouches({
         pageNo: 1,
         pageSize: 10000
       }).then(response => {
-        this.queryData.operatorIdData = response.data // 运营商
+        this.queryData.touchIdData = response.data // 触点码
       })
       getUserList({
         pageNo: 1,
@@ -417,3 +398,4 @@ export default {
   }
 }
 </script>
+
