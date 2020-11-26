@@ -69,12 +69,6 @@ export const constantRoutes = [
         meta: { title: '角色列表', icon: 'table' }
       },
       {
-        path: '/roleList1',
-        name: 'roleList1',
-        component: () => import('@/views/admin/admin-roleList1'),
-        meta: { title: '角色列表1123', icon: 'table' }
-      },
-      {
         path: '/userList',
         name: 'userList',
         component: () => import('@/views/admin/admin-userList'),
@@ -168,6 +162,21 @@ export const constantRoutes = [
         name: 'landinglist',
         component: () => import('@/views/landing/landing-list'),
         meta: { title: '落地页列表', icon: 'el-icon-coin' }
+      }
+    ]
+  },
+  {
+    path: '/apply',
+    component: Layout,
+    name: 'apply',
+    meta: { title: '表单申请服务', icon: 'el-icon-receiving' },
+    alwaysShow: true,
+    children: [
+      {
+        path: '/applyList',
+        name: 'applyList',
+        component: () => import('@/views/apply/apply-list'),
+        meta: { title: '表单列表', icon: 'el-icon-coin' }
       }
     ]
   },

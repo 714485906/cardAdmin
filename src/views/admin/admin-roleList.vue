@@ -17,14 +17,13 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
     >
       <el-table-column label="roleId" prop="id" sortable="custom" align="center" width="100">
         <template slot-scope="{row}">
           <span>{{ row.roleId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="角色名称"min-width="120px" align="center">
+      <el-table-column label="角色名称" width="220px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.roleName }}</span>
         </template>
@@ -41,7 +40,7 @@
           <el-tag type="danger" v-if="row.roleStatus == 0">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="280px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
@@ -179,20 +178,6 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    sortChange(data) {
-      const { prop, order } = data
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
-    },
-    sortByID(order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = '+id'
-      } else {
-        this.listQuery.sort = '-id'
-      }
-      this.handleFilter()
-    },
     resetTemp() {
       this.temp = {
         roleName: '',
@@ -200,10 +185,10 @@ export default {
       }
     },
     handleCreate() {
-      this.getRolePrivilegeIds = []
+      this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      console.log(this.temp)
+      this.$refs.tree2.setCheckedKeys([])
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -227,9 +212,10 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.getRolePrivilegeIdsFun(row.roleId) // 获取权限数据
       this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.getRolePrivilegeIdsFun(row.roleId)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -246,8 +232,8 @@ export default {
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: '成功',
+              message: '成功 修改',
               type: 'success',
               duration: 2000
             })
@@ -277,12 +263,6 @@ export default {
       })
       this.list.splice(index, 1)
     },
-    handleFetchPv(pv) {
-      // fetchPv(pv).then(response => {
-      //   this.pvData = response.data.pvData
-      //   this.dialogPvVisible = true
-      // })
-    },
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
@@ -311,6 +291,7 @@ export default {
         roleId
       }).then(response => {
         this.getRolePrivilegeIds = response.data
+        this.$refs.tree2.setCheckedKeys(this.getRolePrivilegeIds)
       })
     }
   }
