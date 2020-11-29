@@ -42,17 +42,17 @@
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号"min-width="120px" align="center">
+      <el-table-column label="手机号" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.phone }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="角色名称"min-width="120px" align="center">
+      <el-table-column label="角色名称" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.roleName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户组"min-width="120px" align="center">
+      <el-table-column label="用户组" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.groupName }}</span>
         </template>
@@ -60,6 +60,11 @@
       <el-table-column label="创建时间" width="260px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="运营账号数量" min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.accountNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="用户类型" class-name="status-col" width="120" align="center">

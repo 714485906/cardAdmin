@@ -39,6 +39,17 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="平台类型" class-name="status-col" width="120" align="center">
+        <template slot-scope="{row}">
+          <el-tag  v-if="row.platformType == 1">信息流</el-tag>
+          <el-tag type="warning" v-else-if="row.platformType == 2">搜索</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="渠道数量" width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.channelNum }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="用户类型" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
             <el-tag type="success" v-if="row.platformStatus == 1">正常</el-tag>
@@ -64,6 +75,12 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
         <el-form-item label="平台名称" prop="platformName">
           <el-input v-model="temp.platformName" />
+        </el-form-item>
+        <el-form-item label="平台类型" prop="platformType">
+          <el-radio-group v-model="temp.platformType">
+            <el-radio :label="1" :value="1">信息流</el-radio>
+            <el-radio :label="2" :value="2">搜索</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="平台状态" prop="platformStatus">
           <el-radio-group v-model="temp.platformStatus">
@@ -136,6 +153,7 @@ export default {
       showReviewer: false,
       temp: {
         platformName: undefined,
+        platformType: undefined,
         platformStatus: undefined
       },
       dialogFormVisible: false,
@@ -148,9 +166,10 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        platformName: [{ required: true, message: '请输入角色名称', trigger: 'blur' },
+        platformName: [{ required: true, message: '请输入平台名称', trigger: 'blur' },
           { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }],
-        platformStatus: [{ required: true, message: '请选择角色', trigger: 'change' }]
+        platformStatus: [{ required: true, message: '请选择状态', trigger: 'change' }],
+        platformType: [{ required: true, message: '请选择平台类型', trigger: 'change' }]
       },
       downloadLoading: false,
       data2: []
@@ -215,7 +234,8 @@ export default {
     resetTemp() {
       this.temp = {
         platformName: undefined,
-        platformStatus: undefined
+        platformStatus: undefined,
+        platformType: undefined
       }
     },
     handleCreate() {

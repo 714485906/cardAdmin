@@ -23,24 +23,29 @@
           <span>{{ row.accountId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道账号" min-width="120px" align="center">
+      <el-table-column label="渠道账号" min-width="190px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.accountName }}</span>
+          <span class="link-type">{{ row.accountName }}-{{row.accountId}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="260px" align="center">
+      <el-table-column label="创建时间" min-width="160px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="账号状态" class-name="status-col" width="120" align="center">
+      <el-table-column label="账号类型" class-name="status-col" width="120" align="center">
+        <template slot-scope="{row}">
+          <el-tag type="success" v-if="row.accountType == 1">自运营</el-tag>
+          <el-tag type="info" v-else-if="row.accountType == 2">代运营</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="账号类型" fixed="right" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag type="warning" v-if="row.accountStatus == 0">不可用</el-tag>
           <el-tag type="success" v-if="row.accountStatus == 1">正常</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="130px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="130px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
@@ -56,8 +61,19 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="渠道名称" prop="accountName">
+        <el-form-item label="账号名称" prop="accountName">
           <el-input v-model="temp.accountName" />
+        </el-form-item>
+        <el-form-item label="用户名称" prop="userId">
+          <el-select v-model="temp.userId" placeholder="用户名称" clearable class="filter-item" >
+            <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId"  />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="账号类型" prop="accountType">
+          <el-radio-group v-model="temp.accountType">
+            <el-radio :label="1" :value="1">自运营</el-radio>
+            <el-radio :label="2" :value="2">代运营</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="账号状态" prop="accountStatus">
           <el-radio-group v-model="temp.accountStatus">
@@ -90,6 +106,7 @@
 
 <script>
 import { getgetAccounts, PostCreateAccount, PostModifyAccount } from '@/api/channel'
+import { getUserList } from '@/api/admin'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -127,8 +144,9 @@ export default {
       groupList: '',
       showReviewer: false,
       temp: {
-        accountId: undefined,
+        userId: undefined,
         accountName: undefined,
+        accountType: undefined,
         accountStatus: undefined
       },
       dialogFormVisible: false,
@@ -142,7 +160,9 @@ export default {
       rules: {
         accountName: [{ required: true, message: '账号名称', trigger: 'blur' },
           { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
-        accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
+        accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }],
+        userId: [{ required: true, message: '请选择用户', trigger: 'change' }],
+        accountType: [{ required: true, message: '请选择账号类型', trigger: 'change' }]
       },
       downloadLoading: false,
       data2: []
@@ -151,6 +171,7 @@ export default {
   created() {
     this.listQuery.channelId = this.$route.params.channelId
     this.getList()
+    this.getUserListFun()
   },
   methods: {
     getList() {
@@ -231,7 +252,15 @@ export default {
           })
         }
       })
-    }
+    },
+    getUserListFun() { // 获取用户列表
+      getUserList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.getUserListData = response.data
+      })
+    },
   }
 }
 </script>
