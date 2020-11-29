@@ -182,7 +182,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 1 * 500)
       })
     },
     handleModifyStatus(row, status) {

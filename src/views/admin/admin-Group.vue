@@ -31,7 +31,7 @@
           <span>{{ row.groupId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户组" min-width="220px" align="center">
+      <el-table-column label="营销员" min-width="220px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.groupName }}</span>
         </template>
@@ -43,7 +43,9 @@
       </el-table-column>
       <el-table-column label="成员数量" width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.userNum }}</span>
+          <router-link :to="'/Grouplist/'+row.groupId">
+            <span class="link-type">{{ row.userNum }}</span>
+          </router-link>
         </template>
       </el-table-column>
       <el-table-column label="用户组类型" class-name="status-col" width="120" align="center">
@@ -197,7 +199,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 1 * 500)
       })
     },
     // getrole() {
