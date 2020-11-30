@@ -47,7 +47,9 @@
       </el-table-column>
       <el-table-column label="渠道数量" width="90px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.channelNum }}</span>
+          <router-link :to="{path:'channelList/',query:{platformId: row.platformId}}">
+            <span class="link-type">{{ row.channelNum }}</span>
+          </router-link>
         </template>
       </el-table-column>
       <el-table-column label="用户类型" class-name="status-col" width="120" align="center">

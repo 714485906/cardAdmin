@@ -216,7 +216,9 @@ export default {
     }
   },
   created() {
+    this.listQuery.platformId = this.$route.query.platformId
     this.getList()
+
     // this.getUserListFun()
     this.getPlatformListFun()
   },
@@ -259,7 +261,7 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        platformId: undefined,
+        platformId: this.$route.query.platformId,
         channelName: undefined,
         channelStatus: undefined
 

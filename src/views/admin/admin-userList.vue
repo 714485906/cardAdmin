@@ -79,10 +79,13 @@
             <el-tag type="danger" v-else-if="row.userStatus == 0">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="130px" fixed="right" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="180px" fixed="right" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
+          </el-button>
+          <el-button type="warning" size="mini" @click="handleUpdate(row,0)">
+            修改密码
           </el-button>
         </template>
       </el-table-column>
@@ -92,27 +95,27 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="用户名称" prop="username">
+        <el-form-item label="用户名称" prop="username" v-if="tempShow">
           <el-input v-model="temp.username" />
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
+        <el-form-item label="手机号" prop="phone" v-if="tempShow">
           <el-input v-model="temp.phone" />
         </el-form-item>
         <el-form-item label="密码" prop="password" v-if="passShow">
           <el-input v-model="temp.password" type="password" />
         </el-form-item>
-        <el-form-item label="角色" prop="roleId">
-          <el-select v-model="temp.roleId" placeholder="角色" clearable class="filter-item" >
+        <el-form-item label="角色" prop="roleId" v-if="tempShow">
+          <el-select v-model="temp.roleId" placeholder="角色" clearable class="filter-item" v-if="tempShow">
             <el-option v-for="item in roleData" :key="item.roleId" :label="item.roleName" :value="item.roleId"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户组" prop="groupId">
+        <el-form-item label="用户组" prop="groupId" v-if="tempShow">
           <el-select v-model="temp.groupId" placeholder="用户组" clearable class="filter-item" >
             <el-option v-for="item in groupData" :key="item.groupId" :label="item.groupName" :value="item.groupId"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="权限状态" prop="roleStatus">
-          <el-radio-group v-model="temp.userStatus">
+        <el-form-item label="权限状态" prop="roleStatus" v-if="tempShow">
+          <el-radio-group v-model="temp.userStatus" v-if="true">
             <el-radio :label="1" :value="1">正常</el-radio>
             <el-radio :label="0" :value="0">禁用</el-radio>
           </el-radio-group>
@@ -217,6 +220,7 @@ export default {
         roleId: [{ required: true, message: '请选择角色', trigger: 'change' }]
       },
       passShow: true,
+      tempShow: true,
       downloadLoading: false,
       roleData: undefined,
       groupData: undefined
@@ -273,8 +277,14 @@ export default {
         }
       })
     },
-    handleUpdate(row) {
-      this.passShow = false // 取消密码框
+    handleUpdate(row,type) {
+      if(type == 0){ // 0 单独修改密码
+        this.tempShow = false //  取消其他表单 除密码框外
+        this.passShow = true // 显示密码框
+      }else{
+        this.tempShow = true // 显示表单
+        this.passShow = false // 取消密码框
+      }
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true

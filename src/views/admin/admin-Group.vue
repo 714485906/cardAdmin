@@ -9,7 +9,7 @@
         搜索
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加用户组
+        添加营销组
       </el-button>
       <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
       <!--        导出-->
@@ -77,10 +77,10 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="130px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="用户组名称" prop="groupName">
+        <el-form-item label="营销组名称" prop="groupName">
           <el-input v-model="temp.groupName" />
         </el-form-item>
-        <el-form-item label="用户组类型" prop="groupType">
+        <el-form-item label="营销组类型" prop="groupType">
           <el-radio-group v-model="temp.groupType">
             <el-radio :label="1">个人级</el-radio>
             <el-radio :label="2">公司级</el-radio>
@@ -173,12 +173,12 @@ export default {
       dialogStatus: '',
       textMap: {
         update: '编辑用户组',
-        create: '添加用户组'
+        create: '添加营销组'
       },
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        groupName: [{ required: true, message: '请输入用户组名称', trigger: 'blur' },
+        groupName: [{ required: true, message: '请输入营销组名称', trigger: 'blur' },
           { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
         groupStatus: [{ required: true, message: '请选择用户组状态', trigger: 'blur' }],
         groupType: [{ required: true, message: '请选择用户组类型', trigger: 'blur' }]
