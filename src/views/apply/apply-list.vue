@@ -1,19 +1,19 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.channelName" placeholder="渠道名称" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.channelStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in channelStatusData" :key="item.channelStatus" :label="item.channelStatusName" :value="item.channelStatus" />
-      </el-select>
-      <el-select v-model="listQuery.channelType" placeholder="渠道类型" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in channelTypeData" :key="item.channelType" :label="item.channelTypeName" :value="item.channelType" />
-      </el-select>
-      <el-select v-model="listQuery.platformId" placeholder="平台" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in platformData" :key="item.platformId" :label="item.platformName" :value="item.platformId" />
-      </el-select>
-      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId" />
-      </el-select>
+<!--      <el-input v-model="listQuery.channelName" placeholder="渠道名称" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
+<!--      <el-select v-model="listQuery.channelStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">-->
+<!--        <el-option v-for="item in channelStatusData" :key="item.channelStatus" :label="item.channelStatusName" :value="item.channelStatus" />-->
+<!--      </el-select>-->
+<!--      <el-select v-model="listQuery.channelType" placeholder="渠道类型" clearable class="filter-item" style="width: 130px">-->
+<!--        <el-option v-for="item in channelTypeData" :key="item.channelType" :label="item.channelTypeName" :value="item.channelType" />-->
+<!--      </el-select>-->
+<!--      <el-select v-model="listQuery.platformId" placeholder="平台" clearable class="filter-item" style="width: 130px">-->
+<!--        <el-option v-for="item in platformData" :key="item.platformId" :label="item.platformName" :value="item.platformId" />-->
+<!--      </el-select>-->
+<!--      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">-->
+<!--        <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId" />-->
+<!--      </el-select>-->
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -35,54 +35,45 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="channelId" prop="id" sortable="custom" align="center" width="120">
+      <el-table-column label="applyId" prop="id" sortable="custom" align="center" width="120">
         <template slot-scope="{row}">
-          <span>{{ row.channelId }}</span>
+          <span>{{ row.applyId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道名称"min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.channelName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户名称"min-width="120px" align="center">
+      <el-table-column label="申请人姓名"min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平台名称"min-width="120px" align="center">
+      <el-table-column label="申请人身份证号"min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.platformName }}</span>
+          <span class="link-type">{{ row.idNumber }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="收件详细地址"min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.address }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="创建时间" width="260px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道类型" class-name="status-col" width="120" align="center">
+      <el-table-column label="申请状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-            <el-tag type="success" v-if="row.channelType == 1">自运营</el-tag>
-            <el-tag type="info" v-else-if="row.channelType == 2">代运营</el-tag>
+            <el-tag type="info" v-if="row.channelType == 0">待提交</el-tag>
+            <el-tag type="success" v-else-if="row.channelType == 1">已提交</el-tag>
+          <el-tag type="danger" v-else-if="row.channelType == 2">提交失败</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="渠道状态" class-name="status-col" width="120" align="center">
-        <template slot-scope="{row}">
-          <el-tag type="warning" v-if="row.channelStatus == 0">待审核</el-tag>
-          <el-tag type="success" v-if="row.channelStatus == 1">正常</el-tag>
-          <el-tag type="danger" v-if="row.channelStatus == 2">审核失败</el-tag>
-        </template>
-      </el-table-column>
+
       <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-            <el-button type="primary" size="mini" >
-              <router-link :to="'/channelAccount/'+row.channelId">
-                查看账号
-              </router-link>
-            </el-button>
 <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
 <!--            删除-->
 <!--          </el-button>-->
@@ -228,8 +219,6 @@ export default {
   },
   created() {
     this.getList()
-    this.getUserListFun()
-    this.getPlatformListFun()
   },
   methods: {
     getList() {

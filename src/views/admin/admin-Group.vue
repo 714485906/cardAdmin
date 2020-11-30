@@ -11,9 +11,9 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加用户组
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+      <!--        导出-->
+      <!--      </el-button>-->
     </div>
     <div style="margin-bottom: 15px"></div>
     <el-table
@@ -31,7 +31,7 @@
           <span>{{ row.groupId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户组"min-width="120px" align="center">
+      <el-table-column label="营销员" min-width="220px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.groupName }}</span>
         </template>
@@ -41,13 +41,27 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="成员数量" width="120px" align="center">
+        <template slot-scope="{row}">
+          <router-link :to="'/Grouplist/'+row.groupId">
+            <span class="link-type">{{ row.userNum }}</span>
+          </router-link>
+        </template>
+      </el-table-column>
+      <el-table-column label="用户组类型" class-name="status-col" width="120" align="center">
+        <template slot-scope="{row}">
+          <el-tag type="danger" v-if="row.groupType == 0">未知</el-tag>
+          <el-tag type="info" v-if="row.groupType == 1">个人级</el-tag>
+          <el-tag type="warning" v-if="row.groupType == 2">公司级</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag type="success" v-if="row.groupStatus == 1">正常</el-tag>
           <el-tag type="danger" v-if="row.groupStatus == 0">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="280px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
@@ -65,6 +79,12 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="130px" style="width: 400px; margin-left:50px;">
         <el-form-item label="用户组名称" prop="groupName">
           <el-input v-model="temp.groupName" />
+        </el-form-item>
+        <el-form-item label="用户组类型" prop="groupType">
+          <el-radio-group v-model="temp.groupType">
+            <el-radio :label="1">个人级</el-radio>
+            <el-radio :label="2">公司级</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="权限状态" prop="groupStatus">
           <el-radio-group v-model="temp.groupStatus">
@@ -146,7 +166,8 @@ export default {
       temp: {
         groupName: '',
         groupId: '',
-        groupStatus: ''
+        groupStatus: '',
+        groupType: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -159,7 +180,8 @@ export default {
       rules: {
         groupName: [{ required: true, message: '请输入用户组名称', trigger: 'blur' },
           { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
-        groupStatus: [{ required: true, message: '请选择用户组状态', trigger: 'blur' }]
+        groupStatus: [{ required: true, message: '请选择用户组状态', trigger: 'blur' }],
+        groupType: [{ required: true, message: '请选择用户组类型', trigger: 'blur' }]
       },
       downloadLoading: false,
       data2: []
@@ -177,7 +199,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 1 * 500)
       })
     },
     // getrole() {
@@ -224,7 +246,7 @@ export default {
     resetTemp() {
       this.temp = {
         groupName: undefined,
-        groupId: undefined,
+        groupType: undefined,
         groupStatus: undefined
       }
     },
@@ -238,8 +260,9 @@ export default {
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
+        console.log(this.temp)
         if (valid) {
-          PostCreateGroup(this.temp.groupName).then(() => {
+          PostCreateGroup(this.temp).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$notify({
