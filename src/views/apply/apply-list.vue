@@ -20,6 +20,9 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        二次分配
+      </el-button>
 <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
 <!--        导出-->
 <!--      </el-button>-->
@@ -33,8 +36,9 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
+      @selection-change="handleSelectionChange">
     >
+      <el-table-column type="selection" width="55" ></el-table-column>
       <el-table-column label="applyId" prop="id" sortable="custom" align="center" width="120">
         <template slot-scope="{row}">
           <span>{{ row.applyId }}</span>
@@ -214,7 +218,8 @@ export default {
         channelStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
       downloadLoading: false,
-      data2: []
+      data2: [],
+      multipleSelection: []
     }
   },
   created() {
@@ -328,6 +333,9 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    handleSelectionChange(val) {
+      console.log(this.multipleSelection)
     },
     getUserListFun() { // 获取用户列表
       getUserList({
