@@ -5,15 +5,15 @@
       <el-select v-model="listQuery.channelStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in channelStatusData" :key="item.channelStatus" :label="item.channelStatusName" :value="item.channelStatus" />
       </el-select>
-      <el-select v-model="listQuery.channelType" placeholder="渠道类型" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in channelTypeData" :key="item.channelType" :label="item.channelTypeName" :value="item.channelType" />
-      </el-select>
+<!--      <el-select v-model="listQuery.channelType" placeholder="渠道类型" clearable class="filter-item" style="width: 130px">-->
+<!--        <el-option v-for="item in channelTypeData" :key="item.channelType" :label="item.channelTypeName" :value="item.channelType" />-->
+<!--      </el-select>-->
       <el-select v-model="listQuery.platformId" placeholder="平台" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in platformData" :key="item.platformId" :label="item.platformName" :value="item.platformId" />
       </el-select>
-      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId" />
-      </el-select>
+<!--      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">-->
+<!--        <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId" />-->
+<!--      </el-select>-->
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -45,35 +45,39 @@
           <span class="link-type">{{ row.channelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户名称"min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.username }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="平台名称"min-width="120px" align="center">
+<!--      <el-table-column label="用户名称"min-width="120px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.username }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column label="平台名称" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.platformName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="260px" align="center">
+      <el-table-column label="创建时间" width="220px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道类型" class-name="status-col" width="120" align="center">
+      <el-table-column label="修改时间" width="220px" align="center">
         <template slot-scope="{row}">
-            <el-tag type="success" v-if="row.channelType == 1">自运营</el-tag>
-            <el-tag type="info" v-else-if="row.channelType == 2">代运营</el-tag>
+          <span>{{ row.modifyTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道状态" class-name="status-col" width="120" align="center">
+      <el-table-column label="账号数量" min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.accountNum }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="渠道状态" fixed="right" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag type="warning" v-if="row.channelStatus == 0">待审核</el-tag>
           <el-tag type="success" v-if="row.channelStatus == 1">正常</el-tag>
           <el-tag type="danger" v-if="row.channelStatus == 2">审核失败</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
@@ -97,21 +101,15 @@
         <el-form-item label="渠道名称" prop="channelName">
           <el-input v-model="temp.channelName" />
         </el-form-item>
-        <el-form-item label="用户名称" prop="userId">
-          <el-select v-model="temp.userId" placeholder="用户名称" clearable class="filter-item" >
-            <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId"  />
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="用户名称" prop="userId">-->
+<!--          <el-select v-model="temp.userId" placeholder="用户名称" clearable class="filter-item" >-->
+<!--            <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId"  />-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="平台名称" prop="platformId">
           <el-select v-model="temp.platformId" placeholder="平台名称" clearable class="filter-item" >
             <el-option v-for="item in platformData" :key="item.platformId" :label="item.platformName" :value="item.platformId"  />
           </el-select>
-        </el-form-item>
-        <el-form-item label="渠道类型" prop="channelType">
-          <el-radio-group v-model="temp.channelType">
-            <el-radio :label="1" :value="1">自运营</el-radio>
-            <el-radio :label="2" :value="2">代运营</el-radio>
-          </el-radio-group>
         </el-form-item>
         <el-form-item label="渠道类型" prop="channelStatus">
           <el-radio-group v-model="temp.channelStatus">
@@ -177,7 +175,6 @@ export default {
         pageSize: 10,
         channelName: undefined,
         channelStatus: undefined,
-        channelType: undefined,
         platformId: undefined,
         userId: undefined
       },
@@ -187,11 +184,6 @@ export default {
         { channelStatus: '1', channelStatusName: '审核成功' },
         { channelStatus: '2', channelStatusName: '审核失败' }
       ],
-      channelTypeData: [
-        { channelType: '1', channelTypeName: '自运营' },
-        { channelType: '2', channelTypeName: '代运营' }
-
-      ],
       getUserListData: '',
       platformData: '',
       Rolelist: '',
@@ -200,10 +192,8 @@ export default {
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
-        userId: undefined,
         platformId: undefined,
         channelName: undefined,
-        channelType: undefined,
         channelStatus: undefined
       },
       dialogFormVisible: false,
@@ -219,7 +209,6 @@ export default {
           { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
         userId: [{ required: true, message: '请选择用户', trigger: 'change' }],
         platformId: [{ required: true, message: '请选择平台', trigger: 'change' }],
-        channelType: [{ required: true, message: '请选择状态', trigger: 'change' }],
         channelStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
       downloadLoading: false,
@@ -228,7 +217,7 @@ export default {
   },
   created() {
     this.getList()
-    this.getUserListFun()
+    // this.getUserListFun()
     this.getPlatformListFun()
   },
   methods: {
@@ -240,7 +229,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 1 * 500)
       })
     },
     handleFilter() {
@@ -270,10 +259,8 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        userId: undefined,
         platformId: undefined,
         channelName: undefined,
-        channelType: undefined,
         channelStatus: undefined
 
       }
@@ -290,17 +277,17 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           console.log(this.temp)
-          PostcreateChannel(this.temp).then(() => {
-            // this.list.unshift(this.temp)
-            this.getList()
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '成功创建',
-              type: 'success',
-              duration: 2000
-            })
-          })
+          // PostcreateChannel(this.temp).then(() => {
+          //   // this.list.unshift(this.temp)
+          //   this.getList()
+          //   this.dialogFormVisible = false
+          //   this.$notify({
+          //     title: '成功',
+          //     message: '成功创建',
+          //     type: 'success',
+          //     duration: 2000
+          //   })
+          // })
         }
       })
     },
@@ -340,14 +327,14 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    getUserListFun() { // 获取用户列表
-      getUserList({
-        pageNo: 1,
-        pageSize: 10000
-      }).then(response => {
-        this.getUserListData = response.data
-      })
-    },
+    // getUserListFun() { // 获取用户列表
+    //   getUserList({
+    //     pageNo: 1,
+    //     pageSize: 10000
+    //   }).then(response => {
+    //     this.getUserListData = response.data
+    //   })
+    // },
     getPlatformListFun() { // 获取平台及列表
       getPlatformList({
         pageNo: 1,

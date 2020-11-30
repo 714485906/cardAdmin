@@ -75,9 +75,10 @@ export function getGroupList(params) {
     params
   })
 }
-export function PostCreateGroup(name) {
+export function PostCreateGroup(data) {
+  console.log(data)
   return request({
-    url: 'user/createGroup?groupName=' + name, // 创建用户组
+    url: 'user/createGroup?groupName=' + data.groupName + '&groupType=' + data.groupType, // 创建用户组
     method: 'post'
   })
 }
