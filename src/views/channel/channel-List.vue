@@ -279,17 +279,17 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           console.log(this.temp)
-          // PostcreateChannel(this.temp).then(() => {
-          //   // this.list.unshift(this.temp)
-          //   this.getList()
-          //   this.dialogFormVisible = false
-          //   this.$notify({
-          //     title: '成功',
-          //     message: '成功创建',
-          //     type: 'success',
-          //     duration: 2000
-          //   })
-          // })
+          PostcreateChannel(this.temp).then(() => {
+            // this.list.unshift(this.temp)
+            this.getList()
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '成功创建',
+              type: 'success',
+              duration: 2000
+            })
+          })
         }
       })
     },

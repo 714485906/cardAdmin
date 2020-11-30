@@ -113,6 +113,12 @@ export const constantRoutes = [
         component: () => import('@/views/channel/channel-account'),
         meta: { title: '渠道账号列表', icon: 'tree' },
         hidden: true
+      },
+      {
+        path: '/recharge',
+        name: 'recharge',
+        component: () => import('@/views/recharge/recharge-list'),
+        meta: { title: '账号充值', icon: 'tree' }
       }
 
     ]
