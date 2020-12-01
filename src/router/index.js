@@ -194,6 +194,21 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/order',
+    component: Layout,
+    name: 'order',
+    meta: { title: '订单服务', icon: 'el-icon-receiving' },
+    alwaysShow: true,
+    children: [
+      {
+        path: '/orderList',
+        name: 'orderList',
+        component: () => import('@/views/order/order-list'),
+        meta: { title: '订单列表', icon: 'el-icon-coin' }
+      }
+    ]
+  },
   // {
   //   path: '/form',
   //   component: Layout,

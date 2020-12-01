@@ -79,9 +79,9 @@
         <el-form-item label="充值账户币" prop="rechargePoints">
           <el-input v-model="temp.rechargePoints" />
         </el-form-item>
-        <el-form-item label="充值系数" prop="rechargeRate">
-          <el-input v-model="temp.rechargeRate" />
-        </el-form-item>
+<!--        <el-form-item label="充值系数" prop="rechargeRate">-->
+<!--          <el-input v-model="temp.rechargeRate" />-->
+<!--        </el-form-item>-->
         <el-form-item label="备注" prop="remark">
           <el-input v-model="temp.remark" />
         </el-form-item>
@@ -163,7 +163,6 @@ export default {
         accountId: '',
         rechargeFee: '',
         rechargePoints: '',
-        rechargeRate: '',
         remark: ''
       },
       dialogFormVisible: false,
@@ -184,10 +183,6 @@ export default {
         ],
         rechargePoints: [
           { required: true, message: '请选择充值账户币，单位个', trigger: 'blur' },
-          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }
-        ],
-        rechargeRate: [
-          { required: true, message: '请选择输出充值系数，单位百分之', trigger: 'blur' },
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }
         ]
 

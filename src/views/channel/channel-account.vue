@@ -25,12 +25,32 @@
       </el-table-column>
       <el-table-column label="渠道账号" min-width="190px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.accountName }}-{{row.accountId}}</span>
+          <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" min-width="160px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="充值次数" width="100px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.rechargeCount }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="累计充值金额，单位分" width="100px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.rechargeFee }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="累计充值账户币/个" width="100px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.rechargePoints }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注(第三方ID)" min-width="190px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.remark }}</span>
         </template>
       </el-table-column>
       <el-table-column label="账号类型" class-name="status-col" width="120" align="center">
@@ -60,14 +80,17 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="账号名称" prop="accountName">
-          <el-input v-model="temp.accountName" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="充值系数" prop="rechargeRate">
+          <el-input v-model="temp.rechargeRate" />
         </el-form-item>
-        <el-form-item label="用户名称" prop="userId">
-          <el-select v-model="temp.userId" placeholder="用户名称" clearable class="filter-item" >
+        <el-form-item label="营销员名称" prop="userId">
+          <el-select v-model="temp.userId" placeholder="营销员名称" clearable class="filter-item" >
             <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId"  />
           </el-select>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="temp.remark" placeholder="请输入第三方ID" />
         </el-form-item>
         <el-form-item label="账号类型" prop="accountType">
           <el-radio-group v-model="temp.accountType">
@@ -81,6 +104,7 @@
             <el-radio :label="1" :value="1">正常</el-radio>
           </el-radio-group>
         </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -145,9 +169,10 @@ export default {
       showReviewer: false,
       temp: {
         userId: undefined,
-        accountName: undefined,
+        rechargeRate: undefined,
         accountType: undefined,
-        accountStatus: undefined
+        accountStatus: undefined,
+        remark: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -158,8 +183,8 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        accountName: [{ required: true, message: '账号名称', trigger: 'blur' },
-          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
+        rechargeRate: [{ required: true, message: '请选择输出充值系数，单位百分之', trigger: 'blur' },
+          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }],
         accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }],
         userId: [{ required: true, message: '请选择用户', trigger: 'change' }],
         accountType: [{ required: true, message: '请选择账号类型', trigger: 'change' }]
@@ -195,8 +220,9 @@ export default {
     resetTemp() {
       this.temp = {
         channelId: this.listQuery.channelId,
-        accountName: undefined,
-        accountStatus: undefined
+        rechargeRate: undefined,
+        accountStatus: undefined,
+        remark: undefined
       }
     },
     handleCreate() {

@@ -14,14 +14,17 @@
 <!--      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">-->
 <!--        <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId" />-->
 <!--      </el-select>-->
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        搜索
+<!--      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">-->
+<!--        搜索-->
+<!--      </el-button>-->
+<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">-->
+<!--        添加-->
+<!--      </el-button>-->
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(1)">
+        二次分配 {{multipleSelection.length}}
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        二次分配
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(2)">
+        手动批量提交 {{multipleSelection.length}}
       </el-button>
 <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
 <!--        导出-->
@@ -36,9 +39,10 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @selection-change="handleSelectionChange">
-    >
-      <el-table-column type="selection" width="55" ></el-table-column>
+      @selection-change="handleSelectionChange"
+      :row-key="getRowKeys"
+      >
+      <el-table-column type="selection" :reserve-selection="true"  width="45" align="center" fixed="left"></el-table-column>
       <el-table-column label="applyId" prop="id" sortable="custom" align="center" width="120">
         <template slot-scope="{row}">
           <span>{{ row.applyId }}</span>
@@ -49,9 +53,34 @@
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请人身份证号"min-width="120px" align="center">
+      <el-table-column label="申请人身份证号" width="180px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.idNumber }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="省份名称" width="140px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.provinceName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="城市名称" width="140px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.cityName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="区县名称" width="140px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.districtName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="申请号码省份名称" width="140px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.applyProvinceName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="申请号码城市名称" width="140px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.applyCityName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="收件详细地址"min-width="120px" align="center">
@@ -65,15 +94,14 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请状态" class-name="status-col" width="120" align="center">
+      <el-table-column label="申请状态" fixed="right" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-            <el-tag type="info" v-if="row.channelType == 0">待提交</el-tag>
-            <el-tag type="success" v-else-if="row.channelType == 1">已提交</el-tag>
-          <el-tag type="danger" v-else-if="row.channelType == 2">提交失败</el-tag>
+            <el-tag type="info" v-if="row.applyStatus == 0">待提交</el-tag>
+            <el-tag type="success" v-else-if="row.applyStatus == 1">已提交</el-tag>
+          <el-tag type="danger" v-else-if="row.applyStatus == 2">提交失败</el-tag>
         </template>
       </el-table-column>
-
-      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
@@ -86,7 +114,6 @@
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
-
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
         <el-form-item label="渠道名称" prop="channelName">
@@ -125,26 +152,17 @@
         </el-button>
       </div>
     </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getapplyList } from '@/api/apply'
+import { getapplyList, PostResetApply, PostsubmitApply } from '@/api/apply'
 import { getUserList } from '@/api/admin'
 import { getPlatformList } from '@/api/platform'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
+import { Message } from 'element-ui' // secondary package based on el-pagination
 
 // arr to obj, such as { CN : "China", US : "USA" }
 // const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
@@ -176,6 +194,7 @@ export default {
         platformId: undefined,
         userId: undefined
       },
+      multipleSelection: [],
       importanceOptions: [1, 2, 3],
       channelStatusData: [
         { channelStatus: '0', channelStatusName: '待审核' },
@@ -217,9 +236,7 @@ export default {
         channelType: [{ required: true, message: '请选择状态', trigger: 'change' }],
         channelStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
-      downloadLoading: false,
-      data2: [],
-      multipleSelection: []
+      downloadLoading: false
     }
   },
   created() {
@@ -326,6 +343,51 @@ export default {
         }
       })
     },
+    handleResetApply(type) { // 1.二次分配  2.手动批量提交
+      if (!this.multipleSelection.length) {
+        Message({
+          message: '请选择订单',
+          type: 'error',
+          duration: 3 * 1000
+        })
+      }else{
+        let excelList = this.copyArr(this.multipleSelection);
+        let ids = []; // 获取选中的applyId
+        for (let item of excelList) {
+          ids.push(item.applyId);
+        }
+        if( type == 1 ){
+          this.PostResetApplyFun(ids) // type为1  执行二次分配
+        }else if(type == 2){
+          this.PostsubmitApplyFun(ids) //type为2  执行手动批量提交
+        }
+
+      }
+    },
+    copyArr(arr) {
+      return arr.map(e => {
+        if (typeof e === "object") {
+          return Object.assign({}, e);
+        } else {
+          return e;
+        }
+      });
+    },
+    toggleDeficiencySelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.deficiencyTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.deficiencyTable.clearSelection();
+      }
+    },
+    getRowKeys(row) {
+      return row.applyId;
+    },
+    handleSelectionChange: function (val) {
+      this.multipleSelection = val;
+    },
     handleaccount(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
@@ -334,24 +396,47 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    handleSelectionChange(val) {
-      console.log(this.multipleSelection)
+    PostResetApplyFun(ids) { // 二次分配
+      this.$confirm('是否确认二次分配操作?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+          console.log(ids)
+        PostResetApply(ids).then(response => {
+          this.getList()
+          this.$message({
+            type: 'success',
+            message: '操作成功!'
+          });
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
-    getUserListFun() { // 获取用户列表
-      getUserList({
-        pageNo: 1,
-        pageSize: 10000
-      }).then(response => {
-        this.getUserListData = response.data
-      })
-    },
-    getPlatformListFun() { // 获取平台及列表
-      getPlatformList({
-        pageNo: 1,
-        pageSize: 10000
-      }).then(response => {
-        this.platformData = response.data
-      })
+    PostsubmitApplyFun(ids) { // 手动批量提交
+      this.$confirm('是否确认手动批量提交操作?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(ids)
+        PostsubmitApply(ids).then(response => {
+          this.getList()
+          this.$message({
+            type: 'success',
+            message: '操作成功!'
+          });
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   }
 }

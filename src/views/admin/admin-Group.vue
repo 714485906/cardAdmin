@@ -82,9 +82,21 @@
         </el-form-item>
         <el-form-item label="营销组类型" prop="groupType">
           <el-radio-group v-model="temp.groupType">
-            <el-radio :label="1">个人级</el-radio>
-            <el-radio :label="2">公司级</el-radio>
+            <el-radio :label="1"  @change="tempShow=false">个人级</el-radio>
+            <el-radio :label="2" @change="tempShow=true">公司级</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="联系人" prop="contactName" v-if="tempShow">
+          <el-input v-model="temp.contactName" />
+        </el-form-item>
+        <el-form-item label="联系电话" prop="contactPhone" v-if="tempShow">
+          <el-input v-model="temp.contactPhone" />
+        </el-form-item>
+        <el-form-item label="公司名称" prop="companyName" v-if="tempShow">
+          <el-input v-model="temp.companyName" />
+        </el-form-item>
+        <el-form-item label="公司地址" prop="companyAddress" v-if="tempShow">
+          <el-input v-model="temp.companyAddress" />
         </el-form-item>
         <el-form-item label="权限状态" prop="groupStatus">
           <el-radio-group v-model="temp.groupStatus">
@@ -167,7 +179,12 @@ export default {
         groupName: '',
         groupId: '',
         groupStatus: '',
-        groupType: ''
+        groupType: '',
+        contactName: '',
+        contactPhone: '',
+        companyName: '',
+        companyAddress: ''
+
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -184,7 +201,8 @@ export default {
         groupType: [{ required: true, message: '请选择用户组类型', trigger: 'blur' }]
       },
       downloadLoading: false,
-      data2: []
+      data2: [],
+      tempShow: false
     }
   },
   created() {
@@ -245,14 +263,20 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        groupName: undefined,
-        groupType: undefined,
-        groupStatus: undefined
+        groupName: '',
+        groupId: '',
+        groupStatus: '',
+        groupType: '',
+        contactName: '',
+        contactPhone: '',
+        companyName: '',
+        companyAddress: ''
       }
     },
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
+      this.tempShow = false // 隐藏公司信息
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -276,9 +300,15 @@ export default {
       })
     },
     handleUpdate(row) {
+      if(row.groupType == 2){
+          this.tempShow = true
+      }else{
+        this.tempShow = false
+      }
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
