@@ -37,6 +37,42 @@
           <span class="link-type">{{ row.systemOrderNo }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="商品名称" width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.productName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="触点名称" width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.touchName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="运营商名" width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.operatorName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="渠道账号名" width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.accountName }}</span>
+        </template>
+      </el-table-column>
+        <el-table-column label="平台名称" width="120px" align="center">
+          <template slot-scope="{row}">
+            <span class="link-type">{{ row.platformName }}</span>
+          </template>
+        </el-table-column>
+      <el-table-column label="用户名" width="120px" align="center">
+            <template slot-scope="{row}">
+              <span class="link-type">{{ row.username }}</span>
+            </template>
+       </el-table-column>
+      <el-table-column label="商品名称" width="120px" align="center">
+      <template slot-scope="{row}">
+        <span class="link-type">{{ row.productName }}</span>
+      </template>
+    </el-table-column>
+
       <el-table-column label="运营商侧单号" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorOrderNo }}</span>
