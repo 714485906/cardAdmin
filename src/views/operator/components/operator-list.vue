@@ -67,7 +67,7 @@
           </el-button>
           <el-button type="primary" size="mini" >
             <router-link :to="'/getTouches/'+row.operatorId">
-              查看账号
+              查看触点码
             </router-link>
           </el-button>
 <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
@@ -86,6 +86,17 @@
         </el-form-item>
         <el-form-item label="运营商编码" prop="operatorCode">
           <el-input v-model="temp.operatorCode" />
+        </el-form-item>
+        <el-form-item label="接口模式" prop="apiMode">
+          <el-radio-group v-model="temp.apiMode">
+            <el-radio :label="1" :value="1" @change="tempShow = true">接口下单</el-radio>
+            <el-radio :label="2" :value="2" @change="tempShow = false;temp.apiType =''">线下导单</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="接口类型" prop="apiType" v-if="tempShow">
+          <el-select v-model="temp.apiType" placeholder="接口类型" clearable class="filter-item" >
+            <el-option v-for="item in apiTypeData" :key="item.apiType" :label="item.apiTypeName" :value="item.apiType"  />
+          </el-select>
         </el-form-item>
         <el-form-item label="运营商状态" prop="operatorStatus">
           <el-radio-group v-model="temp.operatorStatus">
@@ -163,7 +174,9 @@ export default {
       temp: {
         accountId: undefined,
         accountName: undefined,
-        accountStatus: undefined
+        accountStatus: undefined,
+        apiMode: undefined,
+        apiType: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -178,10 +191,16 @@ export default {
           { min: 3, max: 32, message: '长度在 3 到 32 个字符', trigger: 'blur' }],
         operatorCode: [{ required: true, message: '请输入运营商编码', trigger: 'blur' },
           { min: 3, max: 128, message: '长度在 3 到 128 个字符', trigger: 'blur' }],
-        operatorStatus: [{ required: true, message: '请选择运营商状态', trigger: 'change' }]
+        apiMode: [{ required: true, message: '请选择接口模式', trigger: 'change' }],
+        apiType: [{ required: true, message: '请选择接口类型', trigger: 'blur' }],
+        accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }],
       },
       downloadLoading: false,
-      data2: []
+      apiTypeData: [
+        { apiType: 1, apiTypeName: '联通集团zop'},
+        { apiType: 2, apiTypeName: '长沙联通zop'}
+      ],
+      tempShow: false
     }
   },
   created() {
@@ -214,6 +233,7 @@ export default {
       }
     },
     handleCreate() {
+      this.tempShow = false //隐藏接口模式
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -240,6 +260,11 @@ export default {
       })
     },
     handleUpdate(row) {
+      if(row.apiMode == 2){
+        this.tempShow = true
+      }else{
+        this.tempShow = false
+      }
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true

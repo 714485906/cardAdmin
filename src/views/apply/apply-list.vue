@@ -1,25 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-<!--      <el-input v-model="listQuery.channelName" placeholder="渠道名称" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
-<!--      <el-select v-model="listQuery.channelStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">-->
-<!--        <el-option v-for="item in channelStatusData" :key="item.channelStatus" :label="item.channelStatusName" :value="item.channelStatus" />-->
-<!--      </el-select>-->
-<!--      <el-select v-model="listQuery.channelType" placeholder="渠道类型" clearable class="filter-item" style="width: 130px">-->
-<!--        <el-option v-for="item in channelTypeData" :key="item.channelType" :label="item.channelTypeName" :value="item.channelType" />-->
-<!--      </el-select>-->
-<!--      <el-select v-model="listQuery.platformId" placeholder="平台" clearable class="filter-item" style="width: 130px">-->
-<!--        <el-option v-for="item in platformData" :key="item.platformId" :label="item.platformName" :value="item.platformId" />-->
-<!--      </el-select>-->
-<!--      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">-->
-<!--        <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId" />-->
-<!--      </el-select>-->
-<!--      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">-->
-<!--        搜索-->
-<!--      </el-button>-->
-<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">-->
-<!--        添加-->
-<!--      </el-button>-->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(1)">
         二次分配 {{multipleSelection.length}}
       </el-button>
