@@ -26,11 +26,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="operatorId" prop="id" sortable="custom" align="center" width="120">
-        <template slot-scope="{row}">
-          <span>{{ row.operatorId }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+<!--      <el-table-column label="operatorId" prop="id" sortable="custom" align="center" width="120">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.operatorId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="运营商名称" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>

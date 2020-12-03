@@ -25,11 +25,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="rechargeId" prop="id" sortable="custom" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.rechargeId }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+<!--      <el-table-column label="rechargeId" prop="id" sortable="custom" align="center" width="100">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.rechargeId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="备注" width="220px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.remark }}</span>
@@ -76,9 +77,9 @@
         <el-form-item label="充值金额" prop="rechargeFee">
           <el-input v-model="temp.rechargeFee"  />
         </el-form-item>
-        <el-form-item label="充值账户币" prop="rechargePoints">
-          <el-input v-model="temp.rechargePoints" />
-        </el-form-item>
+<!--        <el-form-item label="充值账户币" prop="rechargePoints">-->
+<!--          <el-input v-model="temp.rechargePoints" />-->
+<!--        </el-form-item>-->
 <!--        <el-form-item label="充值系数" prop="rechargeRate">-->
 <!--          <el-input v-model="temp.rechargeRate" />-->
 <!--        </el-form-item>-->
@@ -168,8 +169,8 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑用户组',
-        create: '添加营销组'
+        update: '编辑',
+        create: '添加'
       },
       dialogPvVisible: false,
       pvData: [],

@@ -86,14 +86,14 @@
             <el-radio :label="2" @change="tempShow=true">公司级</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="公司名称" prop="companyName" v-if="tempShow">
+          <el-input v-model="temp.companyName" />
+        </el-form-item>
         <el-form-item label="联系人" prop="contactName" v-if="tempShow">
           <el-input v-model="temp.contactName" />
         </el-form-item>
         <el-form-item label="联系电话" prop="contactPhone" v-if="tempShow">
           <el-input v-model="temp.contactPhone" />
-        </el-form-item>
-        <el-form-item label="公司名称" prop="companyName" v-if="tempShow">
-          <el-input v-model="temp.companyName" />
         </el-form-item>
         <el-form-item label="公司地址" prop="companyAddress" v-if="tempShow">
           <el-input v-model="temp.companyAddress" />
@@ -196,7 +196,7 @@ export default {
       pvData: [],
       rules: {
         groupName: [{ required: true, message: '请输入营销组名称', trigger: 'blur' },
-          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }],
         groupStatus: [{ required: true, message: '请选择用户组状态', trigger: 'blur' }],
         groupType: [{ required: true, message: '请选择用户组类型', trigger: 'blur' }]
       },

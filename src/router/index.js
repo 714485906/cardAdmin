@@ -183,7 +183,7 @@ export const constantRoutes = [
     path: '/apply',
     component: Layout,
     name: 'apply',
-    meta: { title: '表单申请服务', icon: 'el-icon-receiving' },
+    meta: { title: '表单管理', icon: 'el-icon-receiving' },
     alwaysShow: true,
     children: [
       {

@@ -18,11 +18,12 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="accountId" prop="id" sortable="custom" align="center" width="120">
-        <template slot-scope="{row}">
-          <span>{{ row.accountId }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+<!--      <el-table-column label="accountId" prop="id" sortable="custom" align="center" width="120">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.accountId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="渠道账号" min-width="190px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>
@@ -33,17 +34,22 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="充值系数" width="100px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.rechargeRate /100 }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="充值次数" width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.rechargeCount }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="累计充值金额，单位分" width="100px" align="center">
+      <el-table-column label="累计充值金额/元" width="100px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeFee }}</span>
+          <span class="link-type">{{ row.rechargeFee *100 }}</span> <!--row.rechargeFee 后台单位是分 计算一下 统一为元-->
         </template>
       </el-table-column>
-      <el-table-column label="累计充值账户币/个" width="100px" align="center">
+      <el-table-column label="累计充值账户币/个" width="150px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.rechargePoints }}</span>
         </template>
@@ -81,16 +87,16 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="充值系数" prop="rechargeRate">
-          <el-input v-model="temp.rechargeRate" />
+        <el-form-item label="媒体ID" prop="remark">
+          <el-input v-model="temp.remark" placeholder="请输入第三方媒体ID" />
+        </el-form-item>
+        <el-form-item label="充值系数" prop="rechargeRate" placeholder="请输入小数">
+          <el-input v-model="temp.rechargeRate"/>
         </el-form-item>
         <el-form-item label="营销员名称" prop="userId">
           <el-select v-model="temp.userId" placeholder="营销员名称" clearable class="filter-item" >
             <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId"  />
           </el-select>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="temp.remark" placeholder="请输入第三方ID" />
         </el-form-item>
         <el-form-item label="账号类型" prop="accountType">
           <el-radio-group v-model="temp.accountType">
@@ -183,7 +189,7 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        rechargeRate: [{ required: true, message: '请选择输出充值系数，单位百分之', trigger: 'blur' },
+        rechargeRate: [{ required: true, message: '请选择输出充值系数，小数', trigger: 'blur' },
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }],
         accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }],
         userId: [{ required: true, message: '请选择用户', trigger: 'change' }],
@@ -236,7 +242,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          console.log(this.temp)
+          this.temp.rechargeRate = this.temp.rechargeRate*100
           PostCreateAccount(this.temp).then(() => {
             // this.list.unshift(this.temp)
             this.getList()

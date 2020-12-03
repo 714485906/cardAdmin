@@ -24,11 +24,11 @@
       :row-key="getRowKeys"
       >
       <el-table-column type="selection" :reserve-selection="true"  width="45" align="center" fixed="left"></el-table-column>
-      <el-table-column label="applyId" prop="id" sortable="custom" align="center" width="120">
-        <template slot-scope="{row}">
-          <span>{{ row.applyId }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="applyId" prop="id" sortable="custom" align="center" width="120">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.applyId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="申请人姓名"min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
@@ -84,9 +84,9 @@
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            编辑
-          </el-button>
+<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
+<!--            编辑-->
+<!--          </el-button>-->
 <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
 <!--            删除-->
 <!--          </el-button>-->

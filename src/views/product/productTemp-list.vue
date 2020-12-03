@@ -29,11 +29,12 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="模板id" prop="id" sortable="custom" align="center" width="120">
-        <template slot-scope="{row}">
-          <span>{{ row.templateId }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+<!--      <el-table-column label="模板id" prop="id" sortable="custom" align="center" width="120">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.templateId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="模板名称" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.templateName }}</span>

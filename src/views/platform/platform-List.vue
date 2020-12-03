@@ -23,11 +23,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="platformId" prop="platformId" sortable="custom" align="center" width="140">
-        <template slot-scope="{row}">
-          <span>{{ row.platformId }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+<!--      <el-table-column label="platformId" prop="platformId" sortable="custom" align="center" width="140">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.platformId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="平台名称"min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.platformName }}</span>
@@ -81,6 +82,7 @@
           <el-radio-group v-model="temp.platformType">
             <el-radio :label="1" :value="1">信息流</el-radio>
             <el-radio :label="2" :value="2">搜索</el-radio>
+            <el-radio :label="3" :value="3">其他</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="平台状态" prop="platformStatus">
