@@ -1,15 +1,18 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-<!--      <el-input v-model="listQuery.productCode" placeholder="商品编码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
-<!--      <el-input v-model="listQuery.productName" placeholder="商品名称" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
-<!--      <el-input v-model="listQuery.operatorProductId" placeholder="运营商侧商品" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
-<!--      <el-select v-model="listQuery.operatorId" placeholder="运营商" clearable class="filter-item" style="width: 130px">-->
-<!--        <el-option v-for="item in operatorData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />-->
-<!--      </el-select>-->
-<!--      <el-select v-model="listQuery.productStatus" placeholder="商品状态" clearable class="filter-item" style="width: 130px">-->
-<!--        <el-option v-for="item in productStatusData" :key="item.key" :label="item.name" :value="item.key" />-->
-<!--      </el-select>-->
+      <el-select v-model="listQuery.accountId" placeholder="状态" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
+      </el-select>
+      <el-date-picker
+        v-model="value1"
+        type="datetimerange"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        format="yyyy-MM-dd"
+      >
+      </el-date-picker>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -134,9 +137,11 @@
 
 <script>
 import { getorderList } from '@/api/order'
+import { getgetAccounts } from '@/api/channel'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
+import { getGroupList } from '@/api/admin' // secondary package based on el-pagination
 export default {
   name: 'ComplexTable',
   components: { Pagination },
@@ -158,6 +163,7 @@ export default {
       },
       importanceOptions: [1, 2, 3],
       operatorData: undefined,
+      accountIdData: undefined,
       productStatusData: [
         { key: '1', name: '正常' },
         { key: '0', name: '不可用' }
@@ -169,10 +175,13 @@ export default {
       dialogStatus: '',
       dialogPvVisible: false,
       pvData: [],
+      value1: ''
+
     }
   },
   created() {
     this.getList()
+    this.accountIdDataFun()
   },
   methods: {
     getList() {
@@ -189,6 +198,14 @@ export default {
     handleFilter() {
       this.listQuery.pageNo = 1
       this.getList()
+    },
+    accountIdDataFun() {
+      getgetAccounts({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.accountIdData = response.data // 获取账号
+      })
     }
   }
 }

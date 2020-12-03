@@ -41,6 +41,11 @@
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="申请人联系电话"min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.contactPhone }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="申请人身份证号" width="180px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.idNumber }}</span>
@@ -61,16 +66,16 @@
           <span class="link-type">{{ row.districtName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请号码省份名称" width="140px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.applyProvinceName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="申请号码城市名称" width="140px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.applyCityName }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="申请号码省份名称" width="140px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.applyProvinceName }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="申请号码城市名称" width="140px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.applyCityName }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="收件详细地址"min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.address }}</span>
@@ -222,6 +227,9 @@ export default {
         '456462345923',
         '5679456456564',
         '8979456456456',
+        '4564566456565',
+        '4564566456565',
+        '4564566456565',
         '4564566456565'
       ],
       ChangeNumberlistQuery: {

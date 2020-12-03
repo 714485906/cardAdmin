@@ -56,6 +56,11 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="创建人" width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.createUserId }}</span>
+        </template>
+      </el-table-column>
 <!--      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">-->
 <!--        <template slot-scope="{row,$index}">-->
 <!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
