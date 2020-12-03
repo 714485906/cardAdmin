@@ -46,11 +46,11 @@
           <span class="link-type">{{ row.rechargePoints }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="充值系数" width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeRate }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="充值系数" width="120px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.rechargeRate }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="创建时间" width="260px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
@@ -179,7 +179,7 @@ export default {
           { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }],
         accountId: [{ required: true, message: '请选择渠道账号', trigger: 'blur' }],
         rechargeFee: [
-          { required: true, message: '请选择输出充值金额(分)', trigger: 'blur' },
+          { required: true, message: '请选择输出充值金额(元)', trigger: 'blur' },
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }
         ],
         rechargePoints: [
@@ -259,6 +259,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         console.log(this.temp)
         if (valid) {
+          this.temp.rechargeFee = this.temp.rechargeFee * 100 // 后台数据要求 金额为分  需要把元转分
           PostCreateRecharge(this.temp).then(() => {
             this.getList()
             this.dialogFormVisible = false

@@ -29,9 +29,9 @@
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" min-width="160px" align="center">
+      <el-table-column label="媒体ID(第三方ID)" min-width="190px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span class="link-type">{{ row.remark }}</span>
         </template>
       </el-table-column>
       <el-table-column label="充值系数" width="100px" align="center">
@@ -54,15 +54,16 @@
           <span class="link-type">{{ row.rechargePoints }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注(第三方ID)" min-width="190px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.remark }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column label="账号类型" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag type="success" v-if="row.accountType == 1">自运营</el-tag>
           <el-tag type="info" v-else-if="row.accountType == 2">代运营</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" min-width="160px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="账号类型" fixed="right" class-name="status-col" width="120" align="center">
@@ -242,7 +243,6 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.rechargeRate = this.temp.rechargeRate*100
           PostCreateAccount(this.temp).then(() => {
             // this.list.unshift(this.temp)
             this.getList()
@@ -258,7 +258,16 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
+     // row.rechargeRate = row.rechargeRate /100
+      //this.temp = Object.assign({}, row) // copy obj
+      this.temp = {
+        userId: row.userId,
+        accountId: row.accountId,
+        rechargeRate: row.rechargeRate / 100,   // 由于显示需求  要把百分之转成小数 如:130 转成 1.3
+        accountType: row.accountType,
+        accountStatus: row.accountStatus,
+        remark: row.remark
+      }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -268,9 +277,9 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          console.log(tempData)
-          PostModifyAccount(tempData).then(() => {
+          this.temp.rechargeRate = this.temp.rechargeRate *100  // 由于后台要求  系数要转百分之 如 1.3 转成 130
+          console.log(this.temp)
+          PostModifyAccount(this.temp).then(() => {
             // const index = this.list.findIndex(v => v.id === this.temp.id)
             // this.list.splice(index, 1, this.temp)
             this.getList() // 重新请求刷新数据
