@@ -1,15 +1,22 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <el-input v-model="listQuery.applyPhone" placeholder="申请号码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.contactName" placeholder="申请人姓名" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.contactPhone" placeholder="申请人联系电话" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.applyStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in applyStatusData" :key="item.applyStatus" :label="item.applyStatusName" :value="item.applyStatus" />
+      </el-select>
+      <el-button v-waves class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-search" @click="handleFilter">
+        搜索
+      </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(1)">
         二次分配 {{multipleSelection.length}}
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(2)">
         手动批量提交 {{multipleSelection.length}}
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+
     </div>
     <div style="margin-bottom: 15px"></div>
     <el-table
@@ -82,48 +89,28 @@
           <el-tag type="danger" v-else-if="row.applyStatus == 2">提交失败</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
-<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
-<!--            编辑-->
-<!--          </el-button>-->
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
-<!--          </el-button>-->
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            预占号
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="渠道名称" prop="channelName">
-          <el-input v-model="temp.channelName" />
-        </el-form-item>
-        <el-form-item label="用户名称" prop="userId">
-          <el-select v-model="temp.userId" placeholder="用户名称" clearable class="filter-item" >
-            <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId"  />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="平台名称" prop="platformId">
-          <el-select v-model="temp.platformId" placeholder="平台名称" clearable class="filter-item" >
-            <el-option v-for="item in platformData" :key="item.platformId" :label="item.platformName" :value="item.platformId"  />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="渠道类型" prop="channelType">
-          <el-radio-group v-model="temp.channelType">
-            <el-radio :label="1" :value="1">自运营</el-radio>
-            <el-radio :label="2" :value="2">代运营</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="渠道类型" prop="channelStatus">
-          <el-radio-group v-model="temp.channelStatus">
-            <el-radio :label="0" :value="0">待审核</el-radio>
-            <el-radio :label="1" :value="1">审核成功</el-radio>
-            <el-radio :label="2" :value="2">审核失败</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-form>
+      <el-row>
+        <el-col :span="6"
+                v-for="(item,index) in preemptPhoneData"
+                style="padding: 10px 0;text-align: center"
+                :class="{active:currentIndex === index}"
+                @click.native="liClick(index,item)"
+        >{{item}}</el-col>
+      </el-row>
+      <el-row>
+        <p style="text-align: center" @click="ChangeNumber">换一批</p>
+      </el-row>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
           取消
@@ -169,11 +156,10 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        channelName: undefined,
-        channelStatus: undefined,
-        channelType: undefined,
-        platformId: undefined,
-        userId: undefined
+        applyPhone: undefined,
+        contactName: undefined,
+        contactPhone: undefined,
+        applyStatus: undefined
       },
       multipleSelection: [],
       importanceOptions: [1, 2, 3],
@@ -204,7 +190,7 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑渠道',
+        update: '选择号码',
         create: '添加渠道'
       },
       dialogPvVisible: false,
@@ -217,7 +203,36 @@ export default {
         channelType: [{ required: true, message: '请选择状态', trigger: 'change' }],
         channelStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      applyStatusData: [
+        {applyStatus: 0, applyStatusName: '待提交'},
+        {applyStatus: 1, applyStatusName: '已提交'},
+        {applyStatus: 2, applyStatusName: '提交失败'}
+      ],
+      preemptPhoneData: [
+        '12345654564',
+        '478947564456',
+        '456462345923',
+        '5679456456564',
+        '8979456456456',
+        '456462345923',
+        '5679456456564',
+        '8979456456456',
+        '4564892689789',
+        '456462345923',
+        '5679456456564',
+        '8979456456456',
+        '4564566456565'
+      ],
+      ChangeNumberlistQuery: {
+        pageNo: 1,
+        pageSize: 10
+      },
+      ActiveNumber: {
+        applyId: undefined,
+        applyPhone: undefined
+      },
+      currentIndex: 0
     }
   },
   created() {
@@ -263,66 +278,22 @@ export default {
     resetTemp() {
       this.temp = {
         userId: undefined,
-        platformId: undefined,
-        channelName: undefined,
-        channelType: undefined,
-        channelStatus: undefined
-
       }
     },
-    handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          console.log(this.temp)
-          PostcreateChannel(this.temp).then(() => {
-            // this.list.unshift(this.temp)
-            this.getList()
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '成功创建',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
+    handleUpdate(row) {  //显示预选号码
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      this.ChangeNumberlistQuery.pageNo = 1
+      this.ActiveNumber.applyId = row.applyId
+      this.ChangeNumber() //获取号码池 号码
+    },
+    liClick(index,tel){
+      this.currentIndex = index
+      this.ActiveNumber.tel = tel
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          console.log(tempData)
-          PostModifyChannel(tempData).then(() => {
-            // const index = this.list.findIndex(v => v.id === this.temp.id)
-            // this.list.splice(index, 1, this.temp)
-            this.getList() // 重新请求刷新数据
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '修改成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
+      alert('你选中的号码是'+ this.ActiveNumber.tel + '你的applyId是='+this.ActiveNumber.applyId )
+      this.dialogFormVisible = false
     },
     handleResetApply(type) { // 1.二次分配  2.手动批量提交
       if (!this.multipleSelection.length) {
@@ -394,7 +365,7 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消删除'
+          message: '已取消'
         });
       });
     },
@@ -415,10 +386,20 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消删除'
+          message: '已取消'
         });
       });
-    }
+    },
+    ChangeNumber() { // 请求预选号码池
+       alert("模拟请求-" + '请求页数'+ this.ChangeNumberlistQuery.pageNo)
+      this.ChangeNumberlistQuery.pageNo ++
+    },
+
   }
 }
 </script>
+<style scoped>
+.active{
+  color: red;;
+}
+</style>
