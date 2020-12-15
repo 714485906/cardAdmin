@@ -156,14 +156,22 @@ export const constantRoutes = [
         path: '/productlist',
         name: 'productlist',
         component: () => import('@/views/product/product-list'),
-        meta: { title: '商品列表', icon: 'el-icon-attract' }
+        meta: { title: '商品列表', icon: 'el-icon-attract' },
       },
       {
         path: '/productTemp',
         name: 'productTemp',
         component: () => import('@/views/product/productTemp-list'),
         meta: { title: '商品模板列表', icon: 'el-icon-tickets' }
+      },
+      {
+        path: '/mallsDetail',
+        name: 'mallsDetail',
+        component: () => import('@/views/product/mallsDetail'),
+        meta: { title: '商品模板详情', icon: 'el-icon-tickets' },
+        hidden: true
       }
+
     ]
   },
   {

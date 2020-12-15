@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.productCode" placeholder="商品编码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.productName" placeholder="商品名称" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.operatorProductId" placeholder="运营商侧商品" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.operatorId" placeholder="运营商" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in operatorData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />
-      </el-select>
-      <el-select v-model="listQuery.productStatus" placeholder="商品状态" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in productStatusData" :key="item.key" :label="item.name" :value="item.key" />
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
+<!--      <el-input v-model="listQuery.productCode" placeholder="商品编码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
+<!--      <el-input v-model="listQuery.productName" placeholder="商品名称" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
+<!--      <el-input v-model="listQuery.operatorProductId" placeholder="运营商侧商品" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
+<!--      <el-select v-model="listQuery.operatorId" placeholder="运营商" clearable class="filter-item" style="width: 130px">-->
+<!--        <el-option v-for="item in operatorData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />-->
+<!--      </el-select>-->
+<!--      <el-select v-model="listQuery.productStatus" placeholder="商品状态" clearable class="filter-item" style="width: 130px">-->
+<!--        <el-option v-for="item in productStatusData" :key="item.key" :label="item.name" :value="item.key" />-->
+<!--      </el-select>-->
+<!--      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">-->
+<!--        搜索-->
+<!--      </el-button>-->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
@@ -21,86 +21,104 @@
 <!--      </el-button>-->
     </div>
     <div style="margin-bottom: 15px"></div>
-    <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange"
-    >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="productId" prop="id" sortable="custom" align="center" width="120">-->
+<!--    <el-table-->
+<!--      :key="tableKey"-->
+<!--      v-loading="listLoading"-->
+<!--      :data="list"-->
+<!--      border-->
+<!--      fit-->
+<!--      highlight-current-row-->
+<!--      style="width: 100%;"-->
+<!--      @sort-change="sortChange"-->
+<!--    >-->
+<!--      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>-->
+<!--&lt;!&ndash;      <el-table-column label="productId" prop="id" sortable="custom" align="center" width="120">&ndash;&gt;-->
+<!--&lt;!&ndash;        <template slot-scope="{row}">&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>{{ row.productId }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </template>&ndash;&gt;-->
+<!--&lt;!&ndash;      </el-table-column>&ndash;&gt;-->
+<!--      <el-table-column label="商品名称" min-width="120px" align="center">-->
 <!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.productId }}</span>-->
+<!--          <span class="link-type">{{ row.productName }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="商品名称" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.productName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="运营商" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.operatorName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="运营商侧的商品Id" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.operatorProductId }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品编码" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.productCode }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品简介" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.productSummary }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="主图链接" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.imgUrl }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" width="260px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="运营商" min-width="120px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.operatorName }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="运营商侧的商品Id" min-width="120px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.operatorProductId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="商品编码" min-width="120px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.productCode }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="商品简介" min-width="120px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.productSummary }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="主图链接" min-width="120px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.imgUrl }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="创建时间" width="260px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 
-      <el-table-column label="商品状态" class-name="status-col" width="120" align="center">
-        <template slot-scope="{row}">
-          <el-tag type="warning" v-if="row.productStatus == 0">不可用</el-tag>
-          <el-tag type="success" v-if="row.productStatus == 1">正常</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品佣金/(分)" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.commission }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
-        <template slot-scope="{row, $index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            编辑
-          </el-button>
-<!--            <el-button type="primary" size="mini" >-->
-<!--              <router-link :to="'/channelAccount/'+row.channelId">-->
-<!--                查看账号-->
-<!--              </router-link>-->
-<!--            </el-button>-->
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
+<!--      <el-table-column label="商品状态" class-name="status-col" width="120" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <el-tag type="warning" v-if="row.productStatus == 0">不可用</el-tag>-->
+<!--          <el-tag type="success" v-if="row.productStatus == 1">正常</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="商品佣金/(分)" min-width="120px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.commission }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="{row, $index}">-->
+<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
+<!--            编辑-->
 <!--          </el-button>-->
-        </template>
-      </el-table-column>
-    </el-table>
-
+<!--&lt;!&ndash;            <el-button type="primary" size="mini" >&ndash;&gt;-->
+<!--&lt;!&ndash;              <router-link :to="'/channelAccount/'+row.channelId">&ndash;&gt;-->
+<!--&lt;!&ndash;                查看账号&ndash;&gt;-->
+<!--&lt;!&ndash;              </router-link>&ndash;&gt;-->
+<!--&lt;!&ndash;            </el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">&ndash;&gt;-->
+<!--&lt;!&ndash;            删除&ndash;&gt;-->
+<!--&lt;!&ndash;          </el-button>&ndash;&gt;-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--    </el-table>-->
+  <div style="width: 100%;height: 100%;">
+    <el-row>
+      <el-col :span="4" v-for="(item) in list" :key="item.id" :offset="1">
+        <router-link :to="{path:'/mallsDetail',query:{productId:item.productId}}">
+          <el-card :body-style="{ padding: '0px' }" shadow="hover">
+            <img :src="item.imgUrl" class="image">
+            <div style="padding: 12px;">
+              <h4>{{item.productName}}</h4>
+              <span style="font-size:12px;color:#aaa">{{item.comment2}}</span>
+              <div><span>佣金：</span><span style="color:red">￥{{item.commission /1000}}</span></div>
+              <div class="bottom clearfix">
+                <el-button type="text" class="button">{{item.operatorName}}</el-button>
+              </div>
+            </div>
+          </el-card>
+        </router-link>
+      </el-col>
+    </el-row>
+  </div>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="130px" style="width: 400px; margin-left:50px;">
@@ -130,7 +148,18 @@
           <el-input v-model="temp.commission" />
         </el-form-item>
         <el-form-item label="主图链接" prop="imgUrl">
-          <el-input v-model="temp.imgUrl" />
+          <el-upload
+            action="http://47.99.37.96:8070/upload"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :on-success="successImg">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-input v-model="temp.imgUrl" v-show="false"/>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="temp.imgUrl" v-model="temp.imgUrl" alt="">
+          </el-dialog>
         </el-form-item>
         <el-form-item label="商品状态" prop="productStatus">
           <el-radio-group v-model="temp.productStatus">
@@ -186,7 +215,7 @@ export default {
       listLoading: true,
       listQuery: {
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 8,
         operatorId: undefined,
         operatorProductId: undefined,
         productCode: undefined,
@@ -233,13 +262,12 @@ export default {
           { min: 3, max: 64, message: '长度在 3 到 64 个字符', trigger: 'blur' }],
         productSummary: [{ required: true, message: '请输入商品简介', trigger: 'blur' },
           { min: 3, max: 64, message: '长度在 3 到 64 个字符', trigger: 'blur' }],
-        imgUrl: [{ required: true, message: '请输入主图链接', trigger: 'blur' },
-          { min: 3, max: 64, message: '长度在 3 到 64 个字符', trigger: 'blur' }],
         commission: [{ required: true, message: '请输入商品佣金', trigger: 'blur' }],
         productStatus: [{ required: true, message: '请选择商品状态', trigger: 'change' }]
       },
       downloadLoading: false,
-      data2: []
+      data2: [],
+      dialogVisible: false
     }
   },
   created() {
@@ -291,7 +319,6 @@ export default {
         productName: undefined,
         productCode: undefined,
         productSummary: undefined,
-        imgUrl: undefined,
         commission: undefined
       }
     },
@@ -357,6 +384,16 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
+    handleRemove(file, fileList) {
+      console.log(file, fileList); //文件列表移除文件时的钩子
+    },
+    handlePictureCardPreview(file) {  //点击文件列表中已上传的文件时的钩子
+      this.temp.imgUrl = file.url;
+      this.dialogVisible = true;
+    },
+    successImg(response){
+      this.temp.imgUrl = response.data;  //文件上传成功时的钩子
+    },
     getOperatorListFun() { // 获取运营商列表
       getOperatorList({
         pageNo: 1,
@@ -368,3 +405,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+.image {
+  width: 100%;
+  display: block;
+}
+.el-col{
+  margin-top: 10px;
+}
+</style>
