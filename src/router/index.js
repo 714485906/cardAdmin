@@ -36,13 +36,6 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
-  },
-
   {
     path: '/',
     component: Layout,
@@ -54,25 +47,34 @@ export const constantRoutes = [
       meta: { title: '联露后台管理系统', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/admin',
     component: Layout,
     name: 'Admin',
-    meta: { title: '系统管理', icon: 'el-icon-s-help' },
+    meta: {
+      title: '系统管理',
+      icon: 'el-icon-s-help'
+    },
+
     affix: true,
     children: [
       {
         path: '/roleList',
         name: 'roleList',
         component: () => import('@/views/admin/admin-roleList'),
-        meta: { title: '角色列表', icon: 'table' }
+        meta: {
+          title: '角色列表',
+          icon: 'table'
+        }
       },
       {
         path: '/Group',
         name: 'Group',
         component: () => import('@/views/admin/admin-Group'),
-        meta: { title: '营销组', icon: 'people' }
+        meta: {
+          title: '营销组',
+          icon: 'people'
+        }
       },
       {
         path: '/userList',
@@ -187,11 +189,23 @@ export const constantRoutes = [
     alwaysShow: true,
     children: [
       {
-        path: '/applyList',
-        name: 'applyList',
-        component: () => import('@/views/apply/apply-list'),
-        meta: { title: '表单列表', icon: 'el-icon-coin' }
-      }
+        path: '/applyLiStselection',
+        name: 'applyLiStselection',
+        component: () => import('@/views/apply/apply-list-selection'),
+        meta: { title: '选号列表(自动)', icon: 'el-icon-coin' }
+      },
+      {
+        path: '/applyListNoSelection',
+        name: 'applyListNoSelection',
+        component: () => import('@/views/apply/apply-list-NoSelection'),
+        meta: { title: '非选号列表(手动)', icon: 'el-icon-coin' }
+      },
+      {
+        path: '/packageList',
+        name: 'packageList',
+        component: () => import('@/views/package/package-list'),
+        meta: { title: '打包列表', icon: 'el-icon-coin' }
+      },
     ]
   },
   {
@@ -204,97 +218,35 @@ export const constantRoutes = [
       {
         path: '/orderList',
         name: 'orderList',
-        component: () => import('@/views/order/order-list'),
+        component: () => import('@/views/order/index'),
         meta: { title: '订单列表', icon: 'el-icon-coin' }
+      },
+      {
+        path: '/orderListErr',
+        name: 'orderListErr',
+        component: () => import('@/views/order/index'),
+        meta: { title: '异常订单', icon: 'el-icon-coin' }
       }
     ]
   },
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: 'Form', icon: 'form' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: () => import('@/views/nested/menu1/menu1-1'),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' }
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: () => import('@/views/nested/menu1/menu1-2'),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' }
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' }
-  //             }
-  //           ]
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: () => import('@/views/nested/menu1/menu1-3'),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' }
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: () => import('@/views/nested/menu2/index'),
-  //       name: 'Menu2',
-  //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-  //       meta: { title: 'External Link', icon: 'link' }
-  //     }
-  //   ]
-  // },
-
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+ { path: '*', redirect: '/404', hidden: true }
 ]
+
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+
+]
+
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

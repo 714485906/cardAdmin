@@ -41,14 +41,19 @@
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请人联系电话"min-width="120px" align="center">
+      <el-table-column label="新号码"min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.contactPhone }}</span>
+          <span class="link-type">无新号码字段</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人身份证号" width="180px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.idNumber }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="申请人联系电话"min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.contactPhone }}</span>
         </template>
       </el-table-column>
       <el-table-column label="省份名称" width="140px" align="center">
@@ -76,12 +81,46 @@
 <!--          <span class="link-type">{{ row.applyCityName }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="收件详细地址"min-width="120px" align="center">
+      <el-table-column label="收件详细地址"  min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.address }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="平台标识"  min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.platformName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="渠道标识"  min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.channelName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="账号标识"  min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.accountName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="产品名称"  min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.productName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="运营商"  min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.operatorName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="营销组"  min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">缺少用户组字段</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="营销员"  min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.username }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" width="260px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
@@ -94,13 +133,13 @@
           <el-tag type="danger" v-else-if="row.applyStatus == 2">提交失败</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">
-        <template slot-scope="{row, $index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            预占号
-          </el-button>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="{row, $index}">-->
+<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
+<!--            预占号-->
+<!--          </el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
@@ -161,6 +200,7 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
+        templateTyp:1,  //1.自动选号，2.手动选号(非选号)
         applyPhone: undefined,
         contactName: undefined,
         contactPhone: undefined,
