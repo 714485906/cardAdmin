@@ -21,89 +21,10 @@
 <!--      </el-button>-->
     </div>
     <div style="margin-bottom: 15px"></div>
-<!--    <el-table-->
-<!--      :key="tableKey"-->
-<!--      v-loading="listLoading"-->
-<!--      :data="list"-->
-<!--      border-->
-<!--      fit-->
-<!--      highlight-current-row-->
-<!--      style="width: 100%;"-->
-<!--      @sort-change="sortChange"-->
-<!--    >-->
-<!--      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>-->
-<!--&lt;!&ndash;      <el-table-column label="productId" prop="id" sortable="custom" align="center" width="120">&ndash;&gt;-->
-<!--&lt;!&ndash;        <template slot-scope="{row}">&ndash;&gt;-->
-<!--&lt;!&ndash;          <span>{{ row.productId }}</span>&ndash;&gt;-->
-<!--&lt;!&ndash;        </template>&ndash;&gt;-->
-<!--&lt;!&ndash;      </el-table-column>&ndash;&gt;-->
-<!--      <el-table-column label="商品名称" min-width="120px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.productName }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="运营商" min-width="120px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.operatorName }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="运营商侧的商品Id" min-width="120px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.operatorProductId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="商品编码" min-width="120px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.productCode }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="商品简介" min-width="120px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.productSummary }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="主图链接" min-width="120px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.imgUrl }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="创建时间" width="260px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-
-<!--      <el-table-column label="商品状态" class-name="status-col" width="120" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <el-tag type="warning" v-if="row.productStatus == 0">不可用</el-tag>-->
-<!--          <el-tag type="success" v-if="row.productStatus == 1">正常</el-tag>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="商品佣金/(分)" min-width="120px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.commission }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="{row, $index}">-->
-<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
-<!--            编辑-->
-<!--          </el-button>-->
-<!--&lt;!&ndash;            <el-button type="primary" size="mini" >&ndash;&gt;-->
-<!--&lt;!&ndash;              <router-link :to="'/channelAccount/'+row.channelId">&ndash;&gt;-->
-<!--&lt;!&ndash;                查看账号&ndash;&gt;-->
-<!--&lt;!&ndash;              </router-link>&ndash;&gt;-->
-<!--&lt;!&ndash;            </el-button>&ndash;&gt;-->
-<!--&lt;!&ndash;          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">&ndash;&gt;-->
-<!--&lt;!&ndash;            删除&ndash;&gt;-->
-<!--&lt;!&ndash;          </el-button>&ndash;&gt;-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--    </el-table>-->
   <div style="width: 100%;height: 100%;">
     <el-row>
       <el-col :span="4" v-for="(item) in list" :key="item.id" :offset="1">
-        <router-link :to="{path:'/mallsDetail',query:{productId:item.productId}}">
+        <router-link :to="{path:'/mallsDetail',query:{res:JSON.stringify(item)}}">
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
             <img :src="item.imgUrl" class="image">
             <div style="padding: 12px;">
@@ -111,7 +32,12 @@
               <span style="font-size:12px;color:#aaa">{{item.comment2}}</span>
               <div><span>佣金：</span><span style="color:red">￥{{item.commission /1000}}</span></div>
               <div class="bottom clearfix">
-                <el-button type="text" class="button">{{item.operatorName}}</el-button>
+                <el-button type="text" class="button">
+                  <span style="color: #000;font-size: 14px">运营商:</span>{{item.operatorName}}
+                </el-button>
+                <br>
+                <el-tag type="warning" v-if="item.productStatus == 0">不可用</el-tag>
+                <el-tag type="success" v-if="item.productStatus == 1">正常</el-tag>
               </div>
             </div>
           </el-card>
@@ -346,42 +272,6 @@ export default {
             })
           })
         }
-      })
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          console.log(tempData)
-          PostmodifyProduct(tempData).then(() => {
-            // const index = this.list.findIndex(v => v.id === this.temp.id)
-            // this.list.splice(index, 1, this.temp)
-            this.getList() // 重新请求刷新数据
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '修改成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleaccount(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
       })
     },
     handleRemove(file, fileList) {

@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="新号码"min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">无新号码字段</span>
+          <span class="link-type">{{row.applyPhone}}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人身份证号" width="180px" align="center">
