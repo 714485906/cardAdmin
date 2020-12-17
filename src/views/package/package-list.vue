@@ -43,27 +43,27 @@
       </el-table-column>
       <el-table-column label="数量" width="180px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.idNumber }}</span>
+          <span class="link-type">{{ row.applyNum  }}</span>
         </template>
       </el-table-column>
       <el-table-column label="正常订单"min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.contactPhone }}</span>
+          <span class="link-type">{{ row.successNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="异常订单" width="140px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.provinceName }}</span>
+          <span class="link-type">{{ row.failNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="投放渠道" width="140px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.cityName }}</span>
+          <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="同步接口" width="140px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.districtName }}</span>
+          <span class="link-type">{{ row.touchName }}</span>
         </template>
       </el-table-column>
 
