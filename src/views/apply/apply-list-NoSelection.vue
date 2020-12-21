@@ -17,7 +17,7 @@
 <!--        手动批量提交 {{multipleSelection.length}}-->
 <!--      </el-button>-->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(3)">
-        打包 {{multipleSelection.length}}
+         打包{{multipleSelection.length}}
       </el-button>
 
     </div>
@@ -34,7 +34,13 @@
       @selection-change="handleSelectionChange"
       :row-key="getRowKeys"
       >
-      <el-table-column type="selection" :reserve-selection="true"  width="45" align="center" fixed="left"></el-table-column>
+      <el-table-column
+        type="selection"
+        :reserve-selection="true"
+        width="45"
+        align="center"
+        :selectable="checkSelectable"
+        fixed="left"></el-table-column>
 <!--      <el-table-column label="applyId" prop="id" sortable="custom" align="center" width="120">-->
 <!--        <template slot-scope="{row}">-->
 <!--          <span>{{ row.applyId }}</span>-->
@@ -117,7 +123,7 @@
       </el-table-column>
       <el-table-column label="营销组"  min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">缺少用户组字段</span>
+          <span class="link-type">{{row.groupName}}</span>
         </template>
       </el-table-column>
       <el-table-column label="营销员"  min-width="120px" align="center">
@@ -153,20 +159,11 @@
         <el-form-item label="打包名称" prop="packageName">
           <el-input v-model="temp.packageName" />
         </el-form-item>
-        <el-form-item label="打包格式" prop="platformType">
-          <el-radio-group v-model="temp.remark">
-            <el-radio :label="1" :value="1">预留</el-radio>
-            <el-radio :label="2" :value="2">预留</el-radio>
-            <el-radio :label="3" :value="3">预留</el-radio>
-          </el-radio-group>
-        </el-form-item>
-
         <el-form-item label="产品名称" prop="productId">
           <el-select v-model="temp.productId" placeholder="请输入平台名称" clearable class="filter-item" >
             <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId"  />
           </el-select>
         </el-form-item>
-
         <el-form-item label="渠道账号" prop="accountId">
           <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >
             <el-option v-for="item in accountsData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
@@ -221,7 +218,7 @@ export default {
   data() {
     return {
       tableKey: 0,
-      list: null,
+      list: [],
       total: 0,
       listLoading: true,
       listQuery: {
@@ -316,6 +313,13 @@ export default {
     handleFilter() {
       this.listQuery.pageNo = 1
       this.getList()
+    },
+    checkSelectable(row) {
+      if(row.applyStatus == 1 ){
+        return false // 禁止选中
+      }else{
+        return true  // 允许选中
+      }
     },
     handleModifyStatus(row, status) {
       this.$message({

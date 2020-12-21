@@ -214,6 +214,13 @@ export const constantRoutes = [
         component: () => import('@/views/package/package-list'),
         meta: { title: '打包列表', icon: 'el-icon-coin' }
       },
+      {
+        path: '/packageSelection/:packageId(\\d+)',
+        name: 'packageSelection',
+        component: () => import('@/views/package/package-list-Selection'),
+        meta: { title: '打包详情', icon: 'el-icon-coin' },
+        hidden: true
+      },
     ]
   },
   {

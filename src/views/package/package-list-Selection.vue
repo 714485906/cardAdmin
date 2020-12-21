@@ -10,16 +10,15 @@
       <el-button v-waves class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(1)">-->
-<!--        二次分配 {{multipleSelection.length}}-->
-<!--      </el-button>-->
-<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(2)">-->
-<!--        手动批量提交 {{multipleSelection.length}}-->
-<!--      </el-button>-->
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply">
+        手动批量提交 {{multipleSelection.length}}
+      </el-button>
+
 
     </div>
     <div style="margin-bottom: 15px"></div>
     <el-table
+      ref="deficiencyTable"
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -30,7 +29,13 @@
       @selection-change="handleSelectionChange"
       :row-key="getRowKeys"
       >
-      <el-table-column type="selection" :reserve-selection="true"  width="45" align="center" fixed="left"></el-table-column>
+      <el-table-column
+        type="selection"
+        :reserve-selection="true"
+        width="45"
+        align="center"
+        :selectable="checkSelectable"
+        fixed="left"></el-table-column>
 <!--      <el-table-column label="applyId" prop="id" sortable="custom" align="center" width="120">-->
 <!--        <template slot-scope="{row}">-->
 <!--          <span>{{ row.applyId }}</span>-->
@@ -39,11 +44,6 @@
       <el-table-column label="申请人姓名"min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="新号码"min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{row.applyPhone}}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人身份证号" width="180px" align="center">
@@ -84,6 +84,17 @@
       <el-table-column label="收件详细地址"  min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.address }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="新号码"min-width="120px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{row.applyPhone}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="选号"min-width="120px" align="center">
+        <template slot-scope="{row}">
+<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">预占号</el-button>-->
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">预占号码</el-button>
         </template>
       </el-table-column>
       <el-table-column label="平台标识"  min-width="120px" align="center">
@@ -148,6 +159,7 @@
         <el-col :span="6"
                 v-for="(item,index) in preemptPhoneData"
                 style="padding: 10px 0;text-align: center"
+                v-loading="listLoading"
                 :class="{active:currentIndex === index}"
                 @click.native="liClick(index,item)"
         >{{item}}</el-col>
@@ -168,13 +180,15 @@
 </template>
 
 <script>
-import { getapplyList, PostResetApply, PostsubmitApply } from '@/api/apply'
-import { getUserList } from '@/api/admin'
-import { getPlatformList } from '@/api/platform'
+import { getapplyList, PostResetApply, PostsubmitApply, getPhones ,PostpreemptPhone } from '@/api/apply'
+import { getProductList } from '@/api/product'
+import { getgetAccounts, PostcreateChannel } from '@/api/channel'
+import { getGetTouches } from '@/api/operator'
+import { PostCreatePackage } from '@/api/package'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
-import { Message } from 'element-ui' // secondary package based on el-pagination
+import { Message } from 'element-ui'
 
 // arr to obj, such as { CN : "China", US : "USA" }
 // const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
@@ -200,11 +214,11 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        templateTyp:1,  //1.自动选号，2.手动选号(非选号)
         applyPhone: undefined,
         contactName: undefined,
         contactPhone: undefined,
-        applyStatus: undefined
+        applyStatus: undefined,
+        packageId: ''
       },
       multipleSelection: [],
       importanceOptions: [1, 2, 3],
@@ -226,17 +240,13 @@ export default {
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
-        userId: undefined,
-        platformId: undefined,
-        channelName: undefined,
-        channelType: undefined,
-        channelStatus: undefined
+        applyIds: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: '选择号码',
-        create: '添加渠道'
+        create: '打包'
       },
       dialogPvVisible: false,
       pvData: [],
@@ -254,37 +264,30 @@ export default {
         {applyStatus: 1, applyStatusName: '已提交'},
         {applyStatus: 2, applyStatusName: '提交失败'}
       ],
-      preemptPhoneData: [
-        '12345654564',
-        '478947564456',
-        '456462345923',
-        '5679456456564',
-        '8979456456456',
-        '456462345923',
-        '5679456456564',
-        '8979456456456',
-        '4564892689789',
-        '456462345923',
-        '5679456456564',
-        '8979456456456',
-        '4564566456565',
-        '4564566456565',
-        '4564566456565',
-        '4564566456565'
-      ],
+      preemptPhoneData: [],
       ChangeNumberlistQuery: {
+        landingId:'',
+        provinceId:'',
+        cityId:'',
         pageNo: 1,
-        pageSize: 10
+        pageSize: 12
       },
       ActiveNumber: {
         applyId: undefined,
         applyPhone: undefined
       },
-      currentIndex: 0
+      currentIndex: 0,
+      accountsData: '',
+      getProductData : '',
+      touchData: ''
     }
   },
   created() {
-    this.getList()
+    this.listQuery.packageId = this.$route.params.packageId
+    this.getList();
+    this.getgetAccountsDataFun();
+    this.getProductListDataFun();
+    this.getGetTouchesDataFun()
   },
   methods: {
     getList() {
@@ -301,6 +304,13 @@ export default {
     handleFilter() {
       this.listQuery.pageNo = 1
       this.getList()
+    },
+    checkSelectable(row) {
+      if(row.applyStatus == 1 ){
+        return false // 禁止选中
+      }else{
+        return true  // 允许选中
+      }
     },
     handleModifyStatus(row, status) {
       this.$message({
@@ -332,18 +342,47 @@ export default {
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.ChangeNumberlistQuery.pageNo = 1
+      this.ChangeNumberlistQuery.landingId = row.landingId
+      this.ChangeNumberlistQuery.provinceId = row.provinceId
+      this.ChangeNumberlistQuery.cityId = row.cityId
       this.ActiveNumber.applyId = row.applyId
       this.ChangeNumber() //获取号码池 号码
     },
     liClick(index,tel){
       this.currentIndex = index
-      this.ActiveNumber.tel = tel
+      this.ActiveNumber.applyPhone = tel
     },
     updateData() {
-      alert('你选中的号码是'+ this.ActiveNumber.tel + '你的applyId是='+this.ActiveNumber.applyId )
+      // alert('你选中的号码是'+ this.ActiveNumber.applyPhone + '你的applyId是='+this.ActiveNumber.applyId );
+      if(this.ActiveNumber.applyPhone!= ''){
+        this.$confirm(`你当前选着的号码是${this.ActiveNumber.applyPhone},是否预占当前号码`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          PostpreemptPhone(this.ActiveNumber).then(response => {
+            this.$message({
+              type: 'success',
+              message: '操作成功!'
+            });
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
+      }else{
+        this.$message({
+          type: 'warning',
+          message: '请选择手机号!!!!!!!!'
+        });
+      }
+
       this.dialogFormVisible = false
     },
-    handleResetApply(type) { // 1.二次分配  2.手动批量提交
+    handleResetApply() {
       if (!this.multipleSelection.length) {
         Message({
           message: '请选择订单',
@@ -356,22 +395,37 @@ export default {
         for (let item of excelList) {
           ids.push(item.applyId);
         }
-        if( type == 1 ){
-          this.PostResetApplyFun(ids) // type为1  执行二次分配
-        }else if(type == 2){
-          this.PostsubmitApplyFun(ids) //type为2  执行手动批量提交
-        }
-
+        this.temp.applyIds = ids;
+        PostsubmitApply(this.temp.applyIds).then(() => {
+          this.getList()
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '成功',
+            message: '成功提交',
+            type: 'success',
+            duration: 2000
+          })
+          this.$refs.deficiencyTable.clearSelection();
+        })
       }
     },
-    copyArr(arr) {
-      return arr.map(e => {
-        if (typeof e === "object") {
-          return Object.assign({}, e);
-        } else {
-          return e;
+    createData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          console.log(this.temp)
+          PostCreatePackage(this.temp).then(() => {
+            this.getList()
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '成功创建',
+              type: 'success',
+              duration: 2000
+            })
+            this.$refs.deficiencyTable.clearSelection();
+          })
         }
-      });
+      })
     },
     toggleDeficiencySelection(rows) {
       if (rows) {
@@ -439,9 +493,47 @@ export default {
       });
     },
     ChangeNumber() { // 请求预选号码池
-       alert("模拟请求-" + '请求页数'+ this.ChangeNumberlistQuery.pageNo)
-      this.ChangeNumberlistQuery.pageNo ++
+      this.ActiveNumber.applyPhone = ''
+      this.currentIndex = ''
+      getPhones(this.ChangeNumberlistQuery).then(response => {
+        this.preemptPhoneData = response.data // 获取手机号
+        this.ChangeNumberlistQuery.pageNo ++
+      })
     },
+    copyArr(arr) {
+      return arr.map(e => {
+        if (typeof e === "object") {
+          return Object.assign({}, e);
+        } else {
+          return e;
+        }
+      });
+    },
+    getgetAccountsDataFun() {
+      getgetAccounts({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.accountsData = response.data // 获取账号
+      })
+    },
+
+    getProductListDataFun() {
+      getProductList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.getProductData = response.data // 获取产品
+      })
+    },
+    getGetTouchesDataFun() {
+      getGetTouches({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.touchData = response.data // 获取触点码
+      })
+    }
 
   }
 }

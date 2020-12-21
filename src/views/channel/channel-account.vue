@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column label="累计充值金额/元" width="100px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeFee *100 }}</span> <!--row.rechargeFee 后台单位是分 计算一下 统一为元-->
+          <span class="link-type">{{ row.rechargeFee / 100 }}</span> <!--row.rechargeFee 后台单位是分 计算一下 统一为元-->
         </template>
       </el-table-column>
       <el-table-column label="累计充值账户币/个" width="150px" align="center">

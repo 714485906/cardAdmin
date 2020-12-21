@@ -79,37 +79,37 @@
           <el-tag type="success" v-else-if="row.packageStatus == 2">全部提交</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" min-width="200px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            预占号
+          <el-button type="primary" size="mini" @click="packageInfo(row)">
+            打包详情
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-row>
-        <el-col :span="6"
-                v-for="(item,index) in preemptPhoneData"
-                style="padding: 10px 0;text-align: center"
-                :class="{active:currentIndex === index}"
-                @click.native="liClick(index,item)"
-        >{{item}}</el-col>
-      </el-row>
-      <el-row>
-        <p style="text-align: center" @click="ChangeNumber">换一批</p>
-      </el-row>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          提交
-        </el-button>
-      </div>
-    </el-dialog>
+<!--    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">-->
+<!--      <el-row>-->
+<!--        <el-col :span="6"-->
+<!--                v-for="(item,index) in preemptPhoneData"-->
+<!--                style="padding: 10px 0;text-align: center"-->
+<!--                :class="{active:currentIndex === index}"-->
+<!--                @click.native="liClick(index,item)"-->
+<!--        >{{item}}</el-col>-->
+<!--      </el-row>-->
+<!--      <el-row>-->
+<!--        <p style="text-align: center" @click="ChangeNumber">换一批</p>-->
+<!--      </el-row>-->
+<!--      <div slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="dialogFormVisible = false">-->
+<!--          取消-->
+<!--        </el-button>-->
+<!--        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">-->
+<!--          提交-->
+<!--        </el-button>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 
@@ -140,7 +140,7 @@ export default {
   data() {
     return {
       tableKey: 0,
-      list: null,
+      list: [],
       total: 0,
       listLoading: true,
       listQuery: {
@@ -198,24 +198,6 @@ export default {
         {applyStatus: 0, applyStatusName: '待提交'},
         {applyStatus: 1, applyStatusName: '已提交'},
         {applyStatus: 2, applyStatusName: '提交失败'}
-      ],
-      preemptPhoneData: [
-        '12345654564',
-        '478947564456',
-        '456462345923',
-        '5679456456564',
-        '8979456456456',
-        '456462345923',
-        '5679456456564',
-        '8979456456456',
-        '4564892689789',
-        '456462345923',
-        '5679456456564',
-        '8979456456456',
-        '4564566456565',
-        '4564566456565',
-        '4564566456565',
-        '4564566456565'
       ],
       ChangeNumberlistQuery: {
         pageNo: 1,
@@ -309,6 +291,10 @@ export default {
     //
     //   }
     // },
+    packageInfo(row) {
+      console.log(row)
+      this.$router.push({name:'packageSelection',params: {packageId:'1'}})
+    },
     copyArr(arr) {
       return arr.map(e => {
         if (typeof e === "object") {

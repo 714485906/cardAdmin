@@ -55,16 +55,19 @@
       <el-button v-waves class="filter-item" type=  "primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="handleResetApply(3)" v-show="packageShow">
+        二次分配{{multipleSelection.length}}
+      </el-button>
 <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
 <!--        导出-->
 <!--      </el-button>-->
     </div>
     <div style="margin-bottom: 15px"></div>
     <el-table
-      :key="tableKey"
       ref="deficiencyTable"
       v-loading="listLoading"
       :data="list"
+      :key="tableKey"
       border
       fit
       highlight-current-row
@@ -72,7 +75,15 @@
       @selection-change="handleSelectionChange"
       :row-key="getRowKeys"
     >
-      <el-table-column type="selection" :reserve-selection="true"  width="45" align="center" fixed="left"></el-table-column>
+
+      <el-table-column type="selection"
+        :reserve-selection="true"
+        width="45"
+         align="center"
+         disabled
+         :selectable="checkSelectable"
+         fixed="left"></el-table-column>
+<!--      <el-table-column type="selection"  :reserve-selection="true"  width="45" align="center" disabled fixed="left" ></el-table-column>-->
       <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
 <!--      <el-table-column label="orderId" prop="id" sortable="custom" align="center" width="120">-->
 <!--        <template slot-scope="{row}">-->
@@ -81,7 +92,7 @@
 <!--      </el-table-column>-->
       <el-table-column label="系统单号" min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.systemOrderNo   }}</span>
+          <span class="link-type">{{ row.systemOrderNo}}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人姓名" min-width="120px" align="center">
@@ -207,9 +218,39 @@
         </template>
       </el-table-column>
     </el-table>
-
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="打包名称" prop="packageName">
+          <el-input v-model="temp.packageName" />
+        </el-form-item>
+        <el-form-item label="产品名称" prop="productId">
+          <el-select v-model="temp.productId" placeholder="请输入平台名称" clearable class="filter-item" >
+            <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId"  />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="渠道账号" prop="accountId">
+          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >
+            <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
+          </el-select>
+        </el-form-item>
 
+        <el-form-item label="触点码" prop="touchId">
+          <el-select v-model="temp.touchId" placeholder="请输入触点码" clearable class="filter-item" >
+            <el-option v-for="item in touchData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
+          </el-select>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="createData()">
+          提交
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -219,9 +260,12 @@ import { getgetAccounts } from '@/api/channel'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
-import { getOperatorList } from '@/api/operator'
+import { getGetTouches, getOperatorList } from '@/api/operator'
 import { getChannelList } from '@/api/channel'
 import { getPlatformList } from '@/api/platform'
+import { Message } from 'element-ui'
+import { getProductList } from '@/api/product'
+import { PostCreatePackage } from '@/api/package'
 export default {
   name: 'ComplexTable',
   components: { Pagination },
@@ -234,7 +278,7 @@ export default {
   data() {
     return {
       tableKey: 0,
-      list: null,
+      list: [],
       total: 0,
       listLoading: true,
       listQuery: {
@@ -259,6 +303,16 @@ export default {
         { key: '1', name: '正常' },
         { key: '0', name: '不可用' }
       ],
+      temp: {
+        productId:'',
+        touchId:'',
+        accountId:'',
+        packageName:'',
+        applyIds: ''
+      },
+      textMap: {
+        create: '二次分配'
+      },
       getUserListData: '',
       platformData: '',
       showReviewer: false,
@@ -269,6 +323,15 @@ export default {
       dateTime1: '',
       dateTime2: '',
       dateTime3: '',
+      multipleSelection:[],
+      rules: {
+        channelName: [{ required: true, message: '请输入角色名称', trigger: 'blur' },
+          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
+        userId: [{ required: true, message: '请选择用户', trigger: 'change' }],
+        platformId: [{ required: true, message: '请选择平台', trigger: 'change' }],
+        channelType: [{ required: true, message: '请选择状态', trigger: 'change' }],
+        channelStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
+      },
       logisticsStatusData:[
         { logisticsStatus: 0, name: '待发货'},
         { logisticsStatus: 1, name: '已发货'},
@@ -285,7 +348,11 @@ export default {
       ],
       operatorIdData: '',
       channelIdData: '',
-      platformIdData: ''
+      platformIdData: '',
+      accountsData: '',
+      getProductData : '',
+      touchData: '',
+      packageShow:false
     }
   },
   created() {
@@ -294,19 +361,27 @@ export default {
     }
     if(this.$route.name == 'orderListErr'){  //监听路由  如果为 orderListErr 进入异常订单
       this.listQuery.orderStatus = 2
+      this.packageShow = true
     }
     this.getList() //初始数据
     this.accountIdDataFun() //账号名称
     this.getOperatorListDataFun() //获取运营商
     this.getChannelListDataFun() // 获取渠道
     this.getPlatformListDataFun() //获取平台
+    this.getProductListDataFun(); //产品名称
+    this.getGetTouchesDataFun()  //触点码
   },
   methods: {
     getList() {
       this.listLoading = true
       getorderList(this.listQuery).then(response => {
-        this.list = response.data
-        this.total = response.page.total
+        if(response.data != null){
+          this.list = response.data
+          this.total = response.page.total
+        }else{
+          this.list = []
+          this.total = response.page.total
+        }
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -324,8 +399,72 @@ export default {
         this.listQuery.pageNo = 1
         this.getList()
     },
+    checkSelectable(row) {
+      if(row.orderStatus == 1 ){
+        return false // 禁止选中
+      }else{
+        return true  // 允许选中
+      }
+    },
+    createData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          console.log(this.temp)
+          PostCreatePackage(this.temp).then(() => {
+            this.getList()
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '成功创建',
+              type: 'success',
+              duration: 2000
+            })
+            this.$refs.deficiencyTable.clearSelection();
+          })
+        }
+      })
+    },
+    handleResetApply(type) { // 1.二次分配  2.手动批量提交
+      if (!this.multipleSelection.length) {
+        Message({
+          message: '请选择订单',
+          type: 'error',
+          duration: 3 * 1000
+        })
+      }else{
+        let excelList = this.copyArr(this.multipleSelection);
+        let ids = []; // 获取选中的applyId
+        for (let item of excelList) {
+          ids.push(item.applyId);
+        }
+        this.temp.applyId = ids;
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+      }
+    },
+    copyArr(arr) {
+      return arr.map(e => {
+        if (typeof e === "object") {
+          return Object.assign({}, e);
+        } else {
+          return e;
+        }
+      });
+    },
+    toggleDeficiencySelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.deficiencyTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.deficiencyTable.clearSelection();
+      }
+    },
     getRowKeys(row) {
-      return row.orderId;
+      return row.applyId;
     },
     handleSelectionChange: function (val) {
       this.multipleSelection = val;
@@ -360,6 +499,22 @@ export default {
         pageSize: 10000
       }).then(response => {
         this.platformIdData = response.data // 获取平台
+      })
+    },
+    getProductListDataFun() {
+      getProductList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.getProductData = response.data // 获取产品
+      })
+    },
+    getGetTouchesDataFun() {
+      getGetTouches({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.touchData = response.data // 获取触点码
       })
     }
   }

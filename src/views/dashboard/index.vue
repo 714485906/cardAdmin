@@ -6,7 +6,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
 export default {
   name: 'Dashboard',
   computed: {
@@ -27,4 +26,3 @@ export default {
     line-height: 46px;
   }
 }
-</style>

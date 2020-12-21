@@ -27,7 +27,15 @@ export function PostsubmitApply(data) {
 export function getPhones(params) {
   return request({
     url: 'apply/getPhones', // 获取可选号码
-    method: 'post',
+    method: 'get',
     params
+  })
+}
+
+export function PostpreemptPhone(data) {
+  return request({
+    url: 'apply/preemptPhone', // 手动预占号码
+    method: 'post',
+    data
   })
 }
