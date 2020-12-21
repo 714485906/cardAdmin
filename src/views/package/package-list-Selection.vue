@@ -396,17 +396,30 @@ export default {
           ids.push(item.applyId);
         }
         this.temp.applyIds = ids;
-        PostsubmitApply(this.temp.applyIds).then(() => {
-          this.getList()
-          this.dialogFormVisible = false
-          this.$notify({
-            title: '成功',
-            message: '成功提交',
-            type: 'success',
-            duration: 2000
+        this.$confirm(`是否确定手动批量提交`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          PostsubmitApply(this.temp.applyIds).then(() => {
+            this.getList()
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '成功提交',
+              type: 'success',
+              duration: 2000
+            })
+            this.$refs.deficiencyTable.clearSelection();
           })
-          this.$refs.deficiencyTable.clearSelection();
-        })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
+
       }
     },
     createData() {

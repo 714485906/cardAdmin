@@ -79,7 +79,7 @@
           <el-tag type="success" v-else-if="row.packageStatus == 2">全部提交</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" min-width="200px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
           <el-button type="primary" size="mini" @click="packageInfo(row)">
             打包详情
