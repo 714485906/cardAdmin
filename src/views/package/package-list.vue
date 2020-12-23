@@ -36,38 +36,38 @@
 <!--          <span>{{ row.applyId }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="包名"min-width="120px" align="center">
+      <el-table-column label="包名" width="160px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.packageName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="数量" width="180px" align="center">
+      <el-table-column label="数量" width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.applyNum  }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="正常订单"min-width="120px" align="center">
+      <el-table-column label="正常订单" width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.successNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="异常订单" width="140px" align="center">
+      <el-table-column label="异常订单" width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.failNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="投放渠道" width="140px" align="center">
+      <el-table-column label="投放渠道" min-width="140px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="同步接口" width="140px" align="center">
+      <el-table-column label="同步接口" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.touchName }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="创建时间" width="260px" align="center">
+      <el-table-column label="创建时间" min-width="180px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>

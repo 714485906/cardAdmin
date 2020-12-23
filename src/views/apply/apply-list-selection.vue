@@ -36,37 +36,37 @@
 <!--          <span>{{ row.applyId }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="申请人姓名"min-width="120px" align="center">
+      <el-table-column label="申请人姓名"min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="新号码"min-width="120px" align="center">
+      <el-table-column label="新号码"min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{row.applyPhone}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请人身份证号" width="180px" align="center">
+      <el-table-column label="申请人身份证号" width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.idNumber }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请人联系电话"min-width="120px" align="center">
+      <el-table-column label="申请人联系电话"min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.contactPhone }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="省份名称" width="140px" align="center">
+      <el-table-column label="省份名称" width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.provinceName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="城市名称" width="140px" align="center">
+      <el-table-column label="城市名称" width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.cityName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="区县名称" width="140px" align="center">
+      <el-table-column label="区县名称" width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.districtName }}</span>
         </template>
@@ -81,52 +81,52 @@
 <!--          <span class="link-type">{{ row.applyCityName }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="收件详细地址"  min-width="120px" align="center">
+      <el-table-column label="收件详细地址"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.address }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平台标识"  min-width="120px" align="center">
+      <el-table-column label="平台标识"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.platformName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道标识"  min-width="120px" align="center">
+      <el-table-column label="渠道标识"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.channelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="账号标识"  min-width="120px" align="center">
+      <el-table-column label="账号标识"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="产品名称"  min-width="120px" align="center">
+      <el-table-column label="产品名称"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.productName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商"  min-width="120px" align="center">
+      <el-table-column label="运营商"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="营销组"  min-width="120px" align="center">
+      <el-table-column label="营销组"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{row.groupName}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="营销员"  min-width="120px" align="center">
+      <el-table-column label="营销员"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="260px" align="center">
+      <el-table-column label="创建时间" width="260px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请状态" fixed="right" class-name="status-col" width="120" align="center">
+      <el-table-column label="申请状态" fixed="right" class-name="status-col" width="120" align="center" >
         <template slot-scope="{row}">
             <el-tag type="info" v-if="row.applyStatus == 0">待提交</el-tag>
             <el-tag type="success" v-else-if="row.applyStatus == 1">已提交</el-tag>

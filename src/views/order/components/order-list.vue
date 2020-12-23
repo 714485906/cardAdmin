@@ -90,125 +90,125 @@
 <!--          <span>{{ row.orderId }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="系统单号" min-width="120px" align="center">
+      <el-table-column label="系统单号" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.systemOrderNo}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请人姓名" min-width="120px" align="center">
+      <el-table-column label="申请人姓名" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.contactName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请号码" min-width="120px" align="center">
+      <el-table-column label="申请号码" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.applyPhone }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="省份名称" min-width="120px" align="center">
+      <el-table-column label="省份名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.provinceName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="城市名称" min-width="120px" align="center">
+      <el-table-column label="城市名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.cityName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="区县名称" width="120px" align="center">
+      <el-table-column label="区县名称" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.districtName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请号码省份名称" width="120px" align="center">
+      <el-table-column label="申请号码省份" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.applyProvinceName }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="申请号码城市名称" width="120px" align="center">
+      <el-table-column label="申请号码城市" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.applyCityName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="触点名称" width="120px" align="center">
+      <el-table-column label="触点名称" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.touchName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商名" width="120px" align="center">
+      <el-table-column label="运营商名" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道账号名" width="120px" align="center">
+      <el-table-column label="渠道账号名" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-        <el-table-column label="平台名称" width="120px" align="center">
+        <el-table-column label="平台名称" width="120px" align="center" show-overflow-tooltip>
           <template slot-scope="{row}">
             <span class="link-type">{{ row.platformName }}</span>
           </template>
         </el-table-column>
-      <el-table-column label="用户名" width="120px" align="center">
+      <el-table-column label="用户名" width="120px" align="center" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span class="link-type">{{ row.username }}</span>
             </template>
        </el-table-column>
-      <el-table-column label="渠道名称" width="120px" align="center">
+      <el-table-column label="渠道名称" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.channelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户名" width="120px" align="center">
+      <el-table-column label="用户名" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商侧单号" min-width="120px" align="center">
+      <el-table-column label="运营商侧单号" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorOrderNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="物流单号" min-width="120px" align="center">
+      <el-table-column label="物流单号" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.logisticsNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="物流公司" min-width="120px" align="center">
+      <el-table-column label="物流公司" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.logisticsCompany }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="物流状态" class-name="status-col" width="120" align="center">
+      <el-table-column label="物流状态" class-name="status-col" width="120" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-tag type="info" v-if="row.logisticsStatus == 0">待发货</el-tag>
           <el-tag type="warning" v-if="row.logisticsStatus == 1">已发货</el-tag>
           <el-tag type="success" v-if="row.logisticsStatus == 2">已签收</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="发货时间" width="260px" align="center">
+      <el-table-column label="发货时间" width="260px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.deliveryTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="激活时间" width="260px" align="center">
+      <el-table-column label="激活时间" width="260px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.activateTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="充值时间" width="260px" align="center">
+      <el-table-column label="充值时间" width="260px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.rechargeTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品佣金/(分)" fixed="right" min-width="120px" align="center">
+      <el-table-column label="商品佣金/(分)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.rechargeFee }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="订单状态" fixed="right" class-name="status-col" width="120" align="center">
+      <el-table-column label="订单状态" fixed="right" class-name="status-col" width="120" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-tag type="info" v-if="row.orderStatus == 0">待提交</el-tag>
           <el-tag v-if="row.orderStatus == 1">已提交</el-tag>
@@ -400,7 +400,8 @@ export default {
         this.getList()
     },
     checkSelectable(row) {
-      if(row.orderStatus == 1 ){
+      // row.isPackaged  true已经打包  false没有打包
+      if(row.isPackaged == true ){
         return false // 禁止选中
       }else{
         return true  // 允许选中

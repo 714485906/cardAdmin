@@ -49,7 +49,8 @@
 <!--      </el-table-column>-->
       <el-table-column label="落地页名称" min-width="180px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.landingName }}</span>
+<!--          <span class="link-type">{{ row.landingName }}</span>-->
+          <el-button type="success" size="small" @click="checkLinkBtn(row)">查看链接</el-button>
         </template>
       </el-table-column>
       <el-table-column label="模板名称" min-width="180px" align="center">
@@ -103,14 +104,14 @@
           <el-tag type="danger" v-if="row.landingStatus == 0">不可用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作"  fixed="right" align="center" width="130px" class-name="small-padding fixed-width">
+      <el-table-column label="操作"  fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
-<!--          </el-button>-->
+          <el-button  size="mini" type="warning" @click="iframeBtn(row)">
+            查看效果
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -163,6 +164,20 @@
         <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
       </span>
     </el-dialog>
+    <!--查看链接-->
+    <el-dialog title="复制链接" :visible.sync="checkLinkDialog" width="600px" :close-on-click-modal="false">
+      <div style="padding:10px 80px">
+        <img :src="checkLinkData.qrcode" alt="">
+      </div>
+      <el-input v-model="checkLinkData.link" style="width:400px" type="text" id="copyLink"></el-input>
+      <el-button type="primary" size="medium" @click="copyLink(checkLinkData.link)">复制</el-button>
+    </el-dialog>
+
+    <!--查看效果-->
+    <el-dialog title="查看效果" :visible.sync="iframeDialog" width="600px" :close-on-click-modal="false">
+      <iframe :src="iframeData.link" name="iframe_a" width="375" height="600" frameborder="no"></iframe>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -192,6 +207,15 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      checkLinkDialog:false,
+      checkLinkData:{
+        qrcode: undefined,
+        link: undefined
+      },
+      iframeDialog:false,
+      iframeData:{
+        link: undefined
+      },
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -267,6 +291,12 @@ export default {
           this.listLoading = false
         }, 1 * 500)
       })
+    },
+    checkLinkBtn(row) {
+      console.log(row)
+      this.checkLinkData.link = row.landingUrl
+      this.checkLinkData.qrcode = row.qrcodeUrl
+      this.checkLinkDialog = true
     },
     handleFilter() {
       this.listQuery.pageNo = 1
@@ -356,6 +386,22 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    iframeBtn(row) {
+      this.iframeDialog = true
+      this.iframeData.link = row.landingUrl
+    },
+    copyLink(shareLink) {
+      let input = document.getElementById("copyLink");
+      input.value = shareLink;
+      input.select();
+      document.execCommand("Copy");
+      this.$notify({
+        title: '成功',
+        message: '复制成功',
+        type: 'success',
+        duration: 2000
       })
     },
     queryDataFun() {
