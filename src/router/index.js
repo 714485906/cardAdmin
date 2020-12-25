@@ -245,6 +245,27 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/statistics',
+    component: Layout,
+    name: 'statistics',
+    meta: { title: '统计服务', icon: 'el-icon-receiving' },
+    alwaysShow: true,
+    children: [
+      {
+        path: '/statisticsList',
+        name: 'statisticsList',
+        component: () => import('@/views/statistics/statistics-List'),
+        meta: { title: '投放成本', icon: 'el-icon-coin' }
+      },
+      {
+        path: '/orderListErr',
+        name: 'orderListErr',
+        component: () => import('@/views/statistics/statistics-List'),
+        meta: { title: '投放统计', icon: 'el-icon-coin' }
+      }
+    ]
+  },
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true

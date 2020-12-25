@@ -207,7 +207,7 @@ export default {
       pvData: [],
       rules: {
         channelName: [{ required: true, message: '请输入角色名称', trigger: 'blur' },
-          { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
+          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }],
         userId: [{ required: true, message: '请选择用户', trigger: 'change' }],
         platformId: [{ required: true, message: '请选择平台', trigger: 'change' }],
         channelStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]

@@ -86,7 +86,11 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]"
+               :visible.sync="dialogFormVisible"
+               v-loading="Loading"
+               element-loading-text="拼命加载中"
+               element-loading-spinner="el-icon-loading">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="媒体ID" prop="remark">
           <el-input v-model="temp.remark" placeholder="请输入第三方媒体ID" />
@@ -163,6 +167,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      Loading: false,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -241,7 +246,10 @@ export default {
       })
     },
     createData() {
+      this.Loading = true;
       this.$refs['dataForm'].validate((valid) => {
+        this.temp.rechargeRate = this.temp.rechargeRate*100  // 由于后台要求  系数要转百分之 如 1.3 转成 130
+        console.log(this.temp)
         if (valid) {
           PostCreateAccount(this.temp).then(() => {
             // this.list.unshift(this.temp)
@@ -275,11 +283,13 @@ export default {
       })
     },
     updateData() {
+      this.Loading = true;
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.temp.rechargeRate = this.temp.rechargeRate *100  // 由于后台要求  系数要转百分之 如 1.3 转成 130
           console.log(this.temp)
           PostModifyAccount(this.temp).then(() => {
+            this.Loading = false
             // const index = this.list.findIndex(v => v.id === this.temp.id)
             // this.list.splice(index, 1, this.temp)
             this.getList() // 重新请求刷新数据

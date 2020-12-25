@@ -48,7 +48,7 @@
 <!--      </el-table-column>-->
       <el-table-column label="申请人姓名"min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.username }}</span>
+          <span class="link-type">{{ row.contactName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="新号码"min-width="120px" align="center" show-overflow-tooltip>
@@ -119,6 +119,11 @@
       <el-table-column label="运营商"  min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="触点码名称"  min-width="120px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.touchName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="营销组"  min-width="120px" align="center" show-overflow-tooltip>
@@ -224,7 +229,7 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        templateType:1,  //1.自动选号，2.手动选号(非选号)
+        templateType:2,  //1.自动选号，2.手动选号(非选号)
         applyPhone: undefined,
         contactName: undefined,
         contactPhone: undefined,

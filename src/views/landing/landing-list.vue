@@ -47,53 +47,53 @@
 <!--          <span>{{ row.landingId }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="落地页名称" min-width="180px" align="center">
+      <el-table-column label="落地页名称" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-<!--          <span class="link-type">{{ row.landingName }}</span>-->
-          <el-button type="success" size="small" @click="checkLinkBtn(row)">查看链接</el-button>
+          <span class="link-type">{{ row.landingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="模板名称" min-width="180px" align="center">
+      <el-table-column label="模板名称" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
            <span class="link-type">{{ row.templateName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品名称" min-width="180px" align="center">
+      <el-table-column label="商品名称" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.productName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="触点名称" min-width="180px" align="center">
+      <el-table-column label="触点名称" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.touchName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道账号名" min-width="180px" align="center">
+      <el-table-column label="渠道账号名" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道名称" min-width="180px" align="center">
+      <el-table-column label="渠道名称" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.channelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平台名称" min-width="180px" align="center">
+      <el-table-column label="平台名称" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.platformName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户名" min-width="150px" align="center">
+      <el-table-column label="用户名" min-width="150px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column label="落地页链接" min-width="180px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.landingUrl }}</span>
+<!--          <span class="link-type">{{ row.landingUrl }}</span>-->
+          <el-button type="success" size="small" @click="checkLinkBtn(row)">查看链接</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="260px" align="center">
+      <el-table-column label="创建时间" width="260px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>

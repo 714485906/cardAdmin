@@ -151,7 +151,7 @@
             <span class="link-type">{{ row.platformName }}</span>
           </template>
         </el-table-column>
-      <el-table-column label="用户名" width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="营销员" width="120px" align="center" show-overflow-tooltip>
             <template slot-scope="{row}">
               <span class="link-type">{{ row.username }}</span>
             </template>
@@ -159,11 +159,6 @@
       <el-table-column label="渠道名称" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.channelName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户名" width="120px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column label="运营商侧单号" min-width="120px" align="center" show-overflow-tooltip>
@@ -203,6 +198,11 @@
           <span>{{ row.rechargeTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="备注" width="180px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{row.remark}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="商品佣金/(分)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.rechargeFee }}</span>
@@ -212,7 +212,7 @@
         <template slot-scope="{row}">
           <el-tag type="info" v-if="row.orderStatus == 0">待提交</el-tag>
           <el-tag v-if="row.orderStatus == 1">已提交</el-tag>
-          <el-tag type="danger" v-if="row.orderStatus == 2">提交失败</el-tag>
+          <el-tag type="danger" v-if="row.orderStatus == 2" @click="orderErrFun(row.orderId)">提交失败</el-tag>
           <el-tag type="success" v-if="row.orderStatus == 3">已激活</el-tag>
           <el-tag type="warning" v-if="row.orderStatus == 4">已充值</el-tag>
         </template>
@@ -251,11 +251,20 @@
         </el-button>
       </div>
     </el-dialog>
+
+
+    <el-dialog title="失败原因" :visible.sync="ErrInfoShow">
+      <div v-for="(item,index) in errText">
+        <h3>第{{index + 1}}次</h3>
+        <p>请求报文&nbsp: <span style="color: red">{{item.requestMessage}}</span></p>
+        <p>响应报文&nbsp: <span style="color: red">{{item.responseMessage}}</span></p>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getorderList } from '@/api/order'
+import { getorderList, getOrderDetails } from '@/api/order'
 import { getgetAccounts } from '@/api/channel'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
@@ -319,6 +328,8 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       dialogPvVisible: false,
+      ErrInfoShow: false,
+      errText:[],
       pvData: [],
       dateTime1: '',
       dateTime2: '',
@@ -387,6 +398,18 @@ export default {
           this.listLoading = false
         }, 1 * 1000)
       })
+    },
+
+    orderErrFun(orderId) {
+      this.ErrInfoShow = true
+      getOrderDetails({
+        orderId:orderId,
+        pageNo:1,
+        pageSize:100
+      }).then(response => {
+        this.errText = response.data;
+      })
+
     },
     handleFilter() {
         this.listQuery.beginCreateTime = this.dateTime1[0]
