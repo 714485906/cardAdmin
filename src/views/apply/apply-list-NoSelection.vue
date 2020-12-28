@@ -7,6 +7,9 @@
       <el-select v-model="listQuery.applyStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in applyStatusData" :key="item.applyStatus" :label="item.applyStatusName" :value="item.applyStatus" />
       </el-select>
+      <el-select v-model="listQuery.productId" placeholder="产品名称" clearable class="filter-item" style="width: 130px " @change="queryproduct">
+        <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
+      </el-select>
       <el-button v-waves class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -46,12 +49,12 @@
 <!--          <span>{{ row.applyId }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="申请人姓名"min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="申请人姓名" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.contactName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="新号码"min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="新号码" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{row.applyPhone}}</span>
         </template>
@@ -61,7 +64,7 @@
           <span class="link-type">{{ row.idNumber }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请人联系电话"min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="申请人联系电话" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.contactPhone }}</span>
         </template>
@@ -165,15 +168,15 @@
           <el-input v-model="temp.packageName" />
         </el-form-item>
         <el-form-item label="产品名称" prop="productId">
-          <el-select v-model="temp.productId" placeholder="请输入平台名称" clearable class="filter-item" >
+          <el-select v-model="temp.productId" placeholder="请输入平台名称" clearable class="filter-item" @change="queryproduct">
             <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="渠道账号" prop="accountId">
-          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >
-            <el-option v-for="item in accountsData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="渠道账号" prop="accountId">-->
+<!--          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >-->
+<!--            <el-option v-for="item in accountsData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
 
         <el-form-item label="触点码" prop="touchId">
           <el-select v-model="temp.touchId" placeholder="请输入触点码" clearable class="filter-item" >
@@ -233,6 +236,7 @@ export default {
         applyPhone: undefined,
         contactName: undefined,
         contactPhone: undefined,
+        productId: undefined,
         applyStatus: undefined
       },
       multipleSelection: [],
@@ -294,7 +298,11 @@ export default {
       currentIndex: 0,
       accountsData: '',
       getProductData : '',
-      touchData: ''
+      touchData: '',
+      queryList:{
+        productId: undefined,
+        operatorId: undefined
+      }
     }
   },
   created() {
@@ -321,11 +329,21 @@ export default {
     },
     checkSelectable(row) {
       // row.isPackaged  true已经打包  false没有打包
-      if(row.isPackaged == true ){
+      if(row.isPackaged == true){
         return false // 禁止选中
       }else{
         return true  // 允许选中
       }
+    },
+    queryproduct(val) {
+      console.log(val)
+      this.temp.productId = val
+      let obj = {};
+      obj = this.getProductData.find((item)=>{//遍历list的数据
+        return item.productId === val; //筛选出匹配数据
+      });
+      this.queryList.operatorId = obj.operatorId // 记录当前产品运营商id
+      this.getGetTouchesDataFun()
     },
     handleModifyStatus(row, status) {
       this.$message({
@@ -472,10 +490,6 @@ export default {
         });
       });
     },
-    ChangeNumber() { // 请求预选号码池
-       alert("模拟请求-" + '请求页数'+ this.ChangeNumberlistQuery.pageNo)
-      this.ChangeNumberlistQuery.pageNo ++
-    },
     copyArr(arr) {
       return arr.map(e => {
         if (typeof e === "object") {
@@ -505,7 +519,8 @@ export default {
     getGetTouchesDataFun() {
       getGetTouches({
         pageNo: 1,
-        pageSize: 10000
+        pageSize: 10000,
+        operatorId:this.queryList.operatorId
       }).then(response => {
         this.touchData = response.data // 获取触点码
       })

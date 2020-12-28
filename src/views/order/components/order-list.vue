@@ -52,6 +52,9 @@
       <el-select v-model="listQuery.platformId" placeholder="平台" clearable class="filter-item" style="width: 130px;margin:5px 5px">
         <el-option v-for="item in platformIdData" :key="item.platformId" :label="item.platformName" :value="item.platformId" />
       </el-select>
+      <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin:5px 5px" @change="queryproduct">
+        <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
+      </el-select>
       <el-button v-waves class="filter-item" type=  "primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -225,15 +228,15 @@
           <el-input v-model="temp.packageName" />
         </el-form-item>
         <el-form-item label="产品名称" prop="productId">
-          <el-select v-model="temp.productId" placeholder="请输入平台名称" clearable class="filter-item" >
+          <el-select v-model="temp.productId" placeholder="请输入平台名称" clearable class="filter-item" @change="queryproduct">
             <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="渠道账号" prop="accountId">
-          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >
-            <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="渠道账号" prop="accountId">-->
+<!--          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >-->
+<!--            <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
 
         <el-form-item label="触点码" prop="touchId">
           <el-select v-model="temp.touchId" placeholder="请输入触点码" clearable class="filter-item" >
@@ -302,7 +305,8 @@ export default {
         endRechargeTime: undefined,
         logisticsStatus:undefined,
         operatorId: undefined,
-        channelId: undefined
+        channelId: undefined,
+        productId: undefined
 
       },
       importanceOptions: [1, 2, 3],
@@ -363,7 +367,11 @@ export default {
       accountsData: '',
       getProductData : '',
       touchData: '',
-      packageShow:false
+      packageShow:false,
+      queryList:{
+        productId: undefined,
+        operatorId: undefined
+      }
     }
   },
   created() {
@@ -430,6 +438,16 @@ export default {
         return true  // 允许选中
       }
     },
+    queryproduct(val) {
+      console.log(val)
+      this.temp.productId = val
+      let obj = {};
+      obj = this.getProductData.find((item)=>{//遍历list的数据
+        return item.productId === val; //筛选出匹配数据
+      });
+      this.queryList.operatorId = obj.operatorId // 记录当前产品运营商id
+      this.getGetTouchesDataFun()
+    },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
@@ -461,7 +479,7 @@ export default {
         for (let item of excelList) {
           ids.push(item.applyId);
         }
-        this.temp.applyId = ids;
+        this.temp.applyIds = ids;
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -536,7 +554,8 @@ export default {
     getGetTouchesDataFun() {
       getGetTouches({
         pageNo: 1,
-        pageSize: 10000
+        pageSize: 10000,
+        operatorId:this.queryList.operatorId
       }).then(response => {
         this.touchData = response.data // 获取触点码
       })
