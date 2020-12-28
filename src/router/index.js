@@ -259,15 +259,15 @@ export const constantRoutes = [
     alwaysShow: true,
     children: [
       {
-        path: '/statisticsList',
-        name: 'statisticsList',
-        component: () => import('@/views/statistics/statistics-List'),
+        path: '/costList',
+        name: 'costList',
+        component: () => import('@/views/statistics/costList-List'),
         meta: { title: '投放成本', icon: 'el-icon-coin' }
       },
       {
-        path: '/orderListErr',
-        name: 'orderListErr',
-        component: () => import('@/views/statistics/statistics-List'),
+        path: '/costCountList',
+        name: 'costCountList',
+        component: () => import('@/views/statistics/costCount-List'),
         meta: { title: '投放统计', icon: 'el-icon-coin' }
       }
     ]

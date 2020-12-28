@@ -4,8 +4,10 @@
       <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
       </el-select>
-
-      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin-left: 10px">
+      <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
+        <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
+      </el-select>
+      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">
         <el-option v-for="item in platformStatusData" :key="item.costStatus" :label="item.costStatusName" :value="item.costStatus" />
       </el-select>
       <el-date-picker
@@ -15,8 +17,8 @@
         start-placeholder="下单开始日期"
         end-placeholder="下单结束日期"
         format="yyyy-MM-dd"
-        value-format=“yyyy-MM-dd”
-        style='min-width: 200px'
+        value-format='yyyy-MM-dd'
+        style='min-width: 160px'
         @change="dateChange"
       >
       </el-date-picker>
@@ -75,7 +77,7 @@
           <span class="link-type">{{ row.accountRechargeRate }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态"  min-width="160px" align="center">
+      <el-table-column label="状态"  min-width="130px" align="center">
         <template slot-scope="{row}">
           <el-tag type="info" v-if="row.costStatus == 0">待提交</el-tag>
           <el-tag type="success" v-else-if="row.costStatus == 1">已提交</el-tag>
@@ -101,6 +103,7 @@
 
 <script>
 import { getcostList, PostSubmitCost, getRollbackCost } from '@/api/statistics'
+import { getProductList } from '@/api/product'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
@@ -135,6 +138,7 @@ export default {
         beginCostDate: undefined,
         endCostDate:undefined,
         accountId: undefined,
+        productId: undefined,
         costStatus: undefined
       },
       importanceOptions: [1, 2, 3],
@@ -166,12 +170,14 @@ export default {
       },
       downloadLoading: false,
       data2: [],
-      accountIdData:[]
+      accountIdData:[],
+      productIdData:[]
     }
   },
   created() {
     this.getList();
     this. accountIdDataFun() //初始账号id
+    this.getProductListFun() //初始商品
   },
 methods: {
     getList() {
@@ -254,7 +260,15 @@ methods: {
       }).then(response => {
         this.accountIdData = response.data // 获取账号
       })
-    }
+    },
+  getProductListFun() {
+    getProductList({
+      pageNo: 1,
+      pageSize: 10000
+    }).then(response => {
+      this.productIdData = response.data // 获取账号
+    })
+  }
   }
 }
 </script>

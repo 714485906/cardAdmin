@@ -9,6 +9,23 @@ export function getcostList(params) {
   })
 }
 
+export function getCostCount(params) {
+  return request({
+    url: 'statistics/getCostCount', //成本统计
+    method: 'get',
+    params
+  })
+}
+
+export function getOrderCount(params) {
+  return request({
+    url: 'statistics/getOrderCount', //单量统计
+    method: 'get',
+    params
+  })
+}
+
+
 export function PostSubmitCost(data) {
   return request({
     url: 'statistics/submitCost', // 投放成本列表

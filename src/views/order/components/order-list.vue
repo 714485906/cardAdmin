@@ -7,8 +7,8 @@
         range-separator="至"
         start-placeholder="下单开始日期"
         end-placeholder="下单结束日期"
-        format="yyyy-MM-dd-HH-mm-ss"
-        value-format=“yyyy-MM-dd-HH-mm-ss”
+        format="yyyy-MM-dd"
+        value-format='yyyy-MM-dd'
         style='min-width: 300px'
       >
       </el-date-picker>
@@ -18,8 +18,8 @@
         range-separator="至"
         start-placeholder="激活开始日期"
         end-placeholder="激活结束日期"
-        format="yyyy-MM-dd-HH-mm-ss"
-        value-format=“yyyy-MM-dd-HH-mm-ss”
+        format="yyyy-MM-dd"
+        value-format='yyyy-MM-dd'
         style='min-width: 300px;margin: 5px 5px'
       >
       </el-date-picker>
@@ -29,8 +29,8 @@
         range-separator="至"
         start-placeholder="充值开始日期"
         end-placeholder="充值结束日期"
-        format="yyyy-MM-dd-HH-mm-ss"
-        value-format=“yyyy-MM-dd-HH-mm-ss”
+        format="yyyy-MM-dd"
+        value-format='yyyy-MM-dd'
         style='min-width: 300px;margin: 5px 5px'
       >
       </el-date-picker>

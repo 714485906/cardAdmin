@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="60%">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 440px; margin:90px auto" >
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 440px; margin:20px auto" >
         <el-form-item label="落地页名称" prop="landingName">
           <el-input v-model="temp.landingName" />
         </el-form-item>
@@ -24,6 +24,15 @@
           <el-select v-model="temp.touchId" placeholder="触点码" clearable class="filter-item" >
             <el-option v-for="item in queryData.touchIdData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
           </el-select>
+        </el-form-item>
+        <el-form-item label="第三方代码(长)" >
+          <el-input type="textarea" v-model="JSON.stringify(temp)" />
+        </el-form-item>
+        <el-form-item label="第三方代码(短)">
+          <el-input v-model="JSON.stringify(temp)" />
+        </el-form-item>
+        <el-form-item label="公司信息" prop="landingName">
+          <el-input  type="textarea" v-model="temp.landingName" />
         </el-form-item>
         <el-form-item label="状态" prop="landingStatus">
           <el-radio-group v-model="temp.landingStatus">
@@ -68,7 +77,15 @@ export default {
         templateId: undefined,
         touchId: undefined,
         accountId: undefined,
-        landingStatus: undefined
+        landingStatus: undefined,
+        params:[{
+          paramCode:"",
+          paramValue:JSON.stringify({
+            JavaScriptH: undefined,
+            JavaScriptF: undefined,
+            CompanyInfo: undefined
+          })
+        }]
       },
       dialogVisible: false,
       operatorData: undefined,
@@ -148,7 +165,7 @@ export default {
                 type: 'success',
                 duration: 2000
               })
-              this.$router.push({name:'landinglist'})
+             // this.$router.push({name:'landinglist'})
             })
 
           }else{ //编辑修改
