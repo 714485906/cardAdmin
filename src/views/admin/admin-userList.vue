@@ -99,7 +99,7 @@
           <el-input v-model="temp.username" />
         </el-form-item>
         <el-form-item label="手机号" prop="phone" v-if="tempShow">
-          <el-input v-model="temp.phone" />
+          <el-input v-model="temp.phone" maxlength="11" />
         </el-form-item>
         <el-form-item label="密码" prop="password" v-if="passShow">
           <el-input v-model="temp.password" type="password" />
@@ -114,7 +114,7 @@
             <el-option v-for="item in groupData" :key="item.groupId" :label="item.groupName" :value="item.groupId"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="权限状态" prop="roleStatus" v-if="tempShow">
+        <el-form-item label="权限状态" prop="roleStatus" v-if="StatusShow">
           <el-radio-group v-model="temp.userStatus" v-if="true">
             <el-radio :label="1" :value="1">正常</el-radio>
             <el-radio :label="0" :value="0">禁用</el-radio>
@@ -178,6 +178,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      StatusShow:true,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -255,6 +256,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.StatusShow = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -288,6 +290,7 @@ export default {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.StatusShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

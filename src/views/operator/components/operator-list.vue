@@ -94,12 +94,12 @@
             <el-radio :label="2" :value="2" @change="tempShow = false;temp.apiType =''">线下导单</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="接口类型" prop="apiType" v-if="tempShow">
+        <el-form-item label="接口类型" prop="apiType" v-show="tempShow">
           <el-select v-model="temp.apiType" placeholder="接口类型" clearable class="filter-item" >
             <el-option v-for="item in apiTypeData" :key="item.apiType" :label="item.apiTypeName" :value="item.apiType"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="运营商状态" prop="operatorStatus">
+        <el-form-item label="运营商状态" prop="operatorStatus" v-if="StatusShow">
           <el-radio-group v-model="temp.operatorStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>
@@ -153,6 +153,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      StatusShow:false,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -238,6 +239,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.StatusShow = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -261,14 +263,18 @@ export default {
       })
     },
     handleUpdate(row) {
+      console.log(row)
       if(row.apiMode == 2){
-        this.tempShow = true
-      }else{
         this.tempShow = false
+
+      }else{
+        this.tempShow = true
+        this.temp.apiType = row.apiType
       }
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.StatusShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

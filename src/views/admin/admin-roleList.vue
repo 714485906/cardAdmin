@@ -59,7 +59,7 @@
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="temp.roleName" />
         </el-form-item>
-        <el-form-item label="权限状态" prop="roleStatus">
+        <el-form-item label="权限状态" prop="roleStatus" v-if="StatusShow">
           <el-radio-group v-model="temp.roleStatus">
             <el-radio :label="1">正常</el-radio>
             <el-radio :label="0">禁用</el-radio>
@@ -121,6 +121,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      StatusShow: false,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -188,6 +189,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.StatusShow = false
       this.$refs.tree2.setCheckedKeys([])
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -215,6 +217,7 @@ export default {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.StatusShow = true
       this.getRolePrivilegeIdsFun(row.roleId)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -231,6 +234,7 @@ export default {
             const index = this.list.findIndex(v => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
+            this.getList()
             this.$notify({
               title: '成功',
               message: '成功 修改',

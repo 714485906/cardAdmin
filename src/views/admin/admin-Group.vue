@@ -98,7 +98,7 @@
         <el-form-item label="公司地址" prop="companyAddress" v-if="tempShow">
           <el-input v-model="temp.companyAddress" />
         </el-form-item>
-        <el-form-item label="权限状态" prop="groupStatus">
+        <el-form-item label="权限状态" prop="groupStatus" v-if="StatusShow">
           <el-radio-group v-model="temp.groupStatus">
             <el-radio :label="1">正常</el-radio>
             <el-radio :label="0">禁用</el-radio>
@@ -162,6 +162,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      StatusShow: false,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -278,6 +279,7 @@ export default {
       this.dialogStatus = 'create'
       this.tempShow = false // 隐藏公司信息
       this.dialogFormVisible = true
+      this.StatusShow= false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -308,7 +310,7 @@ export default {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
-
+      this.StatusShow= true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

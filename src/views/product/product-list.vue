@@ -87,7 +87,7 @@
             <img width="100%" :src="temp.imgUrl" v-model="temp.imgUrl" alt="">
           </el-dialog>
         </el-form-item>
-        <el-form-item label="商品状态" prop="productStatus">
+        <el-form-item label="商品状态" prop="productStatus" v-if="false">
           <el-radio-group v-model="temp.productStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>

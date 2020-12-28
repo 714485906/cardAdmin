@@ -186,6 +186,13 @@ export const constantRoutes = [
         name: 'landinglist',
         component: () => import('@/views/landing/landing-list'),
         meta: { title: '落地页列表', icon: 'el-icon-coin' }
+      },
+      {
+        path: '/landingEdit',
+        name: 'landingEdit',
+        component: () => import('@/views/landing/landing-edit'),
+        meta: { title: '编辑落地页信息', icon: 'el-icon-coin' },
+        hidden: true
       }
     ]
   },

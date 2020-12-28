@@ -109,7 +109,7 @@
             <el-radio :label="2" :value="2">代运营</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="账号状态" prop="accountStatus">
+        <el-form-item label="账号状态" prop="accountStatus" v-if="StatusShow">
           <el-radio-group v-model="temp.accountStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>
@@ -168,6 +168,7 @@ export default {
       total: 0,
       listLoading: true,
       Loading: false,
+      StatusShow:true,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -241,6 +242,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.StatusShow = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -252,7 +254,7 @@ export default {
         console.log(this.temp)
         if (valid) {
           PostCreateAccount(this.temp).then(() => {
-            // this.list.unshift(this.temp)
+            this.Loading = false
             this.getList()
             this.dialogFormVisible = false
             this.$notify({
@@ -278,6 +280,7 @@ export default {
       }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.StatusShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

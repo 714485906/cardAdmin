@@ -67,7 +67,7 @@
         <el-form-item label="触点码" prop="touchCode">
           <el-input v-model="temp.touchCode" />
         </el-form-item>
-        <el-form-item label="账号状态" prop="touchStatus">
+        <el-form-item label="账号状态" prop="touchStatus" v-if="StatusShow">
           <el-radio-group v-model="temp.touchStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>
@@ -117,6 +117,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      StatusShow:false,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -186,6 +187,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.StatusShow = false;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -217,6 +219,7 @@ export default {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.StatusShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

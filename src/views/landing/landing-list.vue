@@ -106,7 +106,7 @@
       </el-table-column>
       <el-table-column label="操作"  fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button type="primary" size="mini" @click="editInfo(row)">
             编辑
           </el-button>
           <el-button  size="mini" type="warning" @click="iframeBtn(row)">
@@ -128,21 +128,10 @@
             <el-option v-for="item in queryData.accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="触点码" prop="touchId">
-          <el-select v-model="temp.touchId" placeholder="平台名称" clearable class="filter-item" >
-            <el-option v-for="item in queryData.touchIdData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
+        <el-form-item label="产品名称" prop="productId">
+          <el-select v-model="temp.productId" placeholder="产品名称" clearable class="filter-item" >
+            <el-option v-for="item in queryData.productIdData" :key="item.productId" :label="item.productName" :value="item.productId"  />
           </el-select>
-        </el-form-item>
-        <el-form-item label="商品模板" prop="templateId">
-          <el-select v-model="temp.templateId" placeholder="平台名称" clearable class="filter-item" >
-            <el-option v-for="item in queryData.templateIdData" :key="item.templateId" :label="item.templateName" :value="item.templateId"  />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态" prop="landingStatus">
-          <el-radio-group v-model="temp.landingStatus">
-            <el-radio :label="0" :value="0">不可用</el-radio>
-            <el-radio :label="1" :value="1">正常</el-radio>
-          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -193,7 +182,7 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'ComplexTable',
+  name: 'landingList',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -242,16 +231,15 @@ export default {
       showReviewer: false,
       temp: {
         landingName: undefined,
-        templateId: undefined,
-        touchId: undefined,
         accountId: undefined,
-        landingStatus: undefined
+        productId: undefined
+
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '编辑渠道',
-        create: '添加渠道'
+        update: '编辑',
+        create: '添加'
       },
       dialogPvVisible: false,
       pvData: [],
@@ -327,12 +315,13 @@ export default {
       this.temp = {}
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      // this.resetTemp()
+      // this.dialogStatus = 'create'
+      // this.dialogFormVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
+      this.$router.push({name:'landingEdit',query: {res:'create'}})
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -360,26 +349,29 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          console.log(tempData)
-          PostModifyLanding(tempData).then(() => {
-            // const index = this.list.findIndex(v => v.id === this.temp.id)
-            // this.list.splice(index, 1, this.temp)
-            this.getList() // 重新请求刷新数据
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '修改成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
+    editInfo(row) {
+      this.$router.push({name:'landingEdit',query: {res:JSON.stringify(row)}})
     },
+    // updateData() {
+    //   this.$refs['dataForm'].validate((valid) => {
+    //     if (valid) {
+    //       const tempData = Object.assign({}, this.temp)
+    //       console.log(tempData)
+    //       PostModifyLanding(tempData).then(() => {
+    //         // const index = this.list.findIndex(v => v.id === this.temp.id)
+    //         // this.list.splice(index, 1, this.temp)
+    //         this.getList() // 重新请求刷新数据
+    //         this.dialogFormVisible = false
+    //         this.$notify({
+    //           title: '成功',
+    //           message: '修改成功',
+    //           type: 'success',
+    //           duration: 2000
+    //         })
+    //       })
+    //     }
+    //   })
+    // },
     handleaccount(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'

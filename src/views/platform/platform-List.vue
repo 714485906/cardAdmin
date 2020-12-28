@@ -85,7 +85,7 @@
             <el-radio :label="3" :value="3">其他</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="平台状态" prop="platformStatus">
+        <el-form-item label="平台状态" prop="platformStatus" v-if="StatusShow">
           <el-radio-group v-model="temp.platformStatus">
             <el-radio :label="1" :value="1">正常</el-radio>
             <el-radio :label="0" :value="0">禁用</el-radio>
@@ -142,6 +142,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      StatusShow:true,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -245,6 +246,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.StatusShow = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -271,6 +273,7 @@ export default {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.StatusShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
