@@ -25,14 +25,8 @@
             <el-option v-for="item in queryData.touchIdData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
           </el-select>
         </el-form-item>
-        <el-form-item label="第三方代码(长)" >
-          <el-input type="textarea" v-model="JSON.stringify(temp)" />
-        </el-form-item>
-        <el-form-item label="第三方代码(短)">
-          <el-input v-model="JSON.stringify(temp)" />
-        </el-form-item>
-        <el-form-item label="公司信息" prop="landingName">
-          <el-input  type="textarea" v-model="temp.landingName" />
+        <el-form-item v-for="(item,index) in temp.params" :label="item.paramName" :key="index" >
+          <el-input type="textarea" v-model="item.paramValue" />
         </el-form-item>
         <el-form-item label="状态" prop="landingStatus">
           <el-radio-group v-model="temp.landingStatus">
@@ -78,14 +72,26 @@ export default {
         touchId: undefined,
         accountId: undefined,
         landingStatus: undefined,
-        params:[{
-          paramCode:"",
-          paramValue:JSON.stringify({
-            JavaScriptH: undefined,
-            JavaScriptF: undefined,
-            CompanyInfo: undefined
-          })
-        }]
+        params:[
+          {
+          paramCode:"JavaScriptH",
+          paramName:'第三方代码(长)',
+          paramType:1,
+          paramValue: ''
+        },
+          {
+            paramCode:"JavaScriptF",
+            paramName:'第三方代码(短)',
+            paramType:1,
+            paramValue: ''
+          },
+          {
+            paramCode: "CompanyInfo",
+            paramName: '公司信息',
+            paramType:1,
+            paramValue: ''
+          }
+        ]
       },
       dialogVisible: false,
       operatorData: undefined,
@@ -165,7 +171,7 @@ export default {
                 type: 'success',
                 duration: 2000
               })
-             // this.$router.push({name:'landinglist'})
+             this.$router.push({name:'landinglist'})
             })
 
           }else{ //编辑修改

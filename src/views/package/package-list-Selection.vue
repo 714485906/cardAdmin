@@ -159,6 +159,7 @@
         <el-col :span="6"
                 v-for="(item,index) in preemptPhoneData"
                 style="padding: 10px 0;text-align: center"
+                :key="index"
                 v-loading="listLoading"
                 :class="{active:currentIndex === index}"
                 @click.native="liClick(index,item)"
@@ -197,7 +198,7 @@ import { Message } from 'element-ui'
 // }, {})
 
 export default {
-  name: 'ComplexTable',
+  name: 'packageListSelection',
   components: { Pagination },
   directives: { waves },
   filters: {

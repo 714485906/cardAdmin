@@ -46,7 +46,9 @@ export default {
   },
   methods: {
     fetchData() {
-      transactionList().then(response => {
+      transactionList({
+        periodType:1
+      }).then(response => {
         this.list = response.data.items.slice(0, 8)
       })
     }

@@ -8,10 +8,10 @@ import request from '@/utils/request'
 //   })
 // }
 //
-// export function transactionList(query) {
-//   return request({
-//     url: '/vue-element-admin/transaction/list',
-//     method: 'get',
-//     params: query
-//   })
-// }
+export function transactionList(query) {  //单量统计
+  return request({
+    url: 'statistics/getOrderCount',
+    method: 'get',
+    params: query
+  })
+}

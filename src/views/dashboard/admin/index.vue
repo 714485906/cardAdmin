@@ -1,30 +1,42 @@
 <template>
   <div class="dashboard-editor-container">
-    <github-corner class="github-corner" />
+<!--    <github-corner class="github-corner" />-->
+    <el-radio-group v-model="dateType" size="medium" @change="handleChange">
+      <el-radio-button :label="0">全量</el-radio-button>
+      <el-radio-button :label="1">上月</el-radio-button>
+      <el-radio-button :label="2">本月</el-radio-button>
+      <el-radio-button :label="3">上周</el-radio-button>
+      <el-radio-button :label="4">本周</el-radio-button>
+      <el-radio-button :label="5">昨日</el-radio-button>
+      <el-radio-button :label="6">今日</el-radio-button>
+    </el-radio-group>
+    <!--总量统计-->
+    <panel-group :OrderCountData="OrderCountData"/>
 
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <!--渠道账号统计-->
+    <account-order-counts :accountOrderCounts="OrderCountData.accountOrderCounts"/>
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
-    </el-row>
+<!--    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">-->
+<!--      <line-chart :chart-data="lineChartData" />-->
+<!--    </el-row>-->
 
-    <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <bar-chart />
-        </div>
-      </el-col>
-    </el-row>
+<!--    <el-row :gutter="32">-->
+<!--      <el-col :xs="24" :sm="24" :lg="8">-->
+<!--        <div class="chart-wrapper">-->
+<!--          <raddar-chart />-->
+<!--        </div>-->
+<!--      </el-col>-->
+<!--      <el-col :xs="24" :sm="24" :lg="8">-->
+<!--        <div class="chart-wrapper">-->
+<!--          <pie-chart />-->
+<!--        </div>-->
+<!--      </el-col>-->
+<!--      <el-col :xs="24" :sm="24" :lg="8">-->
+<!--        <div class="chart-wrapper">-->
+<!--          <bar-chart />-->
+<!--        </div>-->
+<!--      </el-col>-->
+<!--    </el-row>-->
 
 <!--    <el-row :gutter="8">-->
 <!--      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">-->
@@ -43,6 +55,7 @@
 <script>
 import GithubCorner from '@/components/GithubCorner'
 import PanelGroup from './components/PanelGroup'
+import accountOrderCounts from './components/accountOrderCounts'
 import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
@@ -50,7 +63,9 @@ import BarChart from './components/BarChart'
 import TransactionTable from './components/TransactionTable'
 import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
+import AccountOrderCounts from '@/views/dashboard/admin/components/accountOrderCounts'
 
+import { transactionList } from '@/api/remote-search'
 const lineChartData = {
   newVisitis: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
@@ -73,6 +88,7 @@ const lineChartData = {
 export default {
   name: 'DashboardAdmin',
   components: {
+    AccountOrderCounts,
     GithubCorner,
     PanelGroup,
     LineChart,
@@ -85,12 +101,29 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitis,
+      OrderCountData:[],
+      dateType:0
     }
+  },
+  created() {
+    this.fetchData()
   },
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
+    },
+    handleChange(val) {
+      console.log(val)
+      this.dateType = val
+      this.fetchData()
+    },
+    fetchData() {
+      transactionList({
+        periodType: this.dateType
+      }).then(response => {
+        this.OrderCountData = response.data
+      })
     }
   }
 }
