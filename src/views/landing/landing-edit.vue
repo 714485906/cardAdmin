@@ -77,19 +77,19 @@ export default {
           paramCode:"JavaScriptH",
           paramName:'第三方代码(长)',
           paramType:1,
-          paramValue: ''
+          paramValue: ' '
         },
           {
             paramCode:"JavaScriptF",
             paramName:'第三方代码(短)',
             paramType:1,
-            paramValue: ''
+            paramValue: ' '
           },
           {
             paramCode: "CompanyInfo",
             paramName: '公司信息',
             paramType:1,
-            paramValue: ''
+            paramValue: ' '
           }
         ]
       },

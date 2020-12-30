@@ -35,12 +35,12 @@
 <!--          <span>{{ row.templateId }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="模板名称" min-width="120px" align="center">
+      <el-table-column label="模板名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.templateName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="模板链接" min-width="120px" align="center">
+      <el-table-column label="模板链接" width="150px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.templateUrl }}</span>
         </template>
@@ -56,14 +56,14 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="模板状态" class-name="status-col" width="120" align="center">
+      <el-table-column label="模板状态" class-name="status-col" fixed="right" width="120px" align="center">
         <template slot-scope="{row}">
           <el-tag type="warning" v-if="row.templateStatus == 0">不可用</el-tag>
           <el-tag type="success" v-if="row.templateStatus == 1">正常</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" fixed="right" width="120px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑

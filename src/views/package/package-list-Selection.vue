@@ -43,7 +43,7 @@
 <!--      </el-table-column>-->
       <el-table-column label="申请人姓名"min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.username }}</span>
+          <span class="link-type">{{ row.contactName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人身份证号" width="180px" align="center" show-overflow-tooltip>

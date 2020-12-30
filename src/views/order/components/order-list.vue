@@ -95,7 +95,12 @@
 <!--      </el-table-column>-->
       <el-table-column label="系统单号" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.systemOrderNo}}</span>
+          <span class="link-type">{{row.systemOrderNo}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="运营商单号" min-width="140px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span class="link-type">{{row.operatorOrderId}}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人姓名" min-width="120px" align="center" show-overflow-tooltip>

@@ -72,10 +72,13 @@
           <el-tag type="success" v-if="row.accountStatus == 1">正常</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="130px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="170px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
+          </el-button>
+          <el-button type="primary" size="mini"@click="rechargeAccount(row)">
+            充值信息
           </el-button>
 <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
 <!--            删除-->
@@ -306,6 +309,9 @@ export default {
           })
         }
       })
+    },
+    rechargeAccount(row) {
+      this.$router.push({name:'recharge',query: {res:row.accountId}})
     },
     getUserListFun() { // 获取用户列表
       getUserList({

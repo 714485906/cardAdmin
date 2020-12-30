@@ -46,11 +46,12 @@
           <span class="link-type">{{ row.rechargePoints }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="充值系数" width="120px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.rechargeRate }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="充值类型" width="120px" align="center">
+        <template slot-scope="{row}">
+          <el-tag v-if="row.rechargeType == 1">直充</el-tag>
+          <el-tag type="success" v-if="row.rechargeType == 2">调剂</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" width="260px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
@@ -91,18 +92,13 @@
         <el-form-item label="备注" prop="remark">
           <el-input v-model="temp.remark" />
         </el-form-item>
-<!--        <el-form-item label="营销组类型" prop="groupType">-->
-<!--          <el-radio-group v-model="temp.groupType">-->
-<!--            <el-radio :label="1">个人级</el-radio>-->
-<!--            <el-radio :label="2">公司级</el-radio>-->
-<!--          </el-radio-group>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="权限状态" prop="groupStatus">-->
-<!--          <el-radio-group v-model="temp.groupStatus">-->
-<!--            <el-radio :label="1">正常</el-radio>-->
-<!--            <el-radio :label="0">禁用</el-radio>-->
-<!--          </el-radio-group>-->
-<!--        </el-form-item>-->
+        <el-form-item label="充值类型" prop="rechargeType">
+          <el-radio-group v-model="temp.rechargeType">
+            <el-radio :label="1">直充</el-radio>
+            <el-radio :label="2">调剂</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -168,7 +164,7 @@ export default {
       temp: {
         accountId: '',
         rechargeFee: '',
-        rechargePoints: '',
+        rechargeType:'',
         remark: ''
       },
       dialogFormVisible: false,
@@ -187,11 +183,7 @@ export default {
           { required: true, message: '请选择输出充值金额(元)', trigger: 'blur' },
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }
         ],
-        rechargePoints: [
-          { required: true, message: '请选择充值账户币，单位个', trigger: 'blur' },
-          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }
-        ]
-
+        rechargeType: [{ required: true, message: '请选择充值状态', trigger: 'blur' }]
       },
       downloadLoading: false,
       data2: [],
@@ -199,6 +191,12 @@ export default {
     }
   },
   created() {
+
+    if(this.$route.query.res){
+      this.listQuery.accountId = this.$route.query.res
+      this.temp.accountId = this.$route.query.res
+      console.log(this.temp.accountId)
+    }
     this.getList()
     this.getgetAccountsFun()
   },

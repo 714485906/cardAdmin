@@ -293,7 +293,7 @@ export default {
     // },
     packageInfo(row) {
       console.log(row)
-      this.$router.push({name:'packageSelection',params: {packageId:'1'}})
+      this.$router.push({name:'packageSelection',params: {packageId:row.packageId}})
     },
     copyArr(arr) {
       return arr.map(e => {

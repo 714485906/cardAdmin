@@ -103,7 +103,7 @@ export default {
     return {
       lineChartData: lineChartData.newVisitis,
       OrderCountData:[],
-      dateType:0
+      dateType:6
     }
   },
   created() {

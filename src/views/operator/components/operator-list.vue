@@ -32,21 +32,33 @@
 <!--          <span>{{ row.operatorId }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="运营商名称" min-width="120px" align="center">
+      <el-table-column label="运营商分公司" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商类型" min-width="120px" align="center">
+      <el-table-column label="所属运营商" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type" v-if="row.operatorType == 1">移动</span>
           <span class="link-type" v-if="row.operatorType == 2">联通</span>
           <span class="link-type" v-if="row.operatorType == 3">电信</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商编码" min-width="120px" align="center">
+      <el-table-column label="运营商编码" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorCode }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="接口类型" min-width="120px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span class="link-type" v-if="row.apiType == 1">联通集团zop</span>
+          <span class="link-type" v-if="row.apiType == 2">长沙联通zop</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="接口模式" min-width="120px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span class="link-type" v-if="row.apiMode == 1">接口下单</span>
+          <span class="link-type" v-if="row.apiMode == 2">线下导单</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="260px" align="center">
@@ -54,14 +66,18 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="数量" min-width="120px" align="center" >
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.touchNum }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="账号状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag type="warning" v-if="row.operatorStatus == 0">不可用</el-tag>
           <el-tag type="success" v-if="row.operatorStatus == 1">正常</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="180px" fixed="right" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑

@@ -24,14 +24,19 @@
           </el-col>
         </el-row>
         <el-row  style="margin-top: 10px">
-          <el-col :span="12">
+          <el-col :span="8">
             <div class="grid-content bg-purple" align="center" style="font-size: 16px">
               <p>成功单量: <span>{{item.accountSuccessCount}}</span> </p>
             </div>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <div class="grid-content bg-purple-light" align="center" style="font-size: 16px">
               <p>废单量: <span style="color: red">{{item.accountFailCount}}</span> </p>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content bg-purple-light" align="center" style="font-size: 16px">
+              <p>废单率: <span style="color: red">待计算</span> </p>
             </div>
           </el-col>
         </el-row>
