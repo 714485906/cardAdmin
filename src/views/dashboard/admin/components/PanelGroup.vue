@@ -9,7 +9,7 @@
           <div class="card-panel-text">
             总量
           </div>
-          <count-to :start-val="0" :end-val="OrderCountData.totalSuccessCount" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="OrderCountData.totalCount" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -35,7 +35,7 @@
           <div class="card-panel-text">
             电信
           </div>
-          <count-to :start-val="0" :end-val="OrderCountData.dxSuccessCount" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="OrderCountData.dxCount" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -48,7 +48,7 @@
           <div class="card-panel-text">
             移动
           </div>
-          <count-to :start-val="0" :end-val="OrderCountData.ydSuccessCount" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="OrderCountData.ydCount" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -61,7 +61,7 @@
           <div class="card-panel-text">
             联通
           </div>
-          <count-to :start-val="0" :end-val="OrderCountData.ltSuccessCount" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="OrderCountData.ltCount" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>

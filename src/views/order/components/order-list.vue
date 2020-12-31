@@ -98,9 +98,9 @@
           <span class="link-type">{{row.systemOrderNo}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商单号" min-width="140px" align="center" show-overflow-tooltip>
+      <el-table-column label="运营商订单ID" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{row.operatorOrderId}}</span>
+          <span class="link-type">{{row.operatorOrderNo}}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人姓名" min-width="120px" align="center" show-overflow-tooltip>
@@ -169,11 +169,11 @@
           <span class="link-type">{{ row.channelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商侧单号" min-width="120px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.operatorOrderNo }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="运营商侧单号" min-width="120px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.operatorOrderNo }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="物流单号" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.logisticsNo }}</span>

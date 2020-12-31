@@ -15,12 +15,18 @@
             <el-option v-for="item in queryData.productIdData" :key="item.productId" :label="item.productName" :value="item.productId"  />
           </el-select>
         </el-form-item>
+        <el-form-item label="模板类型" prop="templateType" >
+          <el-radio-group v-model="temp.templateType" @change="changeTemplateType">
+            <el-radio :label="1" :value="1">自动选号</el-radio>
+            <el-radio :label="2" :value="2">手动选号</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="商品模板"  prop="templateId">
           <el-select v-model="temp.templateId" placeholder="请选择商品模板" clearable class="filter-item" @change="ChangeTemplate">
             <el-option v-for="item in queryData.templateIdData" :key="item.templateId" :label="item.templateName" :value="item.templateId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="触点码" prop="touchId">
+        <el-form-item label="触点码" prop="touchId" v-if="touchIdShow">
           <el-select v-model="temp.touchId" placeholder="触点码" clearable class="filter-item" >
             <el-option v-for="item in queryData.touchIdData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
           </el-select>
@@ -72,6 +78,7 @@ export default {
         touchId: undefined,
         accountId: undefined,
         landingStatus: undefined,
+        templateType: undefined,
         params:[
           {
           paramCode:"JavaScriptH",
@@ -96,6 +103,7 @@ export default {
       dialogVisible: false,
       operatorData: undefined,
       disabledType:true,
+      touchIdShow:true,
       iframeData:{
         link: undefined
       },
@@ -136,10 +144,21 @@ export default {
       this.queryDataFun()
       this.getproductTemplateListFun();
       this.getGetTouchesFun();
+      if(this.temp.templateType == 1){ //自动选号
+        this.touchIdShow = true // 自动选号需要触点码
+      }else if(this.temp.templateType == 2){ //手动选号
+        this.touchIdShow = false // 手动选号不需要触点码
+      }
     }
   },
   methods:{
+    changeTemplateType(val){
+      this.temp.templateId = undefined;
+      this.temp.touchId = undefined;
 
+      this.temp.templateType = val
+      this.getproductTemplateListFun();
+    },
     ChangeProduct(val){   //通过商品id 查询当前商品对应的模板
       this.queryData.templateIdData = undefined;
       this.queryData.touchIdData = undefined;
@@ -156,6 +175,14 @@ export default {
       });
       this.queryList.operatorId = obj.operatorId // 记录当前产品运营商id
       this.iframeData.link = obj.templateUrl
+      console.log(obj.templateType)
+      if(obj.templateType == 1){ //自动选号
+        this.touchIdShow = true // 自动选号需要触点码
+      }else if (obj.templateType == 2){ //手动选号
+        this.touchIdShow = false // 手动选号不需要触点码
+      }
+
+
       this.getGetTouchesFun()
     },
     updateData() {
@@ -193,6 +220,7 @@ export default {
       getproductTemplateList({
         pageNo: 1,
         pageSize: 10000,
+        templateType:this.temp.templateType,
         productId: this.queryList.productId
       }).then(response => {
         this.queryData.templateIdData = response.data // 模板

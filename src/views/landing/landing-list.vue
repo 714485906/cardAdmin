@@ -98,8 +98,11 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="落地页状态" fixed="right" class-name="status-col" width="120" align="center">
+      <el-table-column label="落地页状态" fixed="right" class-name="status-col" width="180" align="center">
         <template slot-scope="{row}">
+          <el-tag type="success" v-if="row.templateType == 1" style='margin-right: 10px'>自动选号</el-tag>
+          <el-tag v-if="row.templateType == 2" style='margin-right: 10px'>手动选号</el-tag>
+
           <el-tag type="success" v-if="row.landingStatus == 1">正常</el-tag>
           <el-tag type="danger" v-if="row.landingStatus == 0">不可用</el-tag>
         </template>

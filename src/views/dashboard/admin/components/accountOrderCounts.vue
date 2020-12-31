@@ -7,26 +7,26 @@
           <el-col :span="6">
             <div class="grid-content bg-purple"  align="center">
               <svg-icon icon-class="yidong" style="display:block;font-size:30px;margin-bottom: 10px" />
-              <count-to :start-val="0" :end-val="item.accountYdSuccessCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
+              <count-to :start-val="0" :end-val="item.accountYdCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
             </div>
           </el-col>
           <el-col :span="6">
             <div class="grid-content bg-purple"  align="center">
               <svg-icon icon-class="liantong" style="display:block;font-size:30px;margin-bottom: 10px" />
-              <count-to :start-val="0" :end-val="item.accountLtSuccessCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
+              <count-to :start-val="0" :end-val="item.accountLtCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
             </div>
           </el-col>
           <el-col :span="6">
             <div class="grid-content bg-purple"  align="center">
               <svg-icon icon-class="dianxin" style="display:block;font-size:30px;margin-bottom: 10px" />
-              <count-to :start-val="0" :end-val="item.accountDxSuccessCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
+              <count-to :start-val="0" :end-val="item.accountDxCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
             </div>
           </el-col>
         </el-row>
         <el-row  style="margin-top: 10px">
           <el-col :span="8">
-            <div class="grid-content bg-purple" align="center" style="font-size: 16px">
-              <p>成功单量: <span>{{item.accountSuccessCount}}</span> </p>
+            <div class="grid-content bg-purple-light" align="center" style="font-size: 16px">
+              <p>成功订单: <span style="color: red">{{item.accountSuccessCount}}</span> </p>
             </div>
           </el-col>
           <el-col :span="8">
@@ -36,7 +36,7 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content bg-purple-light" align="center" style="font-size: 16px">
-              <p>废单率: <span style="color: red">待计算</span> </p>
+              <p>废单率: <span style="color: red">{{ ((item.accountFailCount /(item.accountYdCount + item.accountLtCount + item.accountDxCount)) *100).toFixed() }}%</span> </p>
             </div>
           </el-col>
         </el-row>

@@ -94,7 +94,8 @@
       <el-table-column label="选号"min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
 <!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">预占号</el-button>-->
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">预占号码</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(row)" v-if="row.applyStatus != 1 ">预占号码</el-button>
+          <el-button type="warning" :disabled="true" size="mini" v-else>已预占</el-button>
         </template>
       </el-table-column>
       <el-table-column label="平台标识"  min-width="120px" align="center" show-overflow-tooltip>
@@ -169,12 +170,12 @@
         <p style="text-align: center" @click="ChangeNumber">换一批</p>
       </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          提交
-        </el-button>
+<!--        <el-button @click="dialogFormVisible = false">-->
+<!--          取消-->
+<!--        </el-button>-->
+<!--        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">-->
+<!--          提交-->
+<!--        </el-button>-->
       </div>
     </el-dialog>
   </div>
@@ -266,6 +267,7 @@ export default {
         {applyStatus: 2, applyStatusName: '提交失败'}
       ],
       preemptPhoneData: [],
+      Rowlist: undefined,
       ChangeNumberlistQuery: {
         landingId:'',
         provinceId:'',
@@ -346,15 +348,18 @@ export default {
       this.ChangeNumberlistQuery.landingId = row.landingId
       this.ChangeNumberlistQuery.provinceId = row.provinceId
       this.ChangeNumberlistQuery.cityId = row.cityId
-      this.ActiveNumber.applyId = row.applyId
+      this.ActiveNumber.applyId = row.applyId //获取当前数据的appid
+      this.Rowlist = row //存储当前一整条 数据
       this.ChangeNumber() //获取号码池 号码
     },
     liClick(index,tel){
       this.currentIndex = index
       this.ActiveNumber.applyPhone = tel
+      this.Rowlist.applyPhone = tel
+      this. updateData()
     },
     updateData() {
-      // alert('你选中的号码是'+ this.ActiveNumber.applyPhone + '你的applyId是='+this.ActiveNumber.applyId );
+      console.log('你选中的号码是'+ this.ActiveNumber.applyPhone + '你的applyId是='+this.ActiveNumber.applyId );
       if(this.ActiveNumber.applyPhone!= ''){
         this.$confirm(`你当前选着的号码是${this.ActiveNumber.applyPhone},是否预占当前号码`, '提示', {
           confirmButtonText: '确定',
@@ -423,24 +428,24 @@ export default {
 
       }
     },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          console.log(this.temp)
-          PostCreatePackage(this.temp).then(() => {
-            this.getList()
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '成功创建',
-              type: 'success',
-              duration: 2000
-            })
-            this.$refs.deficiencyTable.clearSelection();
-          })
-        }
-      })
-    },
+    // createData() {
+    //   this.$refs['dataForm'].validate((valid) => {
+    //     if (valid) {
+    //       console.log(this.temp)
+    //       PostCreatePackage(this.temp).then(() => {
+    //         this.getList()
+    //         this.dialogFormVisible = false
+    //         this.$notify({
+    //           title: '成功',
+    //           message: '成功创建',
+    //           type: 'success',
+    //           duration: 2000
+    //         })
+    //         this.$refs.deficiencyTable.clearSelection();
+    //       })
+    //     }
+    //   })
+    // },
     toggleDeficiencySelection(rows) {
       if (rows) {
         rows.forEach(row => {

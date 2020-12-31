@@ -16,6 +16,9 @@
     </el-aside>
     <el-main>
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="130px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="商品名称" prop="productName">
+          <el-input v-model="temp.productName" />
+        </el-form-item>
         <el-form-item label="运营商" prop="operatorId">
           <el-select v-model="temp.operatorId" placeholder="运营商名称" clearable class="filter-item" >
             <el-option v-for="item in operatorData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId"  />
@@ -23,9 +26,6 @@
         </el-form-item>
         <el-form-item label="运营商侧商品Id" prop="operatorProductId">
           <el-input v-model="temp.operatorProductId" />
-        </el-form-item>
-        <el-form-item label="商品名称" prop="productName">
-          <el-input v-model="temp.productName" />
         </el-form-item>
         <el-form-item label="商品编码" prop="productCode">
           <el-input v-model="temp.productCode" />
