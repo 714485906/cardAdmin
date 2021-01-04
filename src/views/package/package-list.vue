@@ -149,7 +149,7 @@ export default {
         applyPhone: undefined,
         contactName: undefined,
         contactPhone: undefined,
-        applyStatus: undefined
+        packageStatus: undefined
       },
       multipleSelection: [],
       importanceOptions: [1, 2, 3],

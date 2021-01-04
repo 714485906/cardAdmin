@@ -7,9 +7,9 @@
       <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
-      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">
-        <el-option v-for="item in platformStatusData" :key="item.costStatus" :label="item.costStatusName" :value="item.costStatus" />
-      </el-select>
+<!--      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">-->
+<!--        <el-option v-for="item in platformStatusData" :key="item.costStatus" :label="item.costStatusName" :value="item.costStatus" />-->
+<!--      </el-select>-->
       <el-date-picker
         v-model="dateTime1"
         type="datetimerange"
@@ -67,9 +67,9 @@
           <span>{{ row.orderNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="投放金额(分)" min-width="220px" align="center" show-overflow-tooltip>
+      <el-table-column label="投放金额(元)" min-width="220px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <el-input size="small" type="text" v-model="row.costFee"  placeholder="请输入投放金额" ></el-input>
+          <el-input size="small" type="text" v-model='row.costFee' placeholder="请输入投放金额" ></el-input>
         </template>
       </el-table-column>
       <el-table-column label="充值系数"  min-width="90px" align="center">
@@ -84,7 +84,7 @@
           <el-tag type="danger" v-else-if="row.costStatus == 2">已撤回</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" fixed="right" width="120px" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             提交
@@ -139,7 +139,7 @@ export default {
         endCostDate:undefined,
         accountId: undefined,
         productId: undefined,
-        costStatus: undefined
+        costStatus:[0,2].toString()
       },
       importanceOptions: [1, 2, 3],
       Rolelist: '',
@@ -179,12 +179,25 @@ export default {
     this. accountIdDataFun() //初始账号id
     this.getProductListFun() //初始商品
   },
-methods: {
+  computed:{
+    mydata: {
+      get (val,aaa) {
+        console.log(val)
+      },
+      set (val) {
+       console.log(val)
+      }
+    }
+  },
+  methods: {
     getList() {
       this.listLoading = true
       getcostList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.page.total
+        this.list.forEach(function(val){  //初始数据时 把投放金额单位 从分转成 元
+          val.costFee = val.costFee /100
+        })
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -201,9 +214,6 @@ methods: {
       this.listQuery.pageNo = 1
       this.getList()
     },
-    costFeeFun(costFee) {
-      return costFee/100
-    },
     handleUpdate(row) {
       this.$confirm('请确定提交当前价格吗', '提示', {
         confirmButtonText: '确定',
@@ -214,7 +224,7 @@ methods: {
 
         PostSubmitCost({
           costId:row.costId,
-          costFee:row.costFee
+          costFee:row.costFee*100   //后台单位为分  需要把元转成分
         }).then(response => {
           this.getList()
           this.$message({

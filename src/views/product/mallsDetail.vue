@@ -44,6 +44,60 @@
         <el-form-item label="主图链接" prop="imgUrl">
           <el-input v-model="temp.imgUrl" disabled />
         </el-form-item>
+        <el-form-item label="归属地" prop="ownPlace">
+          <el-input
+            type="text"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="temp.ownPlace">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="配送方式" prop="deliveryMode">
+          <el-radio-group v-model="temp.deliveryMode">
+            <el-radio :label="0" :value="0">待填充</el-radio>
+            <el-radio :label="1" :value="1">待填充</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="不发货地址" prop="shieldArea">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="temp.shieldArea">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="可发货年龄" prop="allowableAge">
+          <el-input
+            type="text"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="temp.allowableAge">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="结算周期" prop="settlementCycle">
+          <el-input
+            type="text"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="temp.settlementCycle">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="结算要求" prop="settlementRules">
+          <el-input
+            type="text"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="temp.settlementRules">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="优势" prop="advantage">
+          <el-input
+            type="text"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="temp.advantage">
+          </el-input>
+        </el-form-item>
         <el-form-item label="商品状态" prop="productStatus">
           <el-radio-group v-model="temp.productStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>

@@ -7,6 +7,9 @@
       <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
+      <!--      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">-->
+      <!--        <el-option v-for="item in platformStatusData" :key="item.costStatus" :label="item.costStatusName" :value="item.costStatus" />-->
+      <!--      </el-select>-->
       <el-date-picker
         v-model="dateTime1"
         type="datetimerange"
@@ -26,6 +29,32 @@
       <!--        添加-->
       <!--      </el-button>-->
     </div>
+    <!--总数据-->
+    <div style="margin-bottom: 15px"></div>
+    <el-row :gutter="20"  class="row-bg">
+      <el-col :span="3" class="bg-purple">
+        <div class="grid-title" align="center">总单量</div>
+        <div class="grid-content" align="center">{{getCostCountData.orderNum}}</div>
+      </el-col>
+      <el-col :span="3"  class="bg-purple-light">
+        <div class="grid-title" align="center">成本金额(元)</div>
+        <div class="grid-content" align="center">{{getCostCountData.costFee /100}}</div>
+      </el-col>
+      <el-col :span="3" class="bg-purple">
+        <div class="grid-title" align="center">实际成本金额(元)</div>
+        <div class="grid-content" align="center">{{getCostCountData.actualCostFee /100}}</div>
+      </el-col>
+      <el-col :span="3" class="bg-purple-light">
+        <div class="grid-title" align="center">成本单价</div>
+        <div class="grid-content" align="center">{{getCostCountData.costPrice / 100}}</div>
+      </el-col>
+      <el-col :span="3" class="bg-purple">
+        <div class="grid-title" align="center">实际成本单价</div>
+        <div class="grid-content" align="center">{{getCostCountData.actualCostPrice / 100}}</div>
+      </el-col>
+    </el-row>
+
+    <!--明细-->
     <div style="margin-bottom: 15px"></div>
     <el-table
       :key="tableKey"
@@ -64,9 +93,10 @@
           <span>{{ row.orderNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="投放金额(分)" min-width="220px" align="center" show-overflow-tooltip>
+      <el-table-column label="投放金额(元)" min-width="220px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-<!--          <el-input size="small" type="text" v-model="row.costFee"  placeholder="请输入投放金额" ></el-input>-->
+<!--          <el-input size="small" type="text" v-model='row.costFee'   placeholder="请输入投放金额" ></el-input>-->
+          <span>{{ row.costFee }}</span>
         </template>
       </el-table-column>
       <el-table-column label="充值系数"  min-width="90px" align="center">
@@ -81,11 +111,11 @@
           <el-tag type="danger" v-else-if="row.costStatus == 2">已撤回</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" fixed="right" width="120px" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            提交
-          </el-button>
+<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
+<!--            提交-->
+<!--          </el-button>-->
           <el-button v-if="row.costStatus==1" size="mini" type="danger" @click="rollbackCostFun(row)">
             撤回
           </el-button>
@@ -99,7 +129,7 @@
 </template>
 
 <script>
-import { getCostCount, PostSubmitCost, getRollbackCost } from '@/api/statistics'
+import { getcostList, PostSubmitCost, getRollbackCost,getCostCount } from '@/api/statistics'
 import { getProductList } from '@/api/product'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
@@ -107,6 +137,12 @@ import Pagination from '@/components/Pagination'
 import { getgetAccounts } from '@/api/channel' // secondary package based on el-pagination
 
 // arr to obj, such as { CN : "China", US : "USA" }
+const platformStatusData = [
+  { costStatus: '0', costStatusName: '待提交' },
+  { costStatus: '1', costStatusName: '已提交' },
+  { costStatus: '2', costStatusName: '已撤回' },
+
+]
 
 export default {
   name: 'ComplexTable',
@@ -120,7 +156,9 @@ export default {
   data() {
     return {
       tableKey: 0,
+      tableKey0: 0,
       list: null,
+      getCostCountData:[],
       total: 0,
       listLoading: true,
       listQuery: {
@@ -129,7 +167,8 @@ export default {
         beginCostDate: undefined,
         endCostDate:undefined,
         accountId: undefined,
-        productId: undefined
+        productId: undefined,
+        costStatus:1
       },
       importanceOptions: [1, 2, 3],
       Rolelist: '',
@@ -144,6 +183,7 @@ export default {
       },
       dialogFormVisible: false,
       dialogStatus: '',
+      platformStatusData,
       textMap: {
         update: '编辑投放平台',
         create: '添加投放平台'
@@ -168,17 +208,37 @@ export default {
     this. accountIdDataFun() //初始账号id
     this.getProductListFun() //初始商品
   },
+  computed:{
+    mydata: {
+      get (val,aaa) {
+        console.log(val)
+      },
+      set (val) {
+        console.log(val)
+      }
+    }
+  },
   methods: {
     getList() {
       this.listLoading = true
-      getCostCount(this.listQuery).then(response => {
+      getcostList(this.listQuery).then(response => {  //明细
         this.list = response.data
         this.total = response.page.total
+        this.list.forEach(function(val){  //初始数据时 把投放金额单位 从分转成 元
+          val.costFee = val.costFee /100
+        })
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1 * 500)
       })
+        getCostCount(this.listQuery).then(response => { //总数据
+          this.getCostCountData = response.data
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1 * 500)
+        })
+
     },
     dateChange() {
 
@@ -190,9 +250,6 @@ export default {
       this.listQuery.pageNo = 1
       this.getList()
     },
-    costFeeFun(costFee) {
-      return costFee/100
-    },
     handleUpdate(row) {
       this.$confirm('请确定提交当前价格吗', '提示', {
         confirmButtonText: '确定',
@@ -203,7 +260,7 @@ export default {
 
         PostSubmitCost({
           costId:row.costId,
-          costFee:row.costFee
+          costFee:row.costFee*100   //后台单位为分  需要把元转成分
         }).then(response => {
           this.getList()
           this.$message({
@@ -261,3 +318,32 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple-dark {
+  background: #99a9bf;
+}
+.bg-purple {
+  background: #d3dce6;
+}
+.bg-purple-light {
+  background: #e5e9f2;
+}
+.grid-title{
+  padding-top: 10px;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 30px;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
+.grid-title,.grid-content{
+  font-size: 14px;
+}
+</style>

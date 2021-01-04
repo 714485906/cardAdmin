@@ -44,11 +44,11 @@
         align="center"
         :selectable="checkSelectable"
         fixed="left"></el-table-column>
-<!--      <el-table-column label="applyId" prop="id" sortable="custom" align="center" width="120">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.applyId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="系统唯一标识" align="center" width="120" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{ row.applyNo }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="申请人姓名" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.contactName }}</span>
