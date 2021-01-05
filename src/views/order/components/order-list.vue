@@ -301,7 +301,7 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        operatorType: 1,
+        operatorType: 2,
         beginCreateTime: undefined,
         endCreateTime: undefined,
         beginActivateTime: undefined,

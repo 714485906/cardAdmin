@@ -70,8 +70,8 @@
             v-model="temp.productSummary">
           </el-input>
         </el-form-item>
-        <el-form-item label="商品佣金(分)" prop="commission">
-          <el-input v-model="temp.commission" />
+        <el-form-item label="商品佣金(元)" prop="commission">
+          <el-input v-model="temp.commission" placeholder="请输入商品佣金" />
         </el-form-item>
         <el-form-item label="主图链接" prop="imgUrl">
           <el-upload
@@ -96,10 +96,12 @@
           </el-input>
         </el-form-item>
         <el-form-item label="配送方式" prop="deliveryMode">
-          <el-radio-group v-model="temp.deliveryMode">
-            <el-radio :label="0" :value="0">待填充</el-radio>
-            <el-radio :label="1" :value="1">待填充</el-radio>
-          </el-radio-group>
+          <el-input
+            type="text"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="temp.deliveryMode">
+          </el-input>
         </el-form-item>
         <el-form-item label="不发货地址" prop="shieldArea">
           <el-input
@@ -248,9 +250,6 @@ export default {
           { min: 3, max: 64, message: '长度在 3 到 64 个字符', trigger: 'blur' }],
         productCode: [{ required: true, message: '请输入商品编码', trigger: 'blur' },
           { min: 3, max: 64, message: '长度在 3 到 64 个字符', trigger: 'blur' }],
-        productSummary: [{ required: true, message: '请输入商品简介', trigger: 'blur' },
-          { min: 3, max: 64, message: '长度在 3 到 64 个字符', trigger: 'blur' }],
-        commission: [{ required: true, message: '请输入商品佣金', trigger: 'blur' }],
         productStatus: [{ required: true, message: '请选择商品状态', trigger: 'change' }]
       },
       downloadLoading: false,
@@ -321,7 +320,8 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          console.log(this.temp)
+          //console.log(this.temp)
+          this.temp.commission =  this.temp.commission *100
           PostCreateProduct(this.temp).then(() => {
             // this.list.unshift(this.temp)
             this.getList()

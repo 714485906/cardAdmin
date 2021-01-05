@@ -195,7 +195,7 @@ export default {
     if(this.$route.query.res){
       this.listQuery.accountId = this.$route.query.res
       this.temp.accountId = this.$route.query.res
-      console.log(this.temp.accountId)
+   //   console.log(this.temp.accountId)
     }
     this.getList()
     this.getgetAccountsFun()
@@ -254,6 +254,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+      this.temp.accountId = this.$route.query.res
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

@@ -26,11 +26,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="groupId" prop="id" sortable="custom" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.groupId }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+<!--      <el-table-column label="groupId" prop="id" sortable="custom" align="center" width="100">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.groupId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="营销员" min-width="220px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.groupName }}</span>

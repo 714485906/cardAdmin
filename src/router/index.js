@@ -120,7 +120,8 @@ export const constantRoutes = [
         path: '/recharge',
         name: 'recharge',
         component: () => import('@/views/recharge/recharge-list'),
-        meta: { title: '账号充值', icon: 'tree' }
+        meta: { title: '账号充值', icon: 'tree' },
+        hidden: true
       }
 
     ]

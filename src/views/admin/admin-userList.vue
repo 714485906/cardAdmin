@@ -32,11 +32,12 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="userId" prop="id" sortable="custom" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.userId }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+<!--      <el-table-column label="userId" prop="id" sortable="custom" align="center" width="100">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.userId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="用户名称"min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>

@@ -32,7 +32,7 @@
 <!--          <span>{{ row.operatorId }}</span>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="运营商分公司" min-width="140px" align="center" show-overflow-tooltip>
+      <el-table-column label="运营商接口名称" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
         </template>
@@ -110,7 +110,7 @@
             <el-radio :label="2" :value="2" @change="tempShow = false;temp.apiType =''">线下导单</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="接口类型" prop="apiType" v-show="tempShow">
+        <el-form-item label="接口类型" prop="apiType" v-if="tempShow">
           <el-select v-model="temp.apiType" placeholder="接口类型" clearable class="filter-item" >
             <el-option v-for="item in apiTypeData" :key="item.apiType" :label="item.apiTypeName" :value="item.apiType"  />
           </el-select>

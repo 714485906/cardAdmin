@@ -52,6 +52,10 @@
         <div class="grid-title" align="center">实际成本单价</div>
         <div class="grid-content" align="center">{{getCostCountData.actualCostPrice / 100}}</div>
       </el-col>
+      <el-col :span="3" class="bg-purple-light">
+        <div class="grid-title" align="center">返点</div>
+        <div class="grid-content" align="center">{{getCostCountData.accountRechargeRate}}</div>
+      </el-col>
     </el-row>
 
     <!--明细-->

@@ -2,8 +2,8 @@
   <el-container>
     <el-aside width="60%">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 440px; margin:20px auto" >
-        <el-form-item label="落地页名称" prop="landingName">
-          <el-input v-model="temp.landingName" />
+        <el-form-item label="落地页名称" prop="landingName" v-if="landingNameShow">
+          <el-input v-model="temp.landingName" disabled />
         </el-form-item>
         <el-form-item label="渠道账号" prop="accountId">
           <el-select v-model="temp.accountId" placeholder="平台名称" clearable class="filter-item" >
@@ -73,7 +73,6 @@ export default {
   data() {
     return {
       temp: {
-        landingName: undefined,
         templateId: undefined,
         touchId: undefined,
         accountId: undefined,
@@ -104,12 +103,11 @@ export default {
       operatorData: undefined,
       disabledType:true,
       touchIdShow:true,
+      landingNameShow:false,
       iframeData:{
         link: undefined
       },
       rules: {
-        landingName: [{ required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 2, max: 16, message: '长度在 2 到 16 个字符', trigger: 'blur' }],
         accountId: [{ required: true, message: '请选择渠道账号', trigger: 'change' }],
         productId: [{ required: true, message: '请选择商品', trigger: 'change' }],
         templateId: [{ required: true, message: '请选择商品模板', trigger: 'change' }],
@@ -144,6 +142,7 @@ export default {
       this.queryDataFun()
       this.getproductTemplateListFun();
       this.getGetTouchesFun();
+      this.landingNameShow = true
       if(this.temp.templateType == 1){ //自动选号
         this.touchIdShow = true // 自动选号需要触点码
       }else if(this.temp.templateType == 2){ //手动选号

@@ -25,7 +25,7 @@ export default {
         { label: '联通', key: '2' },
         { label: '电信', key: '3' }
       ],
-      activeName: '1'
+      activeName: '2'
     }
   },
   watch: {

@@ -18,11 +18,12 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="roleId" prop="id" sortable="custom" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.roleId }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+<!--      <el-table-column label="roleId" prop="id" sortable="custom" align="center" width="100">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.roleId }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="角色名称" width="220px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.roleName }}</span>

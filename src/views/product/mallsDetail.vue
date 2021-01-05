@@ -38,7 +38,7 @@
             v-model="temp.productSummary">
           </el-input>
         </el-form-item>
-        <el-form-item label="商品佣金(分)" prop="commission">
+        <el-form-item label="商品佣金(元)" prop="commission">
           <el-input v-model="temp.commission" />
         </el-form-item>
         <el-form-item label="主图链接" prop="imgUrl">
@@ -53,10 +53,12 @@
           </el-input>
         </el-form-item>
         <el-form-item label="配送方式" prop="deliveryMode">
-          <el-radio-group v-model="temp.deliveryMode">
-            <el-radio :label="0" :value="0">待填充</el-radio>
-            <el-radio :label="1" :value="1">待填充</el-radio>
-          </el-radio-group>
+          <el-input
+            type="text"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="temp.deliveryMode">
+          </el-input>
         </el-form-item>
         <el-form-item label="不发货地址" prop="shieldArea">
           <el-input
@@ -136,6 +138,7 @@ export default {
   },
   created() {
     this.temp = JSON.parse(this.$route.query.res);
+    this.temp.commission =  this.temp.commission /100
     this.getOperatorListFun()
   },
   methods:{
@@ -152,6 +155,7 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.temp.commission =  this.temp.commission * 100
           const tempData = Object.assign({}, this.temp)
           console.log(tempData)
           PostmodifyProduct(tempData).then(() => {

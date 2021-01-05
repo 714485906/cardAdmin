@@ -4,8 +4,8 @@
       <el-input v-model="listQuery.applyPhone" placeholder="申请号码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.contactName" placeholder="申请人姓名" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.contactPhone" placeholder="申请人联系电话" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.applyStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in applyStatusData" :key="item.applyStatus" :label="item.applyStatusName" :value="item.applyStatus" />
+      <el-select v-model="listQuery.packageStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in packageStatusData" :key="item.packageStatus" :label="item.packageStatusName" :value="item.packageStatus" />
       </el-select>
       <el-button v-waves class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
@@ -194,10 +194,10 @@ export default {
         channelStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
       downloadLoading: false,
-      applyStatusData: [
-        {applyStatus: 0, applyStatusName: '待提交'},
-        {applyStatus: 1, applyStatusName: '已提交'},
-        {applyStatus: 2, applyStatusName: '提交失败'}
+      packageStatusData: [
+        {packageStatus: 0, packageStatusName: '待提交'},
+        {packageStatus: 1, packageStatusName: '部分提交'},
+        {packageStatus: 2, packageStatusName: '全部提交'}
       ],
       ChangeNumberlistQuery: {
         pageNo: 1,
