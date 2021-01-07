@@ -36,11 +36,11 @@
         <div class="grid-content" align="center">{{ getCostCountData.orderNum }}</div>
       </el-col>
       <el-col :span="3" class="bg-purple-light">
-        <div class="grid-title" align="center">成本金额(元)</div>
+        <div class="grid-title" align="center">成本(元)</div>
         <div class="grid-content" align="center">{{ getCostCountData.costFee /100 }}</div>
       </el-col>
       <el-col :span="3" class="bg-purple">
-        <div class="grid-title" align="center">实际成本金额(元)</div>
+        <div class="grid-title" align="center">实际成本(元)</div>
         <div class="grid-content" align="center">{{ getCostCountData.actualCostFee /100 }}</div>
       </el-col>
       <el-col :span="3" class="bg-purple-light">
@@ -53,7 +53,7 @@
       </el-col>
       <el-col :span="3" class="bg-purple-light">
         <div class="grid-title" align="center">返点</div>
-        <div class="grid-content" align="center">{{ getCostCountData.accountRechargeRate }}</div>
+        <div class="grid-content" align="center">{{ getCostCountData.accountRechargeRate /100 }}</div>
       </el-col>
     </el-row>
 
@@ -112,9 +112,14 @@
           <span class="link-type">{{ row.costPrice /100 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="实际成本单价" min-width="90px" align="center">
+      <el-table-column label="实际成本单价" min-width="130px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.actualCostPrice /100 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="实际成本金额" min-width="130px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.actualCostFee /100 }}</span>
         </template>
       </el-table-column>
       <el-table-column label="激活单量" min-width="90px" align="center">
@@ -127,17 +132,12 @@
           <span class="link-type">{{ row.rechargeNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="成本单价" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.costPrice /100 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="累充50单量" min-width="90px" align="center">
+      <el-table-column label="累充50单量" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.recharge50Num}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="累充100单量" min-width="90px" align="center">
+      <el-table-column label="累充100单量" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.recharge100Num}}</span>
         </template>

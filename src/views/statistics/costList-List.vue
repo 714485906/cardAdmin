@@ -86,6 +86,11 @@
           <span class="link-type">{{ row.actualCostPrice /100 }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="实际成本金额" min-width="130px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.actualCostFee /100 }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="激活单量" min-width="90px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.activateNum}}</span>
