@@ -13,18 +13,18 @@
       <el-button v-waves class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(1)">-->
-<!--        二次分配 {{multipleSelection.length}}-->
-<!--      </el-button>-->
-<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(2)">-->
-<!--        手动批量提交 {{multipleSelection.length}}-->
-<!--      </el-button>-->
+      <!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(1)">-->
+      <!--        二次分配 {{multipleSelection.length}}-->
+      <!--      </el-button>-->
+      <!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(2)">-->
+      <!--        手动批量提交 {{multipleSelection.length}}-->
+      <!--      </el-button>-->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(3)">
-         打包{{multipleSelection.length}}
+        打包{{ multipleSelection.length }}
       </el-button>
 
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       ref="deficiencyTable"
       :key="tableKey"
@@ -34,16 +34,17 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @selection-change="handleSelectionChange"
       :row-key="getRowKeys"
-      >
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column
         type="selection"
         :reserve-selection="true"
         width="45"
         align="center"
         :selectable="checkSelectable"
-        fixed="left"></el-table-column>
+        fixed="left"
+      />
       <el-table-column label="系统唯一标识" align="center" width="120" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.applyNo }}</span>
@@ -56,7 +57,7 @@
       </el-table-column>
       <el-table-column label="新号码" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{row.applyPhone}}</span>
+          <span class="link-type">{{ row.applyPhone }}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人身份证号" width="180px" align="center" show-overflow-tooltip>
@@ -84,57 +85,57 @@
           <span class="link-type">{{ row.districtName }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="申请号码省份名称" width="140px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.applyProvinceName }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="申请号码城市名称" width="140px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.applyCityName }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="收件详细地址"  min-width="120px" align="center" show-overflow-tooltip>
+      <!--      <el-table-column label="申请号码省份名称" width="140px" align="center">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span class="link-type">{{ row.applyProvinceName }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
+      <!--      <el-table-column label="申请号码城市名称" width="140px" align="center">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span class="link-type">{{ row.applyCityName }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
+      <el-table-column label="收件详细地址" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.address }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平台标识"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="平台标识" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.platformName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道标识"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="渠道标识" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.channelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="账号标识"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="账号标识" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="产品名称"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="产品名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.productName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="运营商" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="触点码名称"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="触点码名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.touchName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="营销组"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="营销组" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{row.groupName}}</span>
+          <span class="link-type">{{ row.groupName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="营销员"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="营销员" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
         </template>
@@ -146,18 +147,18 @@
       </el-table-column>
       <el-table-column label="申请状态" fixed="right" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-            <el-tag type="info" v-if="row.applyStatus == 0">待提交</el-tag>
-            <el-tag type="success" v-else-if="row.applyStatus == 1">已提交</el-tag>
-          <el-tag type="danger" v-else-if="row.applyStatus == 2">提交失败</el-tag>
+          <el-tag v-if="row.applyStatus == 0" type="info">待提交</el-tag>
+          <el-tag v-else-if="row.applyStatus == 1" type="success">已提交</el-tag>
+          <el-tag v-else-if="row.applyStatus == 2" type="danger">提交失败</el-tag>
         </template>
       </el-table-column>
-<!--      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="{row, $index}">-->
-<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
-<!--            预占号-->
-<!--          </el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">-->
+      <!--        <template slot-scope="{row, $index}">-->
+      <!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
+      <!--            预占号-->
+      <!--          </el-button>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
@@ -169,18 +170,18 @@
         </el-form-item>
         <el-form-item label="产品名称" prop="productId">
           <el-select v-model="temp.productId" placeholder="请输入平台名称" clearable class="filter-item" @change="queryproduct">
-            <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId"  />
+            <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
           </el-select>
         </el-form-item>
-<!--        <el-form-item label="渠道账号" prop="accountId">-->
-<!--          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >-->
-<!--            <el-option v-for="item in accountsData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="渠道账号" prop="accountId">-->
+        <!--          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >-->
+        <!--            <el-option v-for="item in accountsData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
 
         <el-form-item label="触点码" prop="touchId">
-          <el-select v-model="temp.touchId" placeholder="请输入触点码" clearable class="filter-item" >
-            <el-option v-for="item in touchData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
+          <el-select v-model="temp.touchId" placeholder="请输入触点码" clearable class="filter-item">
+            <el-option v-for="item in touchData" :key="item.touchId" :label="item.touchName" :value="item.touchId" />
           </el-select>
         </el-form-item>
 
@@ -232,7 +233,7 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        templateType:2,  //1.自动选号，2.手动选号(非选号)
+        templateType: 2, // 1.自动选号，2.手动选号(非选号)
         applyPhone: undefined,
         contactName: undefined,
         contactPhone: undefined,
@@ -259,10 +260,10 @@ export default {
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
-        productId:'',
-        touchId:'',
-        accountId:'',
-        packageName:'',
+        productId: '',
+        touchId: '',
+        accountId: '',
+        packageName: '',
         applyIds: ''
       },
       dialogFormVisible: false,
@@ -283,9 +284,9 @@ export default {
       },
       downloadLoading: false,
       applyStatusData: [
-        {applyStatus: 0, applyStatusName: '待提交'},
-        {applyStatus: 1, applyStatusName: '已提交'},
-        {applyStatus: 2, applyStatusName: '提交失败'}
+        { applyStatus: 0, applyStatusName: '待提交' },
+        { applyStatus: 1, applyStatusName: '已提交' },
+        { applyStatus: 2, applyStatusName: '提交失败' }
       ],
       ChangeNumberlistQuery: {
         pageNo: 1,
@@ -297,18 +298,18 @@ export default {
       },
       currentIndex: 0,
       accountsData: '',
-      getProductData : '',
+      getProductData: '',
       touchData: '',
-      queryList:{
+      queryList: {
         productId: undefined,
         operatorId: undefined
       }
     }
   },
   created() {
-    this.getList();
-    this.getgetAccountsDataFun();
-    this.getProductListDataFun();
+    this.getList()
+    this.getgetAccountsDataFun()
+    this.getProductListDataFun()
     this.getGetTouchesDataFun()
   },
   methods: {
@@ -329,19 +330,19 @@ export default {
     },
     checkSelectable(row) {
       // row.isPackaged  true已经打包  false没有打包
-      if(row.isPackaged == true){
+      if (row.isPackaged == true) {
         return false // 禁止选中
-      }else{
-        return true  // 允许选中
+      } else {
+        return true // 允许选中
       }
     },
     queryproduct(val) {
       console.log(val)
       this.temp.productId = val
-      let obj = {};
-      obj = this.getProductData.find((item)=>{//遍历list的数据
-        return item.productId === val; //筛选出匹配数据
-      });
+      let obj = {}
+      obj = this.getProductData.find((item) => { // 遍历list的数据
+        return item.productId === val // 筛选出匹配数据
+      })
       this.queryList.operatorId = obj.operatorId // 记录当前产品运营商id
       this.getGetTouchesDataFun()
     },
@@ -368,22 +369,22 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        userId: undefined,
+        userId: undefined
       }
     },
-    handleUpdate(row) {  //显示预选号码
+    handleUpdate(row) { // 显示预选号码
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.ChangeNumberlistQuery.pageNo = 1
       this.ActiveNumber.applyId = row.applyId
-      this.ChangeNumber() //获取号码池 号码
+      this.ChangeNumber() // 获取号码池 号码
     },
-    liClick(index,tel){
+    liClick(index, tel) {
       this.currentIndex = index
       this.ActiveNumber.tel = tel
     },
     updateData() {
-     // alert('你选中的号码是'+ this.ActiveNumber.tel + '你的applyId是='+this.ActiveNumber.applyId )
+      // alert('你选中的号码是'+ this.ActiveNumber.tel + '你的applyId是='+this.ActiveNumber.applyId )
       this.dialogFormVisible = false
     },
     handleResetApply(type) { // 1.二次分配  2.手动批量提交
@@ -393,13 +394,13 @@ export default {
           type: 'error',
           duration: 3 * 1000
         })
-      }else{
-        let excelList = this.copyArr(this.multipleSelection);
-        let ids = []; // 获取选中的applyId
-        for (let item of excelList) {
-          ids.push(item.applyId);
+      } else {
+        const excelList = this.copyArr(this.multipleSelection)
+        const ids = [] // 获取选中的applyId
+        for (const item of excelList) {
+          ids.push(item.applyId)
         }
-        this.temp.applyIds = ids;
+        this.temp.applyIds = ids
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -420,7 +421,7 @@ export default {
               type: 'success',
               duration: 2000
             })
-            this.$refs.deficiencyTable.clearSelection();
+            this.$refs.deficiencyTable.clearSelection()
           })
         }
       })
@@ -428,17 +429,17 @@ export default {
     toggleDeficiencySelection(rows) {
       if (rows) {
         rows.forEach(row => {
-          this.$refs.deficiencyTable.toggleRowSelection(row);
-        });
+          this.$refs.deficiencyTable.toggleRowSelection(row)
+        })
       } else {
-        this.$refs.deficiencyTable.clearSelection();
+        this.$refs.deficiencyTable.clearSelection()
       }
     },
     getRowKeys(row) {
-      return row.applyId;
+      return row.applyId
     },
-    handleSelectionChange: function (val) {
-      this.multipleSelection = val;
+    handleSelectionChange: function(val) {
+      this.multipleSelection = val
     },
     handleaccount(row) {
       this.temp = Object.assign({}, row) // copy obj
@@ -454,20 +455,20 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-          console.log(ids)
+        console.log(ids)
         PostResetApply(ids).then(response => {
           this.getList()
           this.$message({
             type: 'success',
             message: '操作成功!'
-          });
+          })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消'
-        });
-      });
+        })
+      })
     },
     PostsubmitApplyFun(ids) { // 手动批量提交
       this.$confirm('是否确认手动批量提交操作?', '提示', {
@@ -481,23 +482,23 @@ export default {
           this.$message({
             type: 'success',
             message: '操作成功!'
-          });
+          })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消'
-        });
-      });
+        })
+      })
     },
     copyArr(arr) {
       return arr.map(e => {
-        if (typeof e === "object") {
-          return Object.assign({}, e);
+        if (typeof e === 'object') {
+          return Object.assign({}, e)
         } else {
-          return e;
+          return e
         }
-      });
+      })
     },
     getgetAccountsDataFun() {
       getgetAccounts({
@@ -520,7 +521,7 @@ export default {
       getGetTouches({
         pageNo: 1,
         pageSize: 10000,
-        operatorId:this.queryList.operatorId
+        operatorId: this.queryList.operatorId
       }).then(response => {
         this.touchData = response.data // 获取触点码
       })

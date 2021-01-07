@@ -11,11 +11,11 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+      <!--        导出-->
+      <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -26,12 +26,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="operatorId" prop="id" sortable="custom" align="center" width="120">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.operatorId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="operatorId" prop="id" sortable="custom" align="center" width="120">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.operatorId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="运营商接口名称" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
@@ -39,9 +39,9 @@
       </el-table-column>
       <el-table-column label="所属运营商" min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type" v-if="row.operatorType == 1">移动</span>
-          <span class="link-type" v-if="row.operatorType == 2">联通</span>
-          <span class="link-type" v-if="row.operatorType == 3">电信</span>
+          <span v-if="row.operatorType == 1" class="link-type">移动</span>
+          <span v-if="row.operatorType == 2" class="link-type">联通</span>
+          <span v-if="row.operatorType == 3" class="link-type">电信</span>
         </template>
       </el-table-column>
       <el-table-column label="运营商编码" min-width="120px" align="center" show-overflow-tooltip>
@@ -51,14 +51,14 @@
       </el-table-column>
       <el-table-column label="接口类型" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type" v-if="row.apiType == 1">联通集团zop</span>
-          <span class="link-type" v-if="row.apiType == 2">长沙联通zop</span>
+          <span v-if="row.apiType == 1" class="link-type">联通集团zop</span>
+          <span v-if="row.apiType == 2" class="link-type">长沙联通zop</span>
         </template>
       </el-table-column>
       <el-table-column label="接口模式" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type" v-if="row.apiMode == 1">接口下单</span>
-          <span class="link-type" v-if="row.apiMode == 2">线下导单</span>
+          <span v-if="row.apiMode == 1" class="link-type">接口下单</span>
+          <span v-if="row.apiMode == 2" class="link-type">线下导单</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="260px" align="center">
@@ -66,15 +66,15 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="数量" min-width="120px" align="center" >
+      <el-table-column label="数量" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.touchNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="账号状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="warning" v-if="row.operatorStatus == 0">不可用</el-tag>
-          <el-tag type="success" v-if="row.operatorStatus == 1">正常</el-tag>
+          <el-tag v-if="row.operatorStatus == 0" type="warning">不可用</el-tag>
+          <el-tag v-if="row.operatorStatus == 1" type="success">正常</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="180px" fixed="right" class-name="small-padding fixed-width">
@@ -82,14 +82,14 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button type="primary" size="mini" >
+          <el-button type="primary" size="mini">
             <router-link :to="'/getTouches/'+row.operatorId">
               查看触点码
             </router-link>
           </el-button>
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
-<!--          </el-button>-->
+          <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
+          <!--            删除-->
+          <!--          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -110,12 +110,12 @@
             <el-radio :label="2" :value="2" @change="tempShow = false;temp.apiType =''">线下导单</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="接口类型" prop="apiType" v-if="tempShow">
-          <el-select v-model="temp.apiType" placeholder="接口类型" clearable class="filter-item" >
-            <el-option v-for="item in apiTypeData" :key="item.apiType" :label="item.apiTypeName" :value="item.apiType"  />
+        <el-form-item v-if="tempShow" label="接口类型" prop="apiType">
+          <el-select v-model="temp.apiType" placeholder="接口类型" clearable class="filter-item">
+            <el-option v-for="item in apiTypeData" :key="item.apiType" :label="item.apiTypeName" :value="item.apiType" />
           </el-select>
         </el-form-item>
-        <el-form-item label="运营商状态" prop="operatorStatus" v-if="StatusShow">
+        <el-form-item v-if="StatusShow" label="运营商状态" prop="operatorStatus">
           <el-radio-group v-model="temp.operatorStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>
@@ -169,7 +169,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      StatusShow:false,
+      StatusShow: false,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -211,12 +211,12 @@ export default {
           { min: 3, max: 128, message: '长度在 3 到 128 个字符', trigger: 'blur' }],
         apiMode: [{ required: true, message: '请选择接口模式', trigger: 'change' }],
         apiType: [{ required: true, message: '请选择接口类型', trigger: 'blur' }],
-        accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }],
+        accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
       downloadLoading: false,
       apiTypeData: [
-        { apiType: 1, apiTypeName: '联通集团zop'},
-        { apiType: 2, apiTypeName: '长沙联通zop'}
+        { apiType: 1, apiTypeName: '联通集团zop' },
+        { apiType: 2, apiTypeName: '长沙联通zop' }
       ],
       tempShow: false
     }
@@ -251,7 +251,7 @@ export default {
       }
     },
     handleCreate() {
-      this.tempShow = false //隐藏接口模式
+      this.tempShow = false // 隐藏接口模式
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -280,10 +280,9 @@ export default {
     },
     handleUpdate(row) {
       console.log(row)
-      if(row.apiMode == 2){
+      if (row.apiMode == 2) {
         this.tempShow = false
-
-      }else{
+      } else {
         this.tempShow = true
         this.temp.apiType = row.apiType
       }

@@ -8,7 +8,7 @@
         导出
       </el-button>
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -18,12 +18,12 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="roleId" prop="id" sortable="custom" align="center" width="100">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.roleId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="roleId" prop="id" sortable="custom" align="center" width="100">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.roleId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="角色名称" width="220px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.roleName }}</span>
@@ -37,8 +37,8 @@
       </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="success" v-if="row.roleStatus == 1">正常</el-tag>
-          <el-tag type="danger" v-if="row.roleStatus == 0">禁用</el-tag>
+          <el-tag v-if="row.roleStatus == 1" type="success">正常</el-tag>
+          <el-tag v-if="row.roleStatus == 0" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
@@ -60,7 +60,7 @@
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="temp.roleName" />
         </el-form-item>
-        <el-form-item label="权限状态" prop="roleStatus" v-if="StatusShow">
+        <el-form-item v-if="StatusShow" label="权限状态" prop="roleStatus">
           <el-radio-group v-model="temp.roleStatus">
             <el-radio :label="1">正常</el-radio>
             <el-radio :label="0">禁用</el-radio>

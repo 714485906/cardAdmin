@@ -12,7 +12,7 @@
         添加
       </el-button>
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -23,12 +23,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="platformId" prop="platformId" sortable="custom" align="center" width="140">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.platformId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="platformId" prop="platformId" sortable="custom" align="center" width="140">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.platformId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="平台名称"min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.platformName }}</span>
@@ -41,8 +41,8 @@
       </el-table-column>
       <el-table-column label="平台类型" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag  v-if="row.platformType == 1">信息流</el-tag>
-          <el-tag type="warning" v-else-if="row.platformType == 2">搜索</el-tag>
+          <el-tag v-if="row.platformType == 1">信息流</el-tag>
+          <el-tag v-else-if="row.platformType == 2" type="warning">搜索</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="渠道数量" width="90px" align="center">
@@ -54,8 +54,8 @@
       </el-table-column>
       <el-table-column label="用户类型" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-            <el-tag type="success" v-if="row.platformStatus == 1">正常</el-tag>
-            <el-tag type="warning" v-else-if="row.platformStatus == 0">不可用</el-tag>
+          <el-tag v-if="row.platformStatus == 1" type="success">正常</el-tag>
+          <el-tag v-else-if="row.platformStatus == 0" type="warning">不可用</el-tag>
         </template>
       </el-table-column>
 
@@ -64,9 +64,9 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
-<!--          </el-button>-->
+          <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
+          <!--            删除-->
+          <!--          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -85,7 +85,7 @@
             <el-radio :label="3" :value="3">其他</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="平台状态" prop="platformStatus" v-if="StatusShow">
+        <el-form-item v-if="StatusShow" label="平台状态" prop="platformStatus">
           <el-radio-group v-model="temp.platformStatus">
             <el-radio :label="1" :value="1">正常</el-radio>
             <el-radio :label="0" :value="0">禁用</el-radio>
@@ -142,7 +142,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      StatusShow:true,
+      StatusShow: true,
       listQuery: {
         pageNo: 1,
         pageSize: 10,

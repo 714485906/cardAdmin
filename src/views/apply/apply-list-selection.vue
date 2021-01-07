@@ -10,15 +10,15 @@
       <el-button v-waves class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(1)">-->
-<!--        二次分配 {{multipleSelection.length}}-->
-<!--      </el-button>-->
-<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(2)">-->
-<!--        手动批量提交 {{multipleSelection.length}}-->
-<!--      </el-button>-->
+      <!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(1)">-->
+      <!--        二次分配 {{multipleSelection.length}}-->
+      <!--      </el-button>-->
+      <!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(2)">-->
+      <!--        手动批量提交 {{multipleSelection.length}}-->
+      <!--      </el-button>-->
 
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -27,10 +27,10 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @selection-change="handleSelectionChange"
       :row-key="getRowKeys"
-      >
-      <el-table-column type="selection" :reserve-selection="true"  width="45" align="center" fixed="left"></el-table-column>
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" :reserve-selection="true" width="45" align="center" fixed="left" />
       <el-table-column label="系统唯一标识" align="center" width="120" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.applyNo }}</span>
@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column label="新号码"min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{row.applyPhone}}</span>
+          <span class="link-type">{{ row.applyPhone }}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人身份证号" width="180px" align="center" show-overflow-tooltip>
@@ -71,57 +71,57 @@
           <span class="link-type">{{ row.districtName }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="申请号码省份名称" width="140px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.applyProvinceName }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="申请号码城市名称" width="140px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.applyCityName }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="收件详细地址"  min-width="120px" align="center" show-overflow-tooltip>
+      <!--      <el-table-column label="申请号码省份名称" width="140px" align="center">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span class="link-type">{{ row.applyProvinceName }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
+      <!--      <el-table-column label="申请号码城市名称" width="140px" align="center">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span class="link-type">{{ row.applyCityName }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
+      <el-table-column label="收件详细地址" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.address }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平台标识"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="平台标识" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.platformName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道标识"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="渠道标识" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.channelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="账号标识"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="账号标识" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="产品名称"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="产品名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.productName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="运营商" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="触点码名称"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="触点码名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.touchName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="营销组"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="营销组" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{row.groupName}}</span>
+          <span class="link-type">{{ row.groupName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="营销员"  min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="营销员" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
         </template>
@@ -131,31 +131,32 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请状态" fixed="right" class-name="status-col" width="120" align="center" >
+      <el-table-column label="申请状态" fixed="right" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-            <el-tag type="info" v-if="row.applyStatus == 0">待提交</el-tag>
-            <el-tag type="success" v-else-if="row.applyStatus == 1">已提交</el-tag>
-          <el-tag type="danger" v-else-if="row.applyStatus == 2">提交失败</el-tag>
+          <el-tag v-if="row.applyStatus == 0" type="info">待提交</el-tag>
+          <el-tag v-else-if="row.applyStatus == 1" type="success">已提交</el-tag>
+          <el-tag v-else-if="row.applyStatus == 2" type="danger">提交失败</el-tag>
         </template>
       </el-table-column>
-<!--      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="{row, $index}">-->
-<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
-<!--            预占号-->
-<!--          </el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column label="操作" fixed="right" align="center" width="120px" class-name="small-padding fixed-width">-->
+      <!--        <template slot-scope="{row, $index}">-->
+      <!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
+      <!--            预占号-->
+      <!--          </el-button>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-row>
-        <el-col :span="6"
-                v-for="(item,index) in preemptPhoneData"
-                style="padding: 10px 0;text-align: center"
-                :class="{active:currentIndex === index}"
-                @click.native="liClick(index,item)"
-        >{{item}}</el-col>
+        <el-col
+          v-for="(item,index) in preemptPhoneData"
+          :span="6"
+          style="padding: 10px 0;text-align: center"
+          :class="{active:currentIndex === index}"
+          @click.native="liClick(index,item)"
+        >{{ item }}</el-col>
       </el-row>
       <el-row>
         <p style="text-align: center" @click="ChangeNumber">换一批</p>
@@ -205,7 +206,7 @@ export default {
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        templateType:1,  //1.自动选号，2.手动选号(非选号)
+        templateType: 1, // 1.自动选号，2.手动选号(非选号)
         applyPhone: undefined,
         contactName: undefined,
         contactPhone: undefined,
@@ -255,9 +256,9 @@ export default {
       },
       downloadLoading: false,
       applyStatusData: [
-        {applyStatus: 0, applyStatusName: '待提交'},
-        {applyStatus: 1, applyStatusName: '已提交'},
-        {applyStatus: 2, applyStatusName: '提交失败'}
+        { applyStatus: 0, applyStatusName: '待提交' },
+        { applyStatus: 1, applyStatusName: '已提交' },
+        { applyStatus: 2, applyStatusName: '提交失败' }
       ],
       preemptPhoneData: [],
       ChangeNumberlistQuery: {
@@ -313,22 +314,22 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        userId: undefined,
+        userId: undefined
       }
     },
-    handleUpdate(row) {  //显示预选号码
+    handleUpdate(row) { // 显示预选号码
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.ChangeNumberlistQuery.pageNo = 1
       this.ActiveNumber.applyId = row.applyId
-      this.ChangeNumber() //获取号码池 号码
+      this.ChangeNumber() // 获取号码池 号码
     },
-    liClick(index,tel){
+    liClick(index, tel) {
       this.currentIndex = index
       this.ActiveNumber.tel = tel
     },
     updateData() {
-      alert('你选中的号码是'+ this.ActiveNumber.tel + '你的applyId是='+this.ActiveNumber.applyId )
+      alert('你选中的号码是' + this.ActiveNumber.tel + '你的applyId是=' + this.ActiveNumber.applyId)
       this.dialogFormVisible = false
     },
     handleResetApply(type) { // 1.二次分配  2.手动批量提交
@@ -338,43 +339,42 @@ export default {
           type: 'error',
           duration: 3 * 1000
         })
-      }else{
-        let excelList = this.copyArr(this.multipleSelection);
-        let ids = []; // 获取选中的applyId
-        for (let item of excelList) {
-          ids.push(item.applyId);
+      } else {
+        const excelList = this.copyArr(this.multipleSelection)
+        const ids = [] // 获取选中的applyId
+        for (const item of excelList) {
+          ids.push(item.applyId)
         }
-        if( type == 1 ){
+        if (type == 1) {
           this.PostResetApplyFun(ids) // type为1  执行二次分配
-        }else if(type == 2){
-          this.PostsubmitApplyFun(ids) //type为2  执行手动批量提交
+        } else if (type == 2) {
+          this.PostsubmitApplyFun(ids) // type为2  执行手动批量提交
         }
-
       }
     },
     copyArr(arr) {
       return arr.map(e => {
-        if (typeof e === "object") {
-          return Object.assign({}, e);
+        if (typeof e === 'object') {
+          return Object.assign({}, e)
         } else {
-          return e;
+          return e
         }
-      });
+      })
     },
     toggleDeficiencySelection(rows) {
       if (rows) {
         rows.forEach(row => {
-          this.$refs.deficiencyTable.toggleRowSelection(row);
-        });
+          this.$refs.deficiencyTable.toggleRowSelection(row)
+        })
       } else {
-        this.$refs.deficiencyTable.clearSelection();
+        this.$refs.deficiencyTable.clearSelection()
       }
     },
     getRowKeys(row) {
-      return row.applyId;
+      return row.applyId
     },
-    handleSelectionChange: function (val) {
-      this.multipleSelection = val;
+    handleSelectionChange: function(val) {
+      this.multipleSelection = val
     },
     handleaccount(row) {
       this.temp = Object.assign({}, row) // copy obj
@@ -390,20 +390,20 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-          console.log(ids)
+        console.log(ids)
         PostResetApply(ids).then(response => {
           this.getList()
           this.$message({
             type: 'success',
             message: '操作成功!'
-          });
+          })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消'
-        });
-      });
+        })
+      })
     },
     PostsubmitApplyFun(ids) { // 手动批量提交
       this.$confirm('是否确认手动批量提交操作?', '提示', {
@@ -417,19 +417,19 @@ export default {
           this.$message({
             type: 'success',
             message: '操作成功!'
-          });
+          })
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消'
-        });
-      });
+        })
+      })
     },
     ChangeNumber() { // 请求预选号码池
-       alert("模拟请求-" + '请求页数'+ this.ChangeNumberlistQuery.pageNo)
-      this.ChangeNumberlistQuery.pageNo ++
-    },
+      alert('模拟请求-' + '请求页数' + this.ChangeNumberlistQuery.pageNo)
+      this.ChangeNumberlistQuery.pageNo++
+    }
 
   }
 }

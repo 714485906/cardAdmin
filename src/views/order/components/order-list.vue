@@ -8,10 +8,9 @@
         start-placeholder="下单开始日期"
         end-placeholder="下单结束日期"
         format="yyyy-MM-dd"
-        value-format='yyyy-MM-dd'
-        style='min-width: 300px'
-      >
-      </el-date-picker>
+        value-format="yyyy-MM-dd"
+        style="min-width: 300px"
+      />
       <el-date-picker
         v-model="dateTime2"
         type="datetimerange"
@@ -19,10 +18,9 @@
         start-placeholder="激活开始日期"
         end-placeholder="激活结束日期"
         format="yyyy-MM-dd"
-        value-format='yyyy-MM-dd'
-        style='min-width: 300px;margin: 5px 5px'
-      >
-      </el-date-picker>
+        value-format="yyyy-MM-dd"
+        style="min-width: 300px;margin: 5px 5px"
+      />
       <el-date-picker
         v-model="dateTime3"
         type="datetimerange"
@@ -30,10 +28,9 @@
         start-placeholder="充值开始日期"
         end-placeholder="充值结束日期"
         format="yyyy-MM-dd"
-        value-format='yyyy-MM-dd'
-        style='min-width: 300px;margin: 5px 5px'
-      >
-      </el-date-picker>
+        value-format="yyyy-MM-dd"
+        style="min-width: 300px;margin: 5px 5px"
+      />
       <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
       </el-select>
@@ -55,52 +52,54 @@
       <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin:5px 5px" @change="queryproduct">
         <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
-      <el-button v-waves class="filter-item" type=  "primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="handleResetApply(3)" v-show="packageShow">
-        二次分配{{multipleSelection.length}}
+      <el-button v-show="packageShow" class="filter-item" style="margin-left: 10px;" type="primary" @click="handleResetApply(3)">
+        二次分配{{ multipleSelection.length }}
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+      <!--        导出-->
+      <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       ref="deficiencyTable"
+      :key="tableKey"
       v-loading="listLoading"
       :data="list"
-      :key="tableKey"
       border
       fit
       highlight-current-row
       style="width: 100%;"
-      @selection-change="handleSelectionChange"
       :row-key="getRowKeys"
+      @selection-change="handleSelectionChange"
     >
 
-      <el-table-column type="selection"
+      <el-table-column
+        type="selection"
         :reserve-selection="true"
         width="45"
-         align="center"
-         disabled
-         :selectable="checkSelectable"
-         fixed="left"></el-table-column>
-<!--      <el-table-column type="selection"  :reserve-selection="true"  width="45" align="center" disabled fixed="left" ></el-table-column>-->
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="orderId" prop="id" sortable="custom" align="center" width="120">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.orderId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+        align="center"
+        disabled
+        :selectable="checkSelectable"
+        fixed="left"
+      />
+      <!--      <el-table-column type="selection"  :reserve-selection="true"  width="45" align="center" disabled fixed="left" ></el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="orderId" prop="id" sortable="custom" align="center" width="120">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.orderId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="系统单号" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{row.systemOrderNo}}</span>
+          <span class="link-type">{{ row.systemOrderNo }}</span>
         </template>
       </el-table-column>
       <el-table-column label="运营商订单ID" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{row.operatorOrderNo}}</span>
+          <span class="link-type">{{ row.operatorOrderNo }}</span>
         </template>
       </el-table-column>
       <el-table-column label="申请人姓名" min-width="120px" align="center" show-overflow-tooltip>
@@ -154,26 +153,26 @@
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-        <el-table-column label="平台名称" width="120px" align="center" show-overflow-tooltip>
-          <template slot-scope="{row}">
-            <span class="link-type">{{ row.platformName }}</span>
-          </template>
-        </el-table-column>
+      <el-table-column label="平台名称" width="120px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.platformName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="营销员" width="120px" align="center" show-overflow-tooltip>
-            <template slot-scope="{row}">
-              <span class="link-type">{{ row.username }}</span>
-            </template>
-       </el-table-column>
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.username }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="渠道名称" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.channelName }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="运营商侧单号" min-width="120px" align="center" show-overflow-tooltip>-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.operatorOrderNo }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column label="运营商侧单号" min-width="120px" align="center" show-overflow-tooltip>-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span class="link-type">{{ row.operatorOrderNo }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="物流单号" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.logisticsNo }}</span>
@@ -186,9 +185,9 @@
       </el-table-column>
       <el-table-column label="物流状态" class-name="status-col" width="120" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <el-tag type="info" v-if="row.logisticsStatus == 0">待发货</el-tag>
-          <el-tag type="warning" v-if="row.logisticsStatus == 1">已发货</el-tag>
-          <el-tag type="success" v-if="row.logisticsStatus == 2">已签收</el-tag>
+          <el-tag v-if="row.logisticsStatus == 0" type="info">待发货</el-tag>
+          <el-tag v-if="row.logisticsStatus == 1" type="warning">已发货</el-tag>
+          <el-tag v-if="row.logisticsStatus == 2" type="success">已签收</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="发货时间" width="260px" align="center" show-overflow-tooltip>
@@ -208,7 +207,7 @@
       </el-table-column>
       <el-table-column label="备注" width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span>{{row.remark}}</span>
+          <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
       <el-table-column label="商品佣金/(分)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>
@@ -218,11 +217,11 @@
       </el-table-column>
       <el-table-column label="订单状态" fixed="right" class-name="status-col" width="120" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <el-tag type="info" v-if="row.orderStatus == 0">待提交</el-tag>
+          <el-tag v-if="row.orderStatus == 0" type="info">待提交</el-tag>
           <el-tag v-if="row.orderStatus == 1">已提交</el-tag>
-          <el-tag type="danger" v-if="row.orderStatus == 2" @click="orderErrFun(row.orderId)">提交失败</el-tag>
-          <el-tag type="success" v-if="row.orderStatus == 3">已激活</el-tag>
-          <el-tag type="warning" v-if="row.orderStatus == 4">已充值</el-tag>
+          <el-tag v-if="row.orderStatus == 2" type="danger" @click="orderErrFun(row.orderId)">提交失败</el-tag>
+          <el-tag v-if="row.orderStatus == 3" type="success">已激活</el-tag>
+          <el-tag v-if="row.orderStatus == 4" type="warning">已充值</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -234,18 +233,18 @@
         </el-form-item>
         <el-form-item label="产品名称" prop="productId">
           <el-select v-model="temp.productId" placeholder="请输入平台名称" clearable class="filter-item" @change="queryproduct">
-            <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId"  />
+            <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
           </el-select>
         </el-form-item>
-<!--        <el-form-item label="渠道账号" prop="accountId">-->
-<!--          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >-->
-<!--            <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="渠道账号" prop="accountId">-->
+        <!--          <el-select v-model="temp.accountId" placeholder="请输入平台名称" clearable class="filter-item" >-->
+        <!--            <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
 
         <el-form-item label="触点码" prop="touchId">
-          <el-select v-model="temp.touchId" placeholder="请输入触点码" clearable class="filter-item" >
-            <el-option v-for="item in touchData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
+          <el-select v-model="temp.touchId" placeholder="请输入触点码" clearable class="filter-item">
+            <el-option v-for="item in touchData" :key="item.touchId" :label="item.touchName" :value="item.touchId" />
           </el-select>
         </el-form-item>
 
@@ -260,12 +259,11 @@
       </div>
     </el-dialog>
 
-
     <el-dialog title="失败原因" :visible.sync="ErrInfoShow">
       <div v-for="(item,index) in errText">
-        <h3>第{{index + 1}}次</h3>
-        <p>请求报文&nbsp: <span style="color: red">{{item.requestMessage}}</span></p>
-        <p>响应报文&nbsp: <span style="color: red">{{item.responseMessage}}</span></p>
+        <h3>第{{ index + 1 }}次</h3>
+        <p>请求报文&nbsp: <span style="color: red">{{ item.requestMessage }}</span></p>
+        <p>响应报文&nbsp: <span style="color: red">{{ item.responseMessage }}</span></p>
       </div>
     </el-dialog>
   </div>
@@ -308,7 +306,7 @@ export default {
         endActivateTime: undefined,
         beginRechargeTime: undefined,
         endRechargeTime: undefined,
-        logisticsStatus:undefined,
+        logisticsStatus: undefined,
         operatorId: undefined,
         channelId: undefined,
         productId: undefined
@@ -322,10 +320,10 @@ export default {
         { key: '0', name: '不可用' }
       ],
       temp: {
-        productId:'',
-        touchId:'',
-        accountId:'',
-        packageName:'',
+        productId: '',
+        touchId: '',
+        accountId: '',
+        packageName: '',
         applyIds: ''
       },
       textMap: {
@@ -338,12 +336,12 @@ export default {
       dialogStatus: '',
       dialogPvVisible: false,
       ErrInfoShow: false,
-      errText:[],
+      errText: [],
       pvData: [],
       dateTime1: '',
       dateTime2: '',
       dateTime3: '',
-      multipleSelection:[],
+      multipleSelection: [],
       rules: {
         channelName: [{ required: true, message: '请输入角色名称', trigger: 'blur' },
           { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }],
@@ -352,57 +350,57 @@ export default {
         channelType: [{ required: true, message: '请选择状态', trigger: 'change' }],
         channelStatus: [{ required: true, message: '请选择状态', trigger: 'change' }]
       },
-      logisticsStatusData:[
-        { logisticsStatus: 0, name: '待发货'},
-        { logisticsStatus: 1, name: '已发货'},
-        { logisticsStatus: 2, name: '已签收'},
+      logisticsStatusData: [
+        { logisticsStatus: 0, name: '待发货' },
+        { logisticsStatus: 1, name: '已发货' },
+        { logisticsStatus: 2, name: '已签收' }
       ],
       orderStatusData: [
-        { orderStatus: 0, name: '待提交'},
-        { orderStatus: 1, name: '已提交'},
-        { orderStatus: 2, name: '提交失败'},
-        { orderStatus: 3, name: '已激活'},
-        { orderStatus: 4, name: '已充值'},
-        { orderStatus: 5, name: '退单'},
-        { orderStatus: 6, name: '销户'}
+        { orderStatus: 0, name: '待提交' },
+        { orderStatus: 1, name: '已提交' },
+        { orderStatus: 2, name: '提交失败' },
+        { orderStatus: 3, name: '已激活' },
+        { orderStatus: 4, name: '已充值' },
+        { orderStatus: 5, name: '退单' },
+        { orderStatus: 6, name: '销户' }
       ],
       operatorIdData: '',
       channelIdData: '',
       platformIdData: '',
       accountsData: '',
-      getProductData : '',
+      getProductData: '',
       touchData: '',
-      packageShow:false,
-      queryList:{
+      packageShow: false,
+      queryList: {
         productId: undefined,
         operatorId: undefined
       }
     }
   },
   created() {
-    if(this.$route.query.tab!= undefined){  //选择当前营业厅
+    if (this.$route.query.tab != undefined) { // 选择当前营业厅
       this.listQuery.operatorType = this.$route.query.tab
     }
-    if(this.$route.name == 'orderListErr'){  //监听路由  如果为 orderListErr 进入异常订单
+    if (this.$route.name == 'orderListErr') { // 监听路由  如果为 orderListErr 进入异常订单
       this.listQuery.orderStatus = 2
       this.packageShow = true
     }
-    this.getList() //初始数据
-    this.accountIdDataFun() //账号名称
-    this.getOperatorListDataFun() //获取运营商
+    this.getList() // 初始数据
+    this.accountIdDataFun() // 账号名称
+    this.getOperatorListDataFun() // 获取运营商
     this.getChannelListDataFun() // 获取渠道
-    this.getPlatformListDataFun() //获取平台
-    this.getProductListDataFun(); //产品名称
-    this.getGetTouchesDataFun()  //触点码
+    this.getPlatformListDataFun() // 获取平台
+    this.getProductListDataFun() // 产品名称
+    this.getGetTouchesDataFun() // 触点码
   },
   methods: {
     getList() {
       this.listLoading = true
       getorderList(this.listQuery).then(response => {
-        if(response.data != null){
+        if (response.data != null) {
           this.list = response.data
           this.total = response.page.total
-        }else{
+        } else {
           this.list = []
           this.total = response.page.total
         }
@@ -416,40 +414,39 @@ export default {
     orderErrFun(orderId) {
       this.ErrInfoShow = true
       getOrderDetails({
-        orderId:orderId,
-        pageNo:1,
-        pageSize:100
+        orderId: orderId,
+        pageNo: 1,
+        pageSize: 100
       }).then(response => {
-        this.errText = response.data;
+        this.errText = response.data
       })
-
     },
     handleFilter() {
-        this.listQuery.beginCreateTime = this.dateTime1[0]
-        this.listQuery.endCreateTime = this.dateTime1[1]
+      this.listQuery.beginCreateTime = this.dateTime1[0]
+      this.listQuery.endCreateTime = this.dateTime1[1]
       this.listQuery.beginActivateTime = this.dateTime2[0]
       this.listQuery.endActivateTime = this.dateTime2[1]
       this.listQuery.beginRechargeTime = this.dateTime3[0]
       this.listQuery.endRechargeTime = this.dateTime3[1]
       console.log(this.dateTime1[0])
-        this.listQuery.pageNo = 1
-        this.getList()
+      this.listQuery.pageNo = 1
+      this.getList()
     },
     checkSelectable(row) {
       // row.isPackaged  true已经打包  false没有打包
-      if(row.isPackaged == true ){
+      if (row.isPackaged == true) {
         return false // 禁止选中
-      }else{
-        return true  // 允许选中
+      } else {
+        return true // 允许选中
       }
     },
     queryproduct(val) {
       console.log(val)
       this.temp.productId = val
-      let obj = {};
-      obj = this.getProductData.find((item)=>{//遍历list的数据
-        return item.productId === val; //筛选出匹配数据
-      });
+      let obj = {}
+      obj = this.getProductData.find((item) => { // 遍历list的数据
+        return item.productId === val // 筛选出匹配数据
+      })
       this.queryList.operatorId = obj.operatorId // 记录当前产品运营商id
       this.getGetTouchesDataFun()
     },
@@ -466,7 +463,7 @@ export default {
               type: 'success',
               duration: 2000
             })
-            this.$refs.deficiencyTable.clearSelection();
+            this.$refs.deficiencyTable.clearSelection()
           })
         }
       })
@@ -478,13 +475,13 @@ export default {
           type: 'error',
           duration: 3 * 1000
         })
-      }else{
-        let excelList = this.copyArr(this.multipleSelection);
-        let ids = []; // 获取选中的applyId
-        for (let item of excelList) {
-          ids.push(item.applyId);
+      } else {
+        const excelList = this.copyArr(this.multipleSelection)
+        const ids = [] // 获取选中的applyId
+        for (const item of excelList) {
+          ids.push(item.applyId)
         }
-        this.temp.applyIds = ids;
+        this.temp.applyIds = ids
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -494,27 +491,27 @@ export default {
     },
     copyArr(arr) {
       return arr.map(e => {
-        if (typeof e === "object") {
-          return Object.assign({}, e);
+        if (typeof e === 'object') {
+          return Object.assign({}, e)
         } else {
-          return e;
+          return e
         }
-      });
+      })
     },
     toggleDeficiencySelection(rows) {
       if (rows) {
         rows.forEach(row => {
-          this.$refs.deficiencyTable.toggleRowSelection(row);
-        });
+          this.$refs.deficiencyTable.toggleRowSelection(row)
+        })
       } else {
-        this.$refs.deficiencyTable.clearSelection();
+        this.$refs.deficiencyTable.clearSelection()
       }
     },
     getRowKeys(row) {
-      return row.applyId;
+      return row.applyId
     },
-    handleSelectionChange: function (val) {
-      this.multipleSelection = val;
+    handleSelectionChange: function(val) {
+      this.multipleSelection = val
     },
     accountIdDataFun() {
       getgetAccounts({
@@ -560,7 +557,7 @@ export default {
       getGetTouches({
         pageNo: 1,
         pageSize: 10000,
-        operatorId:this.queryList.operatorId
+        operatorId: this.queryList.operatorId
       }).then(response => {
         this.touchData = response.data // 获取触点码
       })

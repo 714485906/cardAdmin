@@ -1,38 +1,38 @@
 <template>
   <el-container>
     <el-aside width="60%">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 440px; margin:20px auto" >
-        <el-form-item label="落地页名称" prop="landingName" v-if="landingNameShow">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 440px; margin:20px auto">
+        <el-form-item v-if="landingNameShow" label="落地页名称" prop="landingName">
           <el-input v-model="temp.landingName" disabled />
         </el-form-item>
         <el-form-item label="渠道账号" prop="accountId">
-          <el-select v-model="temp.accountId" placeholder="平台名称" clearable class="filter-item" >
-            <el-option v-for="item in queryData.accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
+          <el-select v-model="temp.accountId" placeholder="平台名称" clearable class="filter-item">
+            <el-option v-for="item in queryData.accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
           </el-select>
         </el-form-item>
         <el-form-item label="商品" prop="productId">
           <el-select v-model="temp.productId" placeholder="请选择商品" clearable class="filter-item" @change="ChangeProduct">
-            <el-option v-for="item in queryData.productIdData" :key="item.productId" :label="item.productName" :value="item.productId"  />
+            <el-option v-for="item in queryData.productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="模板类型" prop="templateType" >
+        <el-form-item label="模板类型" prop="templateType">
           <el-radio-group v-model="temp.templateType" @change="changeTemplateType">
             <el-radio :label="1" :value="1">自动选号</el-radio>
             <el-radio :label="2" :value="2">手动选号</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="商品模板"  prop="templateId">
+        <el-form-item label="商品模板" prop="templateId">
           <el-select v-model="temp.templateId" placeholder="请选择商品模板" clearable class="filter-item" @change="ChangeTemplate">
             <el-option v-for="item in queryData.templateIdData" :key="item.templateId" :label="item.templateName" :value="item.templateId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="触点码" prop="touchId" v-if="touchIdShow">
-          <el-select v-model="temp.touchId" placeholder="触点码" clearable class="filter-item" >
-            <el-option v-for="item in queryData.touchIdData" :key="item.touchId" :label="item.touchName" :value="item.touchId"  />
+        <el-form-item v-if="touchIdShow" label="触点码" prop="touchId">
+          <el-select v-model="temp.touchId" placeholder="触点码" clearable class="filter-item">
+            <el-option v-for="item in queryData.touchIdData" :key="item.touchId" :label="item.touchName" :value="item.touchId" />
           </el-select>
         </el-form-item>
-        <el-form-item v-for="(item,index) in temp.params" :label="item.paramName" :key="index" >
-          <el-input type="textarea" v-model="item.paramValue" />
+        <el-form-item v-for="(item,index) in temp.params" :key="index" :label="item.paramName">
+          <el-input v-model="item.paramValue" type="textarea" />
         </el-form-item>
         <el-form-item label="状态" prop="landingStatus">
           <el-radio-group v-model="temp.landingStatus">
@@ -46,7 +46,7 @@
       </el-button>
     </el-aside>
     <el-main>
-      <iframe :src="iframeData.link" name="iframe_a" width="375px" height="600px" frameborder="no"></iframe>
+      <iframe :src="iframeData.link" name="iframe_a" width="375px" height="600px" frameborder="no" />
     </el-main>
   </el-container>
 </template>
@@ -62,7 +62,7 @@ import { getUserList } from '@/api/admin'
 import { PostCreateLanding, PostModifyLanding } from '@/api/landing' // secondary package based on el-pagination
 
 export default {
-  name: 'landingEdit',
+  name: 'LandingEdit',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -78,33 +78,33 @@ export default {
         accountId: undefined,
         landingStatus: undefined,
         templateType: undefined,
-        params:[
+        params: [
           {
-          paramCode:"JavaScriptH",
-          paramName:'第三方代码(长)',
-          paramType:1,
-          paramValue: ' '
-        },
-          {
-            paramCode:"JavaScriptF",
-            paramName:'第三方代码(短)',
-            paramType:1,
+            paramCode: 'JavaScriptH',
+            paramName: '第三方代码(长)',
+            paramType: 1,
             paramValue: ' '
           },
           {
-            paramCode: "CompanyInfo",
+            paramCode: 'JavaScriptF',
+            paramName: '第三方代码(短)',
+            paramType: 1,
+            paramValue: ' '
+          },
+          {
+            paramCode: 'CompanyInfo',
             paramName: '公司信息',
-            paramType:1,
+            paramType: 1,
             paramValue: ' '
           }
         ]
       },
       dialogVisible: false,
       operatorData: undefined,
-      disabledType:true,
-      touchIdShow:true,
-      landingNameShow:false,
-      iframeData:{
+      disabledType: true,
+      touchIdShow: true,
+      landingNameShow: false,
+      iframeData: {
         link: undefined
       },
       rules: {
@@ -124,63 +124,60 @@ export default {
         touchIdData: undefined,
         userIdData: undefined
       },
-      queryList:{
+      queryList: {
         productId: undefined,
         operatorId: undefined
       }
     }
   },
   created() {
-
-    if(this.$route.query.res == 'create'){
+    if (this.$route.query.res == 'create') {
       this.queryDataFun()
-    }else{
-      this.temp = JSON.parse(this.$route.query.res);
+    } else {
+      this.temp = JSON.parse(this.$route.query.res)
       this.queryList.productId = this.temp.productId
       this.queryList.operatorId = this.temp.operatorId
       this.iframeData.link = this.temp.landingUrl
       this.queryDataFun()
-      this.getproductTemplateListFun();
-      this.getGetTouchesFun();
+      this.getproductTemplateListFun()
+      this.getGetTouchesFun()
       this.landingNameShow = true
-      if(this.temp.templateType == 1){ //自动选号
+      if (this.temp.templateType == 1) { // 自动选号
         this.touchIdShow = true // 自动选号需要触点码
-      }else if(this.temp.templateType == 2){ //手动选号
+      } else if (this.temp.templateType == 2) { // 手动选号
         this.touchIdShow = false // 手动选号不需要触点码
       }
     }
   },
-  methods:{
-    changeTemplateType(val){
-      this.temp.templateId = undefined;
-      this.temp.touchId = undefined;
-
+  methods: {
+    changeTemplateType(val) {
+      this.temp.templateId = undefined
+      this.temp.touchId = undefined
       this.temp.templateType = val
-      this.getproductTemplateListFun();
+      this.getproductTemplateListFun()
     },
-    ChangeProduct(val){   //通过商品id 查询当前商品对应的模板
-      this.queryData.templateIdData = undefined;
-      this.queryData.touchIdData = undefined;
-      this.temp.templateId = undefined;
-      this.temp.templateName = undefined;
-      this.temp.touchId = undefined;
+    ChangeProduct(val) { // 通过商品id 查询当前商品对应的模板
+      this.queryData.templateIdData = undefined
+      this.queryData.touchIdData = undefined
+      this.temp.templateId = undefined
+      this.temp.templateName = undefined
+      this.temp.touchId = undefined
       this.queryList.productId = val // 记录当前产品id
-      this. getproductTemplateListFun()
+      this.getproductTemplateListFun()
     },
-    ChangeTemplate(val) {  //通过商品id 查询当前商品对应的触点码
-      let obj = {};
-      obj = this.queryData.templateIdData.find((item)=>{//遍历list的数据
-        return item.templateId === val;//筛选出匹配数据
-      });
+    ChangeTemplate(val) { // 通过商品id 查询当前商品对应的触点码
+      let obj = {}
+      obj = this.queryData.templateIdData.find((item) => { // 遍历list的数据
+        return item.templateId === val// 筛选出匹配数据
+      })
       this.queryList.operatorId = obj.operatorId // 记录当前产品运营商id
       this.iframeData.link = obj.templateUrl
       console.log(obj.templateType)
-      if(obj.templateType == 1){ //自动选号
+      if (obj.templateType == 1) { // 自动选号
         this.touchIdShow = true // 自动选号需要触点码
-      }else if (obj.templateType == 2){ //手动选号
+      } else if (obj.templateType == 2) { // 手动选号
         this.touchIdShow = false // 手动选号不需要触点码
       }
-
 
       this.getGetTouchesFun()
     },
@@ -188,7 +185,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           console.log(this.temp)
-          if(this.$route.query.res == 'create'){ //添加
+          if (this.$route.query.res == 'create') { // 添加
             PostCreateLanding(this.temp).then(() => {
               // this.list.unshift(this.temp)
               this.$notify({
@@ -197,10 +194,9 @@ export default {
                 type: 'success',
                 duration: 2000
               })
-             this.$router.push({name:'landinglist'})
+              this.$router.push({ name: 'landinglist' })
             })
-
-          }else{ //编辑修改
+          } else { // 编辑修改
             PostModifyLanding(this.temp).then(() => {
               this.$notify({
                 title: '成功',
@@ -208,29 +204,28 @@ export default {
                 type: 'success',
                 uration: 2000
               })
-           })
-            this.$router.push({name:'landinglist'})
+            })
+            this.$router.push({ name: 'landinglist' })
           }
         }
       })
-
     },
     getproductTemplateListFun() {
       getproductTemplateList({
         pageNo: 1,
         pageSize: 10000,
-        templateType:this.temp.templateType,
+        templateType: this.temp.templateType,
         productId: this.queryList.productId
       }).then(response => {
         this.queryData.templateIdData = response.data // 模板
       })
     },
 
-    getGetTouchesFun(){
+    getGetTouchesFun() {
       getGetTouches({
         pageNo: 1,
         pageSize: 10000,
-        operatorId:this.queryList.operatorId
+        operatorId: this.queryList.operatorId
       }).then(response => {
         this.queryData.touchIdData = response.data // 触点码
       })

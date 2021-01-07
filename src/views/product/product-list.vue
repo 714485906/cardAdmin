@@ -1,50 +1,50 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-<!--      <el-input v-model="listQuery.productCode" placeholder="商品编码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
-<!--      <el-input v-model="listQuery.productName" placeholder="商品名称" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
-<!--      <el-input v-model="listQuery.operatorProductId" placeholder="运营商侧商品" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
-<!--      <el-select v-model="listQuery.operatorId" placeholder="运营商" clearable class="filter-item" style="width: 130px">-->
-<!--        <el-option v-for="item in operatorData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />-->
-<!--      </el-select>-->
-<!--      <el-select v-model="listQuery.productStatus" placeholder="商品状态" clearable class="filter-item" style="width: 130px">-->
-<!--        <el-option v-for="item in productStatusData" :key="item.key" :label="item.name" :value="item.key" />-->
-<!--      </el-select>-->
-<!--      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">-->
-<!--        搜索-->
-<!--      </el-button>-->
+      <!--      <el-input v-model="listQuery.productCode" placeholder="商品编码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
+      <!--      <el-input v-model="listQuery.productName" placeholder="商品名称" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
+      <!--      <el-input v-model="listQuery.operatorProductId" placeholder="运营商侧商品" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />-->
+      <!--      <el-select v-model="listQuery.operatorId" placeholder="运营商" clearable class="filter-item" style="width: 130px">-->
+      <!--        <el-option v-for="item in operatorData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />-->
+      <!--      </el-select>-->
+      <!--      <el-select v-model="listQuery.productStatus" placeholder="商品状态" clearable class="filter-item" style="width: 130px">-->
+      <!--        <el-option v-for="item in productStatusData" :key="item.key" :label="item.name" :value="item.key" />-->
+      <!--      </el-select>-->
+      <!--      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">-->
+      <!--        搜索-->
+      <!--      </el-button>-->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+      <!--        导出-->
+      <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
-  <div style="width: 100%;height: 100%;">
-    <el-row>
-      <el-col :span="4" v-for="(item) in list" :key="item.id" :offset="1">
-        <router-link :to="{path:'/mallsDetail',query:{res:JSON.stringify(item)}}">
-          <el-card :body-style="{ padding: '0px' }" shadow="hover">
-            <img :src="item.imgUrl" class="image">
-            <div style="padding: 12px;">
-              <h4>{{item.productName}}</h4>
-              <span style="font-size:12px;color:#aaa">{{item.comment2}}</span>
-              <div><span>佣金：</span><span style="color:red">￥{{item.commission /1000}}</span></div>
-              <div class="bottom clearfix">
-                <el-button type="text" class="button">
-                  <span style="color: #000;font-size: 14px">运营商:</span>{{item.operatorName}}
-                </el-button>
-                <br>
-                <el-tag type="warning" v-if="item.productStatus == 0">不可用</el-tag>
-                <el-tag type="success" v-if="item.productStatus == 1">正常</el-tag>
+    <div style="margin-bottom: 15px" />
+    <div style="width: 100%;height: 100%;">
+      <el-row>
+        <el-col v-for="(item) in list" :key="item.id" :span="4" :offset="1">
+          <router-link :to="{path:'/mallsDetail',query:{res:JSON.stringify(item)}}">
+            <el-card :body-style="{ padding: '0px' }" shadow="hover">
+              <img :src="item.imgUrl" class="image">
+              <div style="padding: 12px;">
+                <h4>{{ item.productName }}</h4>
+                <span style="font-size:12px;color:#aaa">{{ item.comment2 }}</span>
+                <div><span>佣金：</span><span style="color:red">￥{{ item.commission /100 }}</span></div>
+                <div class="bottom clearfix">
+                  <el-button type="text" class="button">
+                    <span style="color: #000;font-size: 14px">运营商:</span>{{ item.operatorName }}
+                  </el-button>
+                  <br>
+                  <el-tag v-if="item.productStatus == 0" type="warning">不可用</el-tag>
+                  <el-tag v-if="item.productStatus == 1" type="success">正常</el-tag>
+                </div>
               </div>
-            </div>
-          </el-card>
-        </router-link>
-      </el-col>
-    </el-row>
-  </div>
+            </el-card>
+          </router-link>
+        </el-col>
+      </el-row>
+    </div>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="130px" style="width: 400px; margin-left:50px;">
@@ -52,8 +52,8 @@
           <el-input v-model="temp.productName" />
         </el-form-item>
         <el-form-item label="运营商" prop="operatorId">
-          <el-select v-model="temp.operatorId" placeholder="运营商名称" clearable class="filter-item" >
-            <el-option v-for="item in operatorData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId"  />
+          <el-select v-model="temp.operatorId" placeholder="运营商名称" clearable class="filter-item">
+            <el-option v-for="item in operatorData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />
           </el-select>
         </el-form-item>
         <el-form-item label="运营商侧商品Id" prop="operatorProductId">
@@ -64,11 +64,11 @@
         </el-form-item>
         <el-form-item label="商品简介" prop="productSummary">
           <el-input
+            v-model="temp.productSummary"
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="temp.productSummary">
-          </el-input>
+          />
         </el-form-item>
         <el-form-item label="商品佣金(元)" prop="commission">
           <el-input v-model="temp.commission" placeholder="请输入商品佣金" />
@@ -79,71 +79,72 @@
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :on-success="successImg">
-            <i class="el-icon-plus"></i>
+            :on-success="successImg"
+          >
+            <i class="el-icon-plus" />
           </el-upload>
-          <el-input v-model="temp.imgUrl" v-show="false"/>
+          <el-input v-show="false" v-model="temp.imgUrl" />
           <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="temp.imgUrl" v-model="temp.imgUrl" alt="">
+            <img v-model="temp.imgUrl" width="100%" :src="temp.imgUrl" alt="">
           </el-dialog>
         </el-form-item>
         <el-form-item label="归属地" prop="ownPlace">
           <el-input
+            v-model="temp.ownPlace"
             type="text"
             :rows="2"
             placeholder="请输入内容"
-            v-model="temp.ownPlace">
-          </el-input>
+          />
         </el-form-item>
         <el-form-item label="配送方式" prop="deliveryMode">
           <el-input
+            v-model="temp.deliveryMode"
             type="text"
             :rows="2"
             placeholder="请输入内容"
-            v-model="temp.deliveryMode">
-          </el-input>
+          />
         </el-form-item>
         <el-form-item label="不发货地址" prop="shieldArea">
           <el-input
+            v-model="temp.shieldArea"
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="temp.shieldArea">
-          </el-input>
+          />
         </el-form-item>
         <el-form-item label="可发货年龄" prop="allowableAge">
           <el-input
+            v-model="temp.allowableAge"
             type="text"
             :rows="2"
             placeholder="请输入内容"
-            v-model="temp.allowableAge">
-          </el-input>
+          />
         </el-form-item>
         <el-form-item label="结算周期" prop="settlementCycle">
           <el-input
+            v-model="temp.settlementCycle"
             type="text"
             :rows="2"
             placeholder="请输入内容"
-            v-model="temp.settlementCycle">
-          </el-input>
+          />
         </el-form-item>
         <el-form-item label="结算要求" prop="settlementRules">
           <el-input
+            v-model="temp.settlementRules"
             type="text"
             :rows="2"
             placeholder="请输入内容"
-            v-model="temp.settlementRules">
-          </el-input>
+          />
         </el-form-item>
         <el-form-item label="优势" prop="advantage">
           <el-input
+            v-model="temp.advantage"
             type="text"
             :rows="2"
             placeholder="请输入内容"
-            v-model="temp.advantage">
-          </el-input>
+          />
         </el-form-item>
-        <el-form-item label="商品状态" prop="productStatus" v-if="false">
+        <el-form-item v-if="false" label="商品状态" prop="productStatus">
           <el-radio-group v-model="temp.productStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>
@@ -225,13 +226,13 @@ export default {
         productSummary: undefined,
         imgUrl: undefined,
         commission: undefined,
-        ownPlace:undefined,
-        deliveryMode:undefined,
-        shieldArea:undefined,
-        allowableAge:undefined,
-        settlementCycle:undefined,
-        settlementRules:undefined,
-        advantage:undefined
+        ownPlace: undefined,
+        deliveryMode: undefined,
+        shieldArea: undefined,
+        allowableAge: undefined,
+        settlementCycle: undefined,
+        settlementRules: undefined,
+        advantage: undefined
 
       },
       dialogFormVisible: false,
@@ -260,7 +261,6 @@ export default {
   created() {
     this.getList()
     this.getOperatorListFun()
-
   },
   methods: {
     getList() {
@@ -320,8 +320,8 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          //console.log(this.temp)
-          this.temp.commission =  this.temp.commission *100
+          // console.log(this.temp)
+          this.temp.commission = this.temp.commission * 100
           PostCreateProduct(this.temp).then(() => {
             // this.list.unshift(this.temp)
             this.getList()
@@ -337,14 +337,14 @@ export default {
       })
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList); //文件列表移除文件时的钩子
+      console.log(file, fileList) // 文件列表移除文件时的钩子
     },
-    handlePictureCardPreview(file) {  //点击文件列表中已上传的文件时的钩子
-      this.temp.imgUrl = file.url;
-      this.dialogVisible = true;
+    handlePictureCardPreview(file) { // 点击文件列表中已上传的文件时的钩子
+      this.temp.imgUrl = file.url
+      this.dialogVisible = true
     },
-    successImg(response){
-      this.temp.imgUrl = response.data;  //文件上传成功时的钩子
+    successImg(response) {
+      this.temp.imgUrl = response.data // 文件上传成功时的钩子
     },
     getOperatorListFun() { // 获取运营商列表
       getOperatorList({
@@ -360,6 +360,7 @@ export default {
 <style scoped>
 .image {
   width: 100%;
+  height: 145px;
   display: block;
 }
 .el-col{

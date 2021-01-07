@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 
-
 export function getcostList(params) {
   return request({
     url: 'statistics/costList', // 投放成本列表
@@ -11,7 +10,7 @@ export function getcostList(params) {
 
 export function getCostCount(params) {
   return request({
-    url: 'statistics/getCostCount', //成本统计
+    url: 'statistics/getCostCount', // 成本统计
     method: 'get',
     params
   })
@@ -19,12 +18,11 @@ export function getCostCount(params) {
 
 export function getOrderCount(params) {
   return request({
-    url: 'statistics/getOrderCount', //单量统计
+    url: 'statistics/getOrderCount', // 单量统计
     method: 'get',
     params
   })
 }
-
 
 export function PostSubmitCost(data) {
   return request({
@@ -33,7 +31,6 @@ export function PostSubmitCost(data) {
     data
   })
 }
-
 
 export function getRollbackCost(params) {
   return request({

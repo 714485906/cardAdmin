@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="4"  class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="example" class-name="card-panel-icon" />
@@ -14,7 +14,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col">
-      <div class="card-panel" >
+      <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="feidan" class-name="card-panel-icon" />
         </div>
@@ -53,9 +53,9 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col">
-      <div class="card-panel" >
+      <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="liantong"  class-name="card-panel-icon" />
+          <svg-icon icon-class="liantong" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
@@ -75,7 +75,7 @@ export default {
   components: {
     CountTo
   },
-  props:['OrderCountData'],
+  props: ['OrderCountData'],
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)

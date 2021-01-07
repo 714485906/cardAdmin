@@ -1,37 +1,37 @@
 <template>
   <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="6"  class="card-panel-col" v-for="(item,index) in accountOrderCounts" :key="index">
+    <el-col v-for="(item,index) in accountOrderCounts" :key="index" :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" style="height: 200px">
-        <p style="font-size: 16px;padding: 5px 10px;font-weight: 700;text-align: center">{{item.accountName}}</p>
+        <p style="font-size: 16px;padding: 5px 10px;font-weight: 700;text-align: center">{{ item.accountName }}</p>
         <el-row type="flex" class="row-bg" justify="space-around">
           <el-col :span="6">
-            <div class="grid-content bg-purple"  align="center">
+            <div class="grid-content bg-purple" align="center">
               <svg-icon icon-class="yidong" style="display:block;font-size:30px;margin-bottom: 10px" />
               <count-to :start-val="0" :end-val="item.accountYdCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
             </div>
           </el-col>
           <el-col :span="6">
-            <div class="grid-content bg-purple"  align="center">
+            <div class="grid-content bg-purple" align="center">
               <svg-icon icon-class="liantong" style="display:block;font-size:30px;margin-bottom: 10px" />
               <count-to :start-val="0" :end-val="item.accountLtCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
             </div>
           </el-col>
           <el-col :span="6">
-            <div class="grid-content bg-purple"  align="center">
+            <div class="grid-content bg-purple" align="center">
               <svg-icon icon-class="dianxin" style="display:block;font-size:30px;margin-bottom: 10px" />
               <count-to :start-val="0" :end-val="item.accountDxCount" :duration="3600" class="card-panel-num" style="font-size: 16px;font-weight: 700" />
             </div>
           </el-col>
         </el-row>
-        <el-row  style="margin-top: 10px">
+        <el-row style="margin-top: 10px">
           <el-col :span="8">
             <div class="grid-content bg-purple-light" align="center" style="font-size: 16px">
-              <p>成功订单: <span style="color: red">{{item.accountSuccessCount}}</span> </p>
+              <p>成功订单: <span style="color: red">{{ item.accountSuccessCount }}</span> </p>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content bg-purple-light" align="center" style="font-size: 16px">
-              <p>废单量: <span style="color: red">{{item.accountFailCount}}</span> </p>
+              <p>废单量: <span style="color: red">{{ item.accountFailCount }}</span> </p>
             </div>
           </el-col>
           <el-col :span="8">
@@ -52,7 +52,7 @@ export default {
   components: {
     CountTo
   },
-  props:['accountOrderCounts'],
+  props: ['accountOrderCounts'],
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)

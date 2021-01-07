@@ -157,7 +157,7 @@ export const constantRoutes = [
         path: '/productlist',
         name: 'productlist',
         component: () => import('@/views/product/product-list'),
-        meta: { title: '商品列表', icon: 'el-icon-attract' },
+        meta: { title: '商品列表', icon: 'el-icon-attract' }
       },
       {
         path: '/productTemp',
@@ -228,7 +228,7 @@ export const constantRoutes = [
         component: () => import('@/views/package/package-list-Selection'),
         meta: { title: '打包详情', icon: 'el-icon-coin' },
         hidden: true
-      },
+      }
     ]
   },
   {
@@ -279,9 +279,8 @@ export const constantRoutes = [
     hidden: true
   },
   // 404 page must be placed at the end !!!
- { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true }
 ]
-
 
 /**
  * asyncRoutes
@@ -290,7 +289,6 @@ export const constantRoutes = [
 export const asyncRoutes = [
 
 ]
-
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

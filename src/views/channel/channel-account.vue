@@ -4,11 +4,11 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+      <!--        导出-->
+      <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -18,12 +18,12 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="accountId" prop="id" sortable="custom" align="center" width="120">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.accountId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="accountId" prop="id" sortable="custom" align="center" width="120">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.accountId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="渠道账号" min-width="190px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>
@@ -54,11 +54,15 @@
           <span class="link-type">{{ row.rechargePoints }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="账号名称" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.username }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="账号类型" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="success" v-if="row.accountType == 1">自运营</el-tag>
-          <el-tag type="info" v-else-if="row.accountType == 2">代运营</el-tag>
+          <el-tag v-if="row.accountType == 1" type="success">自运营</el-tag>
+          <el-tag v-else-if="row.accountType == 2" type="info">代运营</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" min-width="160px" align="center">
@@ -68,8 +72,8 @@
       </el-table-column>
       <el-table-column label="账号类型" fixed="right" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="warning" v-if="row.accountStatus == 0">不可用</el-tag>
-          <el-tag type="success" v-if="row.accountStatus == 1">正常</el-tag>
+          <el-tag v-if="row.accountStatus == 0" type="warning">不可用</el-tag>
+          <el-tag v-if="row.accountStatus == 1" type="success">正常</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="170px" class-name="small-padding fixed-width">
@@ -80,30 +84,32 @@
           <el-button type="primary" size="mini"@click="rechargeAccount(row)">
             充值信息
           </el-button>
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
-<!--          </el-button>-->
+          <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
+          <!--            删除-->
+          <!--          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]"
-               :visible.sync="dialogFormVisible"
-               v-loading="Loading"
-               element-loading-text="拼命加载中"
-               element-loading-spinner="el-icon-loading">
+    <el-dialog
+      v-loading="Loading"
+      :title="textMap[dialogStatus]"
+      :visible.sync="dialogFormVisible"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+    >
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="媒体ID" prop="remark">
           <el-input v-model="temp.remark" placeholder="请输入第三方媒体ID" />
         </el-form-item>
         <el-form-item label="充值系数" prop="rechargeRate" placeholder="请输入小数">
-          <el-input v-model="temp.rechargeRate"/>
+          <el-input v-model="temp.rechargeRate" />
         </el-form-item>
         <el-form-item label="营销员名称" prop="userId">
-          <el-select v-model="temp.userId" placeholder="营销员名称" clearable class="filter-item" >
-            <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId"  />
+          <el-select v-model="temp.userId" placeholder="营销员名称" clearable class="filter-item">
+            <el-option v-for="item in getUserListData" :key="item.userId" :label="item.username" :value="item.userId" />
           </el-select>
         </el-form-item>
         <el-form-item label="账号类型" prop="accountType">
@@ -112,7 +118,7 @@
             <el-radio :label="2" :value="2">代运营</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="账号状态" prop="accountStatus" v-if="StatusShow">
+        <el-form-item v-if="StatusShow" label="账号状态" prop="accountStatus">
           <el-radio-group v-model="temp.accountStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>
@@ -171,7 +177,7 @@ export default {
       total: 0,
       listLoading: true,
       Loading: false,
-      StatusShow:true,
+      StatusShow: true,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -200,7 +206,7 @@ export default {
       pvData: [],
       rules: {
         rechargeRate: [{ required: true, message: '请选择输出充值系数，小数', trigger: 'blur' },
-          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }],
+          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式', trigger: 'blur' }],
         accountStatus: [{ required: true, message: '请选择状态', trigger: 'change' }],
         userId: [{ required: true, message: '请选择用户', trigger: 'change' }],
         accountType: [{ required: true, message: '请选择账号类型', trigger: 'change' }]
@@ -251,9 +257,9 @@ export default {
       })
     },
     createData() {
-      this.Loading = true;
+      this.Loading = true
       this.$refs['dataForm'].validate((valid) => {
-        this.temp.rechargeRate = this.temp.rechargeRate*100  // 由于后台要求  系数要转百分之 如 1.3 转成 130
+        this.temp.rechargeRate = this.temp.rechargeRate * 100 // 由于后台要求  系数要转百分之 如 1.3 转成 130
         console.log(this.temp)
         if (valid) {
           PostCreateAccount(this.temp).then(() => {
@@ -271,12 +277,12 @@ export default {
       })
     },
     handleUpdate(row) {
-     // row.rechargeRate = row.rechargeRate /100
-      //this.temp = Object.assign({}, row) // copy obj
+      // row.rechargeRate = row.rechargeRate /100
+      // this.temp = Object.assign({}, row) // copy obj
       this.temp = {
         userId: row.userId,
         accountId: row.accountId,
-        rechargeRate: row.rechargeRate / 100,   // 由于显示需求  要把百分之转成小数 如:130 转成 1.3
+        rechargeRate: row.rechargeRate / 100, // 由于显示需求  要把百分之转成小数 如:130 转成 1.3
         accountType: row.accountType,
         accountStatus: row.accountStatus,
         remark: row.remark
@@ -289,10 +295,10 @@ export default {
       })
     },
     updateData() {
-      this.Loading = true;
+      this.Loading = true
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.rechargeRate = this.temp.rechargeRate *100  // 由于后台要求  系数要转百分之 如 1.3 转成 130
+          this.temp.rechargeRate = this.temp.rechargeRate * 100 // 由于后台要求  系数要转百分之 如 1.3 转成 130
           console.log(this.temp)
           PostModifyAccount(this.temp).then(() => {
             this.Loading = false
@@ -311,7 +317,7 @@ export default {
       })
     },
     rechargeAccount(row) {
-      this.$router.push({name:'recharge',query: {res:row.accountId}})
+      this.$router.push({ name: 'recharge', query: { res: row.accountId }})
     },
     getUserListFun() { // 获取用户列表
       getUserList({
@@ -320,7 +326,7 @@ export default {
       }).then(response => {
         this.getUserListData = response.data
       })
-    },
+    }
   }
 }
 </script>

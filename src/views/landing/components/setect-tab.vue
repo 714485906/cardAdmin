@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-cascader :options="options" clearable></el-cascader>
+      <el-cascader :options="options" clearable />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+      <!--        导出-->
+      <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -23,12 +23,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="operatorId" prop="id" sortable="custom" align="center" width="120">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.operatorId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="operatorId" prop="id" sortable="custom" align="center" width="120">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.operatorId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="运营商名称" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorName }}</span>
@@ -36,9 +36,9 @@
       </el-table-column>
       <el-table-column label="运营商类型" min-width="120px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type" v-if="row.operatorType == 1">移动</span>
-          <span class="link-type" v-if="row.operatorType == 2">联通</span>
-          <span class="link-type" v-if="row.operatorType == 3">电信</span>
+          <span v-if="row.operatorType == 1" class="link-type">移动</span>
+          <span v-if="row.operatorType == 2" class="link-type">联通</span>
+          <span v-if="row.operatorType == 3" class="link-type">电信</span>
         </template>
       </el-table-column>
       <el-table-column label="运营商编码" min-width="120px" align="center">
@@ -54,8 +54,8 @@
 
       <el-table-column label="账号状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="warning" v-if="row.operatorStatus == 0">不可用</el-tag>
-          <el-tag type="success" v-if="row.operatorStatus == 1">正常</el-tag>
+          <el-tag v-if="row.operatorStatus == 0" type="warning">不可用</el-tag>
+          <el-tag v-if="row.operatorStatus == 1" type="success">正常</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
@@ -63,14 +63,14 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button type="primary" size="mini" >
+          <el-button type="primary" size="mini">
             <router-link :to="'/getTouches/'+row.operatorId">
               查看账号
             </router-link>
           </el-button>
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
-<!--          </el-button>-->
+          <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
+          <!--            删除-->
+          <!--          </el-button>-->
         </template>
       </el-table-column>
     </el-table>

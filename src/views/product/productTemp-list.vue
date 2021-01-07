@@ -19,7 +19,7 @@
       </el-button>
 
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -29,15 +29,20 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="模板id" prop="id" sortable="custom" align="center" width="120">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.templateId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="模板id" prop="id" sortable="custom" align="center" width="120">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.templateId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="模板名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.templateName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="运营商接口名称" min-width="120px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.operatorName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="模板链接" width="150px" align="center" show-overflow-tooltip>
@@ -48,7 +53,7 @@
       <el-table-column label="模板类型" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag v-if="row.templateType == 1">自动选号</el-tag>
-          <el-tag type="info" v-if="row.templateType == 2">手动选号</el-tag>
+          <el-tag v-if="row.templateType == 2" type="info">手动选号</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="260px" align="center">
@@ -58,8 +63,8 @@
       </el-table-column>
       <el-table-column label="模板状态" class-name="status-col" fixed="right" width="120px" align="center">
         <template slot-scope="{row}">
-          <el-tag type="warning" v-if="row.templateStatus == 0">不可用</el-tag>
-          <el-tag type="success" v-if="row.templateStatus == 1">正常</el-tag>
+          <el-tag v-if="row.templateStatus == 0" type="warning">不可用</el-tag>
+          <el-tag v-if="row.templateStatus == 1" type="success">正常</el-tag>
         </template>
       </el-table-column>
 
@@ -68,9 +73,9 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-<!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
-<!--            删除-->
-<!--          </el-button>-->
+          <!--          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">-->
+          <!--            删除-->
+          <!--          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -82,8 +87,8 @@
           <el-input v-model="temp.templateName" />
         </el-form-item>
         <el-form-item label="商品" prop="productId">
-          <el-select v-model="temp.productId" placeholder="请选择商品" clearable class="filter-item" >
-            <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId"  />
+          <el-select v-model="temp.productId" placeholder="请选择商品" clearable class="filter-item">
+            <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
           </el-select>
         </el-form-item>
         <el-form-item label="模板链接" prop="templateUrl">
@@ -95,7 +100,7 @@
             <el-radio :label="2" :value="2">手动选号</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="模板状态" prop="templateStatus" v-if="StatusShow">
+        <el-form-item v-if="StatusShow" label="模板状态" prop="templateStatus">
           <el-radio-group v-model="temp.templateStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>
@@ -144,7 +149,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      StatusShow:false,
+      StatusShow: false,
       listQuery: {
         pageNo: 1,
         pageSize: 10,

@@ -48,7 +48,7 @@ const mutations = {
 
 const actions = {
   generateRoutes({ commit }, roles) {
-    console.info("6.通过 角色 和 所有路由 匹配出对应角色拥有的路由权限 返回路由组");
+    console.info('6.通过 角色 和 所有路由 匹配出对应角色拥有的路由权限 返回路由组')
     return new Promise(resolve => {
       let accessedRoutes
       if (roles.includes('admin')) {

@@ -15,7 +15,7 @@
       <!--        导出-->
       <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -26,12 +26,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="groupId" prop="id" sortable="custom" align="center" width="100">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.groupId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="groupId" prop="id" sortable="custom" align="center" width="100">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.groupId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="营销员" min-width="220px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.groupName }}</span>
@@ -51,15 +51,15 @@
       </el-table-column>
       <el-table-column label="用户组类型" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="danger" v-if="row.groupType == 0">未知</el-tag>
-          <el-tag type="info" v-if="row.groupType == 1">个人级</el-tag>
-          <el-tag type="warning" v-if="row.groupType == 2">公司级</el-tag>
+          <el-tag v-if="row.groupType == 0" type="danger">未知</el-tag>
+          <el-tag v-if="row.groupType == 1" type="info">个人级</el-tag>
+          <el-tag v-if="row.groupType == 2" type="warning">公司级</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="success" v-if="row.groupStatus == 1">正常</el-tag>
-          <el-tag type="danger" v-if="row.groupStatus == 0">禁用</el-tag>
+          <el-tag v-if="row.groupStatus == 1" type="success">正常</el-tag>
+          <el-tag v-if="row.groupStatus == 0" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
@@ -83,23 +83,23 @@
         </el-form-item>
         <el-form-item label="营销组类型" prop="groupType">
           <el-radio-group v-model="temp.groupType">
-            <el-radio :label="1"  @change="tempShow=false">个人级</el-radio>
+            <el-radio :label="1" @change="tempShow=false">个人级</el-radio>
             <el-radio :label="2" @change="tempShow=true">公司级</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="公司名称" prop="companyName" v-if="tempShow">
+        <el-form-item v-if="tempShow" label="公司名称" prop="companyName">
           <el-input v-model="temp.companyName" />
         </el-form-item>
-        <el-form-item label="联系人" prop="contactName" v-if="tempShow">
+        <el-form-item v-if="tempShow" label="联系人" prop="contactName">
           <el-input v-model="temp.contactName" />
         </el-form-item>
-        <el-form-item label="联系电话" prop="contactPhone" v-if="tempShow">
+        <el-form-item v-if="tempShow" label="联系电话" prop="contactPhone">
           <el-input v-model="temp.contactPhone" />
         </el-form-item>
-        <el-form-item label="公司地址" prop="companyAddress" v-if="tempShow">
+        <el-form-item v-if="tempShow" label="公司地址" prop="companyAddress">
           <el-input v-model="temp.companyAddress" />
         </el-form-item>
-        <el-form-item label="权限状态" prop="groupStatus" v-if="StatusShow">
+        <el-form-item v-if="StatusShow" label="权限状态" prop="groupStatus">
           <el-radio-group v-model="temp.groupStatus">
             <el-radio :label="1">正常</el-radio>
             <el-radio :label="0">禁用</el-radio>
@@ -280,7 +280,7 @@ export default {
       this.dialogStatus = 'create'
       this.tempShow = false // 隐藏公司信息
       this.dialogFormVisible = true
-      this.StatusShow= false
+      this.StatusShow = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -303,15 +303,15 @@ export default {
       })
     },
     handleUpdate(row) {
-      if(row.groupType == 2){
-          this.tempShow = true
-      }else{
+      if (row.groupType == 2) {
+        this.tempShow = true
+      } else {
         this.tempShow = false
       }
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
-      this.StatusShow= true
+      this.StatusShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

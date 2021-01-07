@@ -55,13 +55,13 @@ const actions = {
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
-        //const { name, avatar } = data
+        // const { name, avatar } = data
         const roles = [`userType:${data.userType}`]
         const name = data.username
-        commit('SET_ROLES',roles)
+        commit('SET_ROLES', roles)
         commit('SET_NAME', name)
-        console.log('name:'+name+' roles:'+roles)
-      //  commit('SET_AVATAR', avatar)
+        console.log('name:' + name + ' roles:' + roles)
+        //  commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {
         reject(error)

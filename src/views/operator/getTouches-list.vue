@@ -4,11 +4,11 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+      <!--        导出-->
+      <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -19,12 +19,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="touchId" prop="id" sortable="custom" align="center" width="120">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.touchId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="touchId" prop="id" sortable="custom" align="center" width="120">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.touchId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="触点名称" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.touchName }}</span>
@@ -44,8 +44,8 @@
 
       <el-table-column label="账号状态" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
-          <el-tag type="warning" v-if="row.touchStatus == 0">不可用</el-tag>
-          <el-tag type="success" v-if="row.touchStatus == 1">正常</el-tag>
+          <el-tag v-if="row.touchStatus == 0" type="warning">不可用</el-tag>
+          <el-tag v-if="row.touchStatus == 1" type="success">正常</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="130px" class-name="small-padding fixed-width">
@@ -67,7 +67,7 @@
         <el-form-item label="触点码" prop="touchCode">
           <el-input v-model="temp.touchCode" />
         </el-form-item>
-        <el-form-item label="账号状态" prop="touchStatus" v-if="StatusShow">
+        <el-form-item v-if="StatusShow" label="账号状态" prop="touchStatus">
           <el-radio-group v-model="temp.touchStatus">
             <el-radio :label="0" :value="0">禁用</el-radio>
             <el-radio :label="1" :value="1">正常</el-radio>
@@ -117,7 +117,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      StatusShow:false,
+      StatusShow: false,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -187,7 +187,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.StatusShow = false;
+      this.StatusShow = false
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

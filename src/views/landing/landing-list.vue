@@ -26,11 +26,11 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
-<!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-<!--        导出-->
-<!--      </el-button>-->
+      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
+      <!--        导出-->
+      <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -41,12 +41,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="landingId" prop="id" sortable="custom" align="center" width="120">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.landingId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="landingId" prop="id" sortable="custom" align="center" width="120">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.landingId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="落地页名称" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.landingName }}</span>
@@ -54,7 +54,7 @@
       </el-table-column>
       <el-table-column label="模板名称" min-width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-           <span class="link-type">{{ row.templateName }}</span>
+          <span class="link-type">{{ row.templateName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="商品名称" min-width="180px" align="center" show-overflow-tooltip>
@@ -89,7 +89,7 @@
       </el-table-column>
       <el-table-column label="落地页链接" min-width="180px" align="center">
         <template slot-scope="{row}">
-<!--          <span class="link-type">{{ row.landingUrl }}</span>-->
+          <!--          <span class="link-type">{{ row.landingUrl }}</span>-->
           <el-button type="success" size="small" @click="checkLinkBtn(row)">查看链接</el-button>
         </template>
       </el-table-column>
@@ -100,19 +100,19 @@
       </el-table-column>
       <el-table-column label="落地页状态" fixed="right" class-name="status-col" width="180" align="center">
         <template slot-scope="{row}">
-          <el-tag type="success" v-if="row.templateType == 1" style='margin-right: 10px'>自动选号</el-tag>
-          <el-tag v-if="row.templateType == 2" style='margin-right: 10px'>手动选号</el-tag>
+          <el-tag v-if="row.templateType == 1" type="success" style="margin-right: 10px">自动选号</el-tag>
+          <el-tag v-if="row.templateType == 2" style="margin-right: 10px">手动选号</el-tag>
 
-          <el-tag type="success" v-if="row.landingStatus == 1">正常</el-tag>
-          <el-tag type="danger" v-if="row.landingStatus == 0">不可用</el-tag>
+          <el-tag v-if="row.landingStatus == 1" type="success">正常</el-tag>
+          <el-tag v-if="row.landingStatus == 0" type="danger">不可用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作"  fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="180px" class-name="small-padding fixed-width">
         <template slot-scope="{row, $index}">
           <el-button type="primary" size="mini" @click="editInfo(row)">
             编辑
           </el-button>
-          <el-button  size="mini" type="warning" @click="iframeBtn(row)">
+          <el-button size="mini" type="warning" @click="iframeBtn(row)">
             查看效果
           </el-button>
         </template>
@@ -122,18 +122,18 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;" >
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
         <el-form-item label="落地页名称" prop="landingName">
           <el-input v-model="temp.landingName" />
         </el-form-item>
         <el-form-item label="渠道账号" prop="accountId">
-          <el-select v-model="temp.accountId" placeholder="平台名称" clearable class="filter-item" >
-            <el-option v-for="item in queryData.accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
+          <el-select v-model="temp.accountId" placeholder="平台名称" clearable class="filter-item">
+            <el-option v-for="item in queryData.accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
           </el-select>
         </el-form-item>
         <el-form-item label="产品名称" prop="productId">
-          <el-select v-model="temp.productId" placeholder="产品名称" clearable class="filter-item" >
-            <el-option v-for="item in queryData.productIdData" :key="item.productId" :label="item.productName" :value="item.productId"  />
+          <el-select v-model="temp.productId" placeholder="产品名称" clearable class="filter-item">
+            <el-option v-for="item in queryData.productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -161,13 +161,13 @@
       <div style="padding:10px 80px">
         <img :src="checkLinkData.qrcode" alt="">
       </div>
-      <el-input v-model="checkLinkData.link" style="width:400px" type="text" id="copyLink"></el-input>
+      <el-input id="copyLink" v-model="checkLinkData.link" style="width:400px" type="text" />
       <el-button type="primary" size="medium" @click="copyLink(checkLinkData.link)">复制</el-button>
     </el-dialog>
 
     <!--查看效果-->
     <el-dialog title="查看效果" :visible.sync="iframeDialog" width="600px" :close-on-click-modal="false">
-      <iframe :src="iframeData.link" name="iframe_a" width="375" height="600" frameborder="no"></iframe>
+      <iframe :src="iframeData.link" name="iframe_a" width="375" height="600" frameborder="no" />
     </el-dialog>
 
   </div>
@@ -185,7 +185,7 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'landingList',
+  name: 'LandingList',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -199,13 +199,13 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      checkLinkDialog:false,
-      checkLinkData:{
+      checkLinkDialog: false,
+      checkLinkData: {
         qrcode: undefined,
         link: undefined
       },
-      iframeDialog:false,
-      iframeData:{
+      iframeDialog: false,
+      iframeData: {
         link: undefined
       },
       listQuery: {
@@ -324,7 +324,7 @@ export default {
       // this.$nextTick(() => {
       //   this.$refs['dataForm'].clearValidate()
       // })
-      this.$router.push({name:'landingEdit',query: {res:'create'}})
+      this.$router.push({ name: 'landingEdit', query: { res: 'create' }})
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -353,7 +353,7 @@ export default {
       })
     },
     editInfo(row) {
-      this.$router.push({name:'landingEdit',query: {res:JSON.stringify(row)}})
+      this.$router.push({ name: 'landingEdit', query: { res: JSON.stringify(row) }})
     },
     // updateData() {
     //   this.$refs['dataForm'].validate((valid) => {
@@ -388,10 +388,10 @@ export default {
       this.iframeData.link = row.landingUrl
     },
     copyLink(shareLink) {
-      let input = document.getElementById("copyLink");
-      input.value = shareLink;
-      input.select();
-      document.execCommand("Copy");
+      const input = document.getElementById('copyLink')
+      input.value = shareLink
+      input.select()
+      document.execCommand('Copy')
       this.$notify({
         title: '成功',
         message: '复制成功',

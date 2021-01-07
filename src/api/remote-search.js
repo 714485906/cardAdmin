@@ -8,7 +8,7 @@ import request from '@/utils/request'
 //   })
 // }
 //
-export function transactionList(query) {  //单量统计
+export function transactionList(query) { // 单量统计
   return request({
     url: 'statistics/getOrderCount',
     method: 'get',

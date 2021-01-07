@@ -14,7 +14,7 @@
       <!--        导出-->
       <!--      </el-button>-->
     </div>
-    <div style="margin-bottom: 15px"></div>
+    <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -25,15 +25,21 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
-<!--      <el-table-column label="rechargeId" prop="id" sortable="custom" align="center" width="100">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.rechargeId }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="备注" width="220px" align="center">
+      <el-table-column type="index" width="70" label="序号" align="center" />
+      <!--      <el-table-column label="rechargeId" prop="id" sortable="custom" align="center" width="100">-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span>{{ row.rechargeId }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
+      <el-table-column label="账号名称" width="220px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.remark }}</span>
+          <span class="link-type">{{ row.accountName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="账号类型" width="220px" align="center">
+        <template slot-scope="{row}">
+          <el-tag v-if="row.accountType == 1" type="success">自运营</el-tag>
+          <el-tag v-else-if="row.accountType == 2" type="info">代运营</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="充值金额(元)" width="220px" align="center">
@@ -46,10 +52,15 @@
           <span class="link-type">{{ row.rechargePoints }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="充值系数" width="220px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.rechargeRate /100 }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="充值类型" width="120px" align="center">
         <template slot-scope="{row}">
           <el-tag v-if="row.rechargeType == 1">直充</el-tag>
-          <el-tag type="success" v-if="row.rechargeType == 2">调剂</el-tag>
+          <el-tag v-if="row.rechargeType == 2" type="success">调剂</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="260px" align="center">
@@ -57,18 +68,23 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="备注" width="220px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.remark }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建人" width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.createUserId }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="{row,$index}">-->
-<!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
-<!--            编辑-->
-<!--          </el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">-->
+      <!--        <template slot-scope="{row,$index}">-->
+      <!--          <el-button type="primary" size="mini" @click="handleUpdate(row)">-->
+      <!--            编辑-->
+      <!--          </el-button>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />
@@ -76,19 +92,19 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="130px" style="width: 400px; margin-left:50px;">
         <el-form-item label="渠道账号" prop="accountId">
-          <el-select v-model="temp.accountId" placeholder="请选择渠道账号" clearable class="filter-item" >
-            <el-option v-for="item in AccountData" :key="item.accountId" :label="item.accountName" :value="item.accountId"  />
+          <el-select v-model="temp.accountId" placeholder="请选择渠道账号" clearable class="filter-item">
+            <el-option v-for="item in AccountData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
           </el-select>
         </el-form-item>
         <el-form-item label="充值金额" prop="rechargeFee">
-          <el-input v-model="temp.rechargeFee"  />
+          <el-input v-model="temp.rechargeFee" />
         </el-form-item>
-<!--        <el-form-item label="充值账户币" prop="rechargePoints">-->
-<!--          <el-input v-model="temp.rechargePoints" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="充值系数" prop="rechargeRate">-->
-<!--          <el-input v-model="temp.rechargeRate" />-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="充值账户币" prop="rechargePoints">-->
+        <!--          <el-input v-model="temp.rechargePoints" />-->
+        <!--        </el-form-item>-->
+        <!--        <el-form-item label="充值系数" prop="rechargeRate">-->
+        <!--          <el-input v-model="temp.rechargeRate" />-->
+        <!--        </el-form-item>-->
         <el-form-item label="备注" prop="remark">
           <el-input v-model="temp.remark" />
         </el-form-item>
@@ -164,7 +180,7 @@ export default {
       temp: {
         accountId: '',
         rechargeFee: '',
-        rechargeType:'',
+        rechargeType: '',
         remark: ''
       },
       dialogFormVisible: false,
@@ -181,7 +197,7 @@ export default {
         accountId: [{ required: true, message: '请选择渠道账号', trigger: 'blur' }],
         rechargeFee: [
           { required: true, message: '请选择输出充值金额(元)', trigger: 'blur' },
-          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式',trigger: 'blur' }
+          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式', trigger: 'blur' }
         ],
         rechargeType: [{ required: true, message: '请选择充值状态', trigger: 'blur' }]
       },
@@ -191,11 +207,10 @@ export default {
     }
   },
   created() {
-
-    if(this.$route.query.res){
+    if (this.$route.query.res) {
       this.listQuery.accountId = this.$route.query.res
       this.temp.accountId = this.$route.query.res
-   //   console.log(this.temp.accountId)
+      //   console.log(this.temp.accountId)
     }
     this.getList()
     this.getgetAccountsFun()
