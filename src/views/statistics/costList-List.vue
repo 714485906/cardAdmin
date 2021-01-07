@@ -73,7 +73,62 @@
       </el-table-column>
       <el-table-column label="充值系数" min-width="90px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.accountRechargeRate }}</span>
+          <span class="link-type">{{ row.accountRechargeRate /100 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="成本单价" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.costPrice /100 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="实际成本单价" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.actualCostPrice /100 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="激活单量" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.activateNum}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="首充单量" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.rechargeNum}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="成本单价" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.costPrice /100 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="累充50单量" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.recharge50Num}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="累充100单量" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.recharge100Num}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="激活率" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.activateRate /100 }}%</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="首充率" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.rechargeRate /100 }}%</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="累充50率" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.recharge50Rate /100 }}%</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="累充100率" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.recharge100Rate /100 }}%</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" min-width="130px" align="center">
@@ -194,9 +249,11 @@ export default {
       getcostList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.page.total
-        this.list.forEach(function(val) { // 初始数据时 把投放金额单位 从分转成 元
-          val.costFee = val.costFee / 100
-        })
+        if(this.total!=0){ //有数据执行 没有数据不执行
+          this.list.forEach(function(val) { // 初始数据时 把投放金额单位 从分转成 元
+            val.costFee = val.costFee / 100
+          })
+        }
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false

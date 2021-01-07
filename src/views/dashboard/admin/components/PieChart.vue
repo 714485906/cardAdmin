@@ -21,11 +21,16 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    accountOrderCounts:{
+      type: Array,
+      required: true
     }
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      accountOrderCountsData:this.accountOrderCounts
     }
   },
   mounted() {
@@ -42,8 +47,8 @@ export default {
   },
   methods: {
     initChart() {
+      console.log(this.accountOrderCountsData)
       this.chart = echarts.init(this.$el, 'macarons')
-
       this.chart.setOption({
         tooltip: {
           trigger: 'item',
