@@ -15,6 +15,13 @@ export function getCostCount(params) {
     params
   })
 }
+export function getAssessList(params) {
+  return request({
+    url: 'statistics/assessList', //考核列表
+    method: 'get',
+    params
+  })
+}
 
 export function getOrderCount(params) {
   return request({

@@ -11,53 +11,18 @@
       <!--        <el-option v-for="item in platformStatusData" :key="item.costStatus" :label="item.costStatusName" :value="item.costStatus" />-->
       <!--      </el-select>-->
       <el-date-picker
-        v-model="dateTime1"
-        type="datetimerange"
-        range-separator="至"
-        start-placeholder="下单开始日期"
-        end-placeholder="下单结束日期"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        style="min-width: 160px"
-        @change="dateChange"
+        v-model="listQuery.assessMonth"
+        type="month"
+        format="yyyy-MM"
+        value-format="yyyy-MM"
+        style="min-width: 120px"
+        placeholder="请选择月份"
       />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 10px" @click="handleFilter">
         搜索
       </el-button>
-      <!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">-->
-      <!--        添加-->
-      <!--      </el-button>-->
-    </div>
-    <!--总数据-->
-    <div style="margin-bottom: 15px" />
-    <el-row :gutter="20" class="row-bg">
-      <el-col :span="3" class="bg-purple">
-        <div class="grid-title" align="center">总单量</div>
-        <div class="grid-content" align="center">{{ getCostCountData.orderNum }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple-light">
-        <div class="grid-title" align="center">成本(元)</div>
-        <div class="grid-content" align="center">{{ getCostCountData.costFee /100 }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple">
-        <div class="grid-title" align="center">实际成本(元)</div>
-        <div class="grid-content" align="center">{{ getCostCountData.actualCostFee /100 }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple-light">
-        <div class="grid-title" align="center">成本单价</div>
-        <div class="grid-content" align="center">{{ getCostCountData.costPrice / 100 }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple">
-        <div class="grid-title" align="center">实际成本单价</div>
-        <div class="grid-content" align="center">{{ getCostCountData.actualCostPrice / 100 }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple-light">
-        <div class="grid-title" align="center">返点</div>
-        <div class="grid-content" align="center">{{ getCostCountData.accountRechargeRate /100 }}</div>
-      </el-col>
-    </el-row>
 
-    <!--明细-->
+    </div>
     <div style="margin-bottom: 15px" />
     <el-table
       :key="tableKey"
@@ -75,36 +40,35 @@
       <!--        </template>-->
       <!--      </el-table-column>-->
 
-      <el-table-column label="日期" width="220px" align="center" show-overflow-tooltip>
+<!--      <el-table-column label="日期" width="220px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.costDate }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+
+      <el-table-column label="用户名" width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span>{{ row.costDate }}</span>
+          <span>{{ row.username }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="商品" width="180px" align="center" show-overflow-tooltip>
+      <el-table-column label="商品名称" width="180px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.productName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="账号名称" width="180px" align="center" show-overflow-tooltip>
+      <el-table-column label="账号数量" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span>{{ row.accountName }}</span>
+          <span>{{ row.accountNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="数量" width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="总单量" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span>{{ row.orderNum }}</span>
+          <span>{{row.orderNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="投放金额(元)" min-width="220px" align="center" show-overflow-tooltip>
+      <el-table-column label="成本金额" min-width="90px" align="center">
         <template slot-scope="{row}">
-          <!--          <el-input size="small" type="text" v-model='row.costFee'   placeholder="请输入投放金额" ></el-input>-->
-          <span>{{ row.costFee }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="充值系数" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.accountRechargeRate /100 }}</span>
+          <span class="link-type">{{ row.costFee /100 }}</span>
         </template>
       </el-table-column>
       <el-table-column label="成本单价" min-width="90px" align="center">
@@ -112,14 +76,19 @@
           <span class="link-type">{{ row.costPrice /100 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="实际成本单价" min-width="140px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.actualCostPrice /100 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="实际成本金额" min-width="140px" align="center">
+      <el-table-column label="实际成本" min-width="90px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.actualCostFee /100 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="成本单价" min-width="130px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.costPrice /100 }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="实际成本单价" min-width="130px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.actualCostPrice /100}}</span>
         </template>
       </el-table-column>
       <el-table-column label="激活单量" min-width="90px" align="center">
@@ -129,7 +98,7 @@
       </el-table-column>
       <el-table-column label="首充单量" min-width="90px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeNum}}</span>
+          <span class="link-type">{{ row.rechargeNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="累充50单量" min-width="120px" align="center">
@@ -162,19 +131,8 @@
           <span class="link-type">{{ row.recharge100Rate /100 }}%</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="状态" min-width="130px" align="center">-->
-<!--        <template slot-scope="{row}">-->
-<!--          <el-tag v-if="row.costStatus == 0" type="info">待提交</el-tag>-->
-<!--          <el-tag v-else-if="row.costStatus == 1" type="success">已提交</el-tag>-->
-<!--          <el-tag v-else-if="row.costStatus == 2" type="danger">已撤回</el-tag>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="操作" align="center" fixed="right" width="160px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" fixed="right" width="120px" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-
-          <el-button v-if="row.costStatus==1" size="mini" type="danger" @click="rollbackCostFun(row)">
-            撤回
-          </el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             查看
           </el-button>
@@ -188,7 +146,7 @@
 </template>
 
 <script>
-import { getcostList, PostSubmitCost, getRollbackCost, getCostCount } from '@/api/statistics'
+import { getAssessList, PostSubmitCost, getRollbackCost } from '@/api/statistics'
 import { getProductList } from '@/api/product'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
@@ -215,20 +173,15 @@ export default {
   data() {
     return {
       tableKey: 0,
-      tableKey0: 0,
       list: null,
-      getCostCountData: [],
       total: 0,
       listLoading: true,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        beginCostDate: undefined,
-        endCostDate: undefined,
+        assessMonth: undefined,
         accountId: undefined,
-        productId: undefined,
-        assessMonth:undefined,
-        costStatus: 1
+        productId: undefined
       },
       importanceOptions: [1, 2, 3],
       Rolelist: '',
@@ -260,8 +213,7 @@ export default {
       downloadLoading: false,
       data2: [],
       accountIdData: [],
-      productIdData: [],
-      queryResData:[]
+      productIdData: []
     }
   },
   computed: {
@@ -275,12 +227,6 @@ export default {
     }
   },
   created() {
-    if(this.$route.query.res){
-      this.queryResData = JSON.parse(this.$route.query.res)
-     this.listQuery.accountId = this.queryResData.accountId
-      this.listQuery.productId = this.queryResData.productId
-      this.listQuery.assessMonth = this.queryResData.assessMonth
-    }
     this.getList()
     this.accountIdDataFun() // 初始账号id
     this.getProductListFun() // 初始商品
@@ -288,7 +234,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getcostList(this.listQuery).then(response => { // 明细
+      getAssessList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.page.total
         if(this.total!=0){ //有数据执行 没有数据不执行
@@ -301,48 +247,14 @@ export default {
           this.listLoading = false
         }, 1 * 500)
       })
-      getCostCount(this.listQuery).then(response => { // 总数据
-        this.getCostCountData = response.data
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1 * 500)
-      })
     },
-    dateChange() {
 
-    },
     handleFilter() {
-      console.log(this.dateTime1.toString())
-      this.listQuery.beginCostDate = this.dateTime1[0]
-      this.listQuery.endCostDate = this.dateTime1[1]
       this.listQuery.pageNo = 1
       this.getList()
     },
     handleUpdate(row) {
-      this.$router.push({name:'applyLiStselection',query: {accountId:row.accountId}})
-    },
-    rollbackCostFun(row) {
-      this.$confirm('请确定撤回当前数据吗', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      }).then(() => {
-        getRollbackCost({
-          costId: row.costId
-        }).then(response => {
-          this.getList()
-          this.$message({
-            message: '操作Success',
-            type: 'success'
-          })
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
+      this.$router.push({name:'costCountList',query:{res:JSON.stringify(row)}})
     },
     accountIdDataFun() {
       getgetAccounts({
@@ -363,32 +275,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-title{
-  padding-top: 10px;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 30px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-.grid-title,.grid-content{
-  font-size: 14px;
-}
-</style>

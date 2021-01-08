@@ -152,6 +152,7 @@
       <el-row>
         <el-col
           v-for="(item,index) in preemptPhoneData"
+          :key="index"
           :span="6"
           style="padding: 10px 0;text-align: center"
           :class="{active:currentIndex === index}"
@@ -209,6 +210,7 @@ export default {
         templateType: 1, // 1.自动选号，2.手动选号(非选号)
         applyPhone: undefined,
         contactName: undefined,
+        accountId:undefined,
         contactPhone: undefined,
         applyStatus: undefined
       },
@@ -273,6 +275,10 @@ export default {
     }
   },
   created() {
+    if(this.$route.query.accountId){
+      this.listQuery.accountId = this.$route.query.accountId
+      this.listQuery.templateType = undefined
+    }
     this.getList()
   },
   methods: {
