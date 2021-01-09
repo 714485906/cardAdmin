@@ -55,6 +55,9 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+        导出数据
+      </el-button>
       <el-button v-show="packageShow" class="filter-item" style="margin-left: 10px;" type="primary" @click="handleResetApply(3)">
         二次分配{{ multipleSelection.length }}
       </el-button>
@@ -371,6 +374,7 @@ export default {
       getProductData: '',
       touchData: '',
       packageShow: false,
+      downloadLoading: false,
       queryList: {
         productId: undefined,
         operatorId: undefined
@@ -561,6 +565,35 @@ export default {
       }).then(response => {
         this.touchData = response.data // 获取触点码
       })
+    },
+    handleDownload() {
+      // const excelList = this.copyArr(this.multipleSelection)
+      // const ids = [] // 获取选中的applyId
+      // let filters = this.$root.$options.filters;
+      // for (const item of excelList) {
+      //   ids.push(item.applyId)
+      // }
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['系统单号', '运营商订单ID', '申请人姓名', '申请号码', '省份名称', '城市名称', '区县名称', '申请号码省份', '申请号码城市', '触点名称', '运营商名', '渠道账号名', '平台名称', '物流单号', '物流状态', '发货时间', '激活时间', '充值时间','状态']
+        const filterVal = ['systemOrderNo', 'operatorOrderNo', 'contactName', 'applyCityName', 'provinceName', 'cityName', 'districtName', 'applyProvinceName', 'applyCityName', 'touchName', 'operatorName', 'accountName', 'platformName', 'logisticsNo', 'logisticsStatus', 'deliveryTime', 'activateTime', 'rechargeTime', 'orderStatus']
+        const data = this.formatJson(filterVal)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'table-list'
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal) {
+      return this.list.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
 }

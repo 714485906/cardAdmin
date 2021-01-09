@@ -34,21 +34,9 @@
       style="width: 100%;"
     >
       <el-table-column type="index" width="70" label="序号" align="center" />
-      <!--      <el-table-column label="platformId" prop="platformId" sortable="custom" align="center" width="140">-->
-      <!--        <template slot-scope="{row}">-->
-      <!--          <span>{{ row.platformId }}</span>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
-
-<!--      <el-table-column label="日期" width="220px" align="center" show-overflow-tooltip>-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span>{{ row.costDate }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-
-      <el-table-column label="用户名" width="180px" align="center" show-overflow-tooltip>
+      <el-table-column label="日期" width="220px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span>{{ row.username }}</span>
+          <span>{{ row.assessMonth }}</span>
         </template>
       </el-table-column>
       <el-table-column label="商品名称" width="180px" align="center" show-overflow-tooltip>
@@ -56,59 +44,45 @@
           <span>{{ row.productName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="账号数量" width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="营销员" width="180px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{ row.username }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="投放渠道数" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.accountNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="总单量" min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="表单数" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{row.orderNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="成本金额" min-width="90px" align="center">
+      <el-table-column label="投放金额(返前)" min-width="160px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.costFee /100 }}</span>
+          <span>{{ row.costFee }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="成本单价" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.costPrice /100 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="实际成本" min-width="90px" align="center">
+      <el-table-column label="投放金额(返后)" min-width="140px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.actualCostFee /100 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="成本单价" min-width="130px" align="center">
+
+      <el-table-column label="表单价(返前)" min-width="120px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.costPrice /100 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="实际成本单价" min-width="130px" align="center">
+      <el-table-column label="表单价（返后）" min-width="140px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.actualCostPrice /100}}</span>
+          <span class="link-type">{{ row.actualCostPrice /100 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="激活单量" min-width="90px" align="center">
+      <el-table-column label="激活数" min-width="90px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.activateNum}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="首充单量" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeNum }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="累充50单量" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge50Num}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="累充100单量" min-width="120px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge100Num}}</span>
         </template>
       </el-table-column>
       <el-table-column label="激活率" min-width="90px" align="center">
@@ -116,21 +90,22 @@
           <span class="link-type">{{ row.activateRate /100 }}%</span>
         </template>
       </el-table-column>
-      <el-table-column label="首充率" min-width="90px" align="center">
+      <el-table-column label="首充大于50(含50)" min-width="140px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeRate /100 }}%</span>
+          <span class="link-type">{{ row.recharge50Num}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="累充50率" min-width="90px" align="center">
+      <el-table-column label="首充大于50率" min-width="150px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.recharge50Rate /100 }}%</span>
         </template>
       </el-table-column>
-      <el-table-column label="累充100率" min-width="90px" align="center">
+      <el-table-column label="首充转化成本" min-width="150px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge100Rate /100 }}%</span>
+          <span class="link-type">{{ row.recharge50Price /100 }}</span>
         </template>
       </el-table-column>
+
       <el-table-column label="操作" align="center" fixed="right" width="120px" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
@@ -254,7 +229,7 @@ export default {
       this.getList()
     },
     handleUpdate(row) {
-      this.$router.push({name:'costCountList',query:{res:JSON.stringify(row)}})
+      this.$router.push({name:'assessInfo',query:{res:JSON.stringify(row)}})
     },
     accountIdDataFun() {
       getgetAccounts({

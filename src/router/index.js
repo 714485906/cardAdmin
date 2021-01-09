@@ -275,6 +275,13 @@ export const constantRoutes = [
         name: 'assessList',
         component: () => import('@/views/statistics/assessList-List'),
         meta: { title: '考核报表', icon: 'el-icon-coin' }
+      },
+      {
+        path: '/assessInfo',
+        name: 'assessInfo',
+        component: () => import('@/views/statistics/assess-info'),
+        meta: { title: '考核报表详情', icon: 'el-icon-coin' },
+        hidden: true
       }
     ]
   },

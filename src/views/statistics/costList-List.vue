@@ -66,71 +66,71 @@
           <span>{{ row.orderNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="投放金额(元)" min-width="220px" align="center" show-overflow-tooltip>
+      <el-table-column label="投放金额(元)" width="220px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-input v-model="row.costFee" size="small" type="text" placeholder="请输入投放金额" />
         </template>
       </el-table-column>
-      <el-table-column label="充值系数" min-width="90px" align="center">
+      <el-table-column label="充值系数" width="90px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountRechargeRate /100 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="成本单价" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.costPrice /100 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="实际成本单价" min-width="140px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.actualCostPrice /100 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="实际成本金额" min-width="140px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.actualCostFee /100 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="激活单量" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.activateNum}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="首充单量" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeNum}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="累充50单量" min-width="100px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge50Num}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="累充100单量" min-width="100px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge100Num}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="激活率" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.activateRate /100 }}%</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="首充率" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeRate /100 }}%</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="累充50率" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge50Rate /100 }}%</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="累充100率" min-width="90px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge100Rate /100 }}%</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="成本单价" min-width="90px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.costPrice /100 }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="实际成本单价" min-width="140px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.actualCostPrice /100 }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="实际成本金额" min-width="140px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.actualCostFee /100 }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="激活单量" min-width="90px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.activateNum}}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="首充单量" min-width="90px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.rechargeNum}}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="累充50单量" min-width="100px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.recharge50Num}}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="累充100单量" min-width="100px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.recharge100Num}}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="激活率" min-width="90px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.activateRate /100 }}%</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="首充率" min-width="90px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.rechargeRate /100 }}%</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="累充50率" min-width="90px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.recharge50Rate /100 }}%</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="累充100率" min-width="90px" align="center">-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.recharge100Rate /100 }}%</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 <!--      <el-table-column label="状态" min-width="130px" align="center">-->
 <!--        <template slot-scope="{row}">-->
 <!--          <el-tag v-if="row.costStatus == 0" type="info">待提交</el-tag>-->
@@ -138,7 +138,7 @@
 <!--          <el-tag v-else-if="row.costStatus == 2" type="danger">已撤回</el-tag>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="操作" align="center" fixed="right" width="120px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="120px" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             提交

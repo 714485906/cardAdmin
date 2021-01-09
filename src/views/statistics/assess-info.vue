@@ -1,29 +1,29 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
-      </el-select>
-      <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
-      </el-select>
+<!--      <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">-->
+<!--        <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />-->
+<!--      </el-select>-->
+<!--      <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">-->
+<!--        <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />-->
+<!--      </el-select>-->
       <!--      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">-->
       <!--        <el-option v-for="item in platformStatusData" :key="item.costStatus" :label="item.costStatusName" :value="item.costStatus" />-->
       <!--      </el-select>-->
-      <el-date-picker
-        v-model="dateTime1"
-        type="datetimerange"
-        range-separator="至"
-        start-placeholder="下单开始日期"
-        end-placeholder="下单结束日期"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        style="min-width: 160px"
-        @change="dateChange"
-      />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 10px" @click="handleFilter">
-        搜索
-      </el-button>
+<!--      <el-date-picker-->
+<!--        v-model="dateTime1"-->
+<!--        type="datetimerange"-->
+<!--        range-separator="至"-->
+<!--        start-placeholder="下单开始日期"-->
+<!--        end-placeholder="下单结束日期"-->
+<!--        format="yyyy-MM-dd"-->
+<!--        value-format="yyyy-MM-dd"-->
+<!--        style="min-width: 160px"-->
+<!--        @change="dateChange"-->
+<!--      />-->
+<!--      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 10px" @click="handleFilter">-->
+<!--        搜索-->
+<!--      </el-button>-->
       <!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">-->
       <!--        添加-->
       <!--      </el-button>-->
@@ -155,7 +155,11 @@
         </template>
       </el-table-column>
 
-
+      <el-table-column label="首充转化成本" min-width="150px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.recharge50Price /100 }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="160px" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
 
