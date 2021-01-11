@@ -55,6 +55,7 @@ export default {
   props: ['accountOrderCounts'],
   methods: {
     handleSetLineChartData(type) {
+      console.log(this.accountOrderCounts)
       this.$emit('handleSetLineChartData', type)
     }
   }

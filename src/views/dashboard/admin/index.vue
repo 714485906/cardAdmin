@@ -20,23 +20,23 @@
 <!--          <line-chart :chart-data="lineChartData" />-->
 <!--        </el-row>-->
 
-<!--        <el-row :gutter="32">-->
-<!--          <el-col :xs="12" :sm="12" :lg="8">-->
-<!--            <div class="chart-wrapper">-->
-<!--              <raddar-chart />-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--          <el-col :xs="12" :sm="12" :lg="8">-->
-<!--            <div class="chart-wrapper">-->
-<!--              <pie-chart :account-order-counts="OrderCountData.accountOrderCounts" />-->
-<!--            </div>-->
-<!--          </el-col>-->
+        <el-row :gutter="32">
+          <el-col :xs="12" :sm="12" :lg="8">
+            <div class="chart-wrapper">
+              <pie-chart2 :order-count-data="OrderCountData" />
+            </div>
+          </el-col>
+          <el-col :xs="12" :sm="12" :lg="8">
+            <div class="chart-wrapper">
+              <pie-chart :account-order-counts-data="OrderCountData.accountOrderCounts" />
+            </div>
+          </el-col>
 <!--          <el-col :xs="24" :sm="24" :lg="8">-->
 <!--            <div class="chart-wrapper">-->
 <!--              <bar-chart />-->
 <!--            </div>-->
 <!--          </el-col>-->
-<!--        </el-row>-->
+        </el-row>
 
     <!--    <el-row :gutter="8">-->
     <!--      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">-->
@@ -59,6 +59,7 @@ import accountOrderCounts from './components/accountOrderCounts'
 import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
+import PieChart2 from './components/PieChart2'
 import BarChart from './components/BarChart'
 import TransactionTable from './components/TransactionTable'
 import TodoList from './components/TodoList'
@@ -94,6 +95,7 @@ export default {
     LineChart,
     RaddarChart,
     PieChart,
+    PieChart2,
     BarChart,
     TransactionTable,
     TodoList,
@@ -114,7 +116,6 @@ export default {
       this.lineChartData = lineChartData[type]
     },
     handleChange(val) {
-      console.log(val)
       this.dateType = val
       this.fetchData()
     },

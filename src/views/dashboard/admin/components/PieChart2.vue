@@ -24,22 +24,22 @@ export default {
       type: String,
       default: '300px'
     },
-    accountOrderCountsData:[String, Number,Object,Array]
+    OrderCountData:[String, Number,Object,Array]
   },
   data() {
     return {
       chart: null,
       titleData: undefined,
-      accountOrderCountsData1:this.accountOrderCountsData,
+      OrderCountData1:this.OrderCountData,
       list: undefined,
     }
   },
   watch: {
-    accountOrderCountsData: {
+    OrderCountData: {
       deep: true,  // 深度监听
       handler(newVal) {
-        // 监听props 中的accountOrderCountsData 数据变化
-        this.accountOrderCountsData1 = newVal
+        // 监听props OrderCountData 数据变化
+        this.OrderCountData1 = newVal
         this.aaa()
       }
     }
@@ -90,18 +90,15 @@ export default {
       })
     },
     aaa(){
-      console.log(this.accountOrderCountsData1)
-      if(this.accountOrderCountsData1!= undefined){
-        if(this.accountOrderCountsData1.length != 0){
-          //有数据
-          let q1 = [];
-          let w1= [];
-          this.accountOrderCountsData.forEach(function (value) {
-            q1.push(value.accountName)
-            w1.push(value.accountSuccessCount+value.accountFailCount)
-          });
-          this.titleData = q1
-          this.list = q1.map((name,i) => ({name, value: w1[i]})); // Es6数据合并
+      console.log(this.OrderCountData1)
+      if(this.OrderCountData1!= undefined){
+        if(this.OrderCountData1.length != 0){
+          this.titleData = ['移动', '联通', '电信']
+          this.list = [
+              {name:'移动',value:this.OrderCountData1.ydCount},
+              {name:'联通',value:this.OrderCountData1.ltCount},
+              {name:'电信',value:this.OrderCountData1.dxCount}
+            ]
           this.$nextTick(() => {
             this.initChart()
           })
