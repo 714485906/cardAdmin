@@ -90,7 +90,7 @@ export default {
       })
     },
     aaa(){
-      console.log(this.accountOrderCountsData1)
+
       if(this.accountOrderCountsData1!= undefined){
         if(this.accountOrderCountsData1.length != 0){
           //有数据

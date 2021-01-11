@@ -31,11 +31,19 @@
               <pie-chart :account-order-counts-data="OrderCountData.accountOrderCounts" />
             </div>
           </el-col>
-<!--          <el-col :xs="24" :sm="24" :lg="8">-->
-<!--            <div class="chart-wrapper">-->
-<!--              <bar-chart />-->
-<!--            </div>-->
-<!--          </el-col>-->
+
+        </el-row>
+
+        <el-row style="height: 600px">
+          <el-col :span="24">
+            <div class="grid-content bg-purple-dark">
+              <el-col>
+                <div class="chart-wrapper">
+                  <bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
+                </div>
+              </el-col>
+            </div>
+          </el-col>
         </el-row>
 
     <!--    <el-row :gutter="8">-->

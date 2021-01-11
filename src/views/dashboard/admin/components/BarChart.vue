@@ -22,12 +22,28 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
-    }
+      default: '600px'
+    },
+    provinceOrderCounts:[String, Number,Object,Array]
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      provinceOrderCountsData: this.provinceOrderCounts,
+      provinceName1: undefined,
+      ydData: undefined,
+      ltData: undefined,
+      dxData: undefined
+    }
+  },
+  watch: {
+    provinceOrderCounts: {
+      deep: true,  // 深度监听
+      handler(newVal) {
+        // 监听props 中的accountOrderCountsData 数据变化
+        this.provinceOrderCountsData = newVal
+       this.aaa()
+      }
     }
   },
   mounted() {
@@ -42,10 +58,12 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
+  created(){
+   // this.aaa()
+  },
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
@@ -62,7 +80,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
           axisTick: {
             alignWithLabel: true
           }
@@ -96,7 +114,25 @@ export default {
           animationDuration
         }]
       })
+    },
+    aaa() {
+      if(this.provinceOrderCountsData!= undefined){
+        if(this.provinceOrderCountsData.length != 0){
+          //有数据
+          console.log(this.provinceOrderCountsData)
+          this.provinceOrderCountsData.forEach(function (value) {
+            this.provinceName1.push(value.provinceName)  //城市名称
+            this.ydData.push(value.provinceYdSuccessCount) //移动数据
+            this.ltData.push(value.provinceLtSuccessCount)//联通数据
+            this.dxData.push(value.provinceDxSuccessCount)//电信数据
+          });
+          console.log(this.provinceName1)
+        }
+      }else{
+        //没有数据
+      }
     }
   }
+
 }
 </script>

@@ -90,7 +90,6 @@ export default {
       })
     },
     aaa(){
-      console.log(this.OrderCountData1)
       if(this.OrderCountData1!= undefined){
         if(this.OrderCountData1.length != 0){
           this.titleData = ['移动', '联通', '电信']
