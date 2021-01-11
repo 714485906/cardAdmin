@@ -43,10 +43,46 @@ export const constantRoutes = [
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
+      component: () => import('@/views/welcome/welcome'),
       meta: { title: '联露后台管理系统', icon: 'dashboard' }
     }]
   },
+
+
+  {
+    path: '/census',
+    component: Layout,
+    name: 'census',
+    meta: {
+      title: '数据中心',
+      icon: 'el-icon-s-help'
+    },
+
+    affix: true,
+    children: [
+      {
+        path: '/censusApply',
+        name: 'censusApply',
+        component: () => import('@/views/dashboard/index'),
+        meta: {
+          title: '收单概览',
+          icon: 'table'
+        }
+      },
+      {
+        path: '/censusOrder',
+        name: 'censusOrder',
+        component: () => import('@/views/censusOrder/censusOrder'),
+        meta: {
+          title: '订单概览',
+          icon: 'people'
+        }
+      }
+    ]
+  },
+
+
+
   {
     path: '/admin',
     component: Layout,
