@@ -379,6 +379,7 @@ export default {
             type: 'info',
             message: '已取消操作'
           })
+          this.Rowlist.applyPhone = ''
         })
       } else {
         this.$message({
