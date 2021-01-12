@@ -11,8 +11,22 @@
              <el-radio-button :label="4">本周</el-radio-button>
              <el-radio-button :label="5">昨日</el-radio-button>
              <el-radio-button :label="6">今日</el-radio-button>
+             <el-radio-button :label="7">自定义</el-radio-button>
            </el-radio-group>
+           <el-date-picker
+             v-model="dateTime1"
+             type="datetimerange"
+             range-separator="至"
+             start-placeholder="开始日期"
+             end-placeholder="结束时间"
+             format="yyyy-MM-dd"
+             value-format="yyyy-MM-dd"
+             style="width: 260px;margin-left: 20px"
+             v-if="dateTimeShow"
+             @change="ChangeTime"
+           />
          </div>
+
        </el-col>
      </el-row>
      <el-row type="flex" class="row-bg" :gutter="20">
@@ -43,10 +57,10 @@
          </div>
        </el-col>
      </el-row>
-      <!--销量-->
+      <!--产品销量-->
      <el-row :gutter="10">
-       <el-col :span="12" style="padding-left: 20px">
-         <p>产品销量</p>
+       <el-col :span="24" style="padding-left: 20px">
+         <p style="font-size: 18px">产品销量</p>
          <el-table
            :key="tableKey"
            v-loading="listLoading"
@@ -54,7 +68,7 @@
            border
            fit
            highlight-current-row
-           style="width: 100%;"
+           style="width: 50%;"
          >
            <el-table-column type="index" width="70" label="序号" align="center" />
            <el-table-column label="商品"min-width="120px" align="center">
@@ -86,8 +100,11 @@
          </el-table>
 <!--         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize" @pagination="getList" />-->
        </el-col>
-       <el-col :span="12" style="padding-right: 20px">
-         <p>代理商销量</p>
+     </el-row>
+
+     <el-row>
+       <el-col :span="24" style="padding-left: 20px">
+         <p style="font-size: 18px">渠道销量</p>
          <el-table
            :key="tableKey"
            v-loading="listLoading"
@@ -95,10 +112,10 @@
            border
            fit
            highlight-current-row
-           style="width: 100%;"
+           style="width: 70%;"
          >
            <el-table-column type="index" width="70" label="序号" align="center" />
-           <el-table-column label="一级代理名称"min-width="120px" align="center">
+           <el-table-column label="渠道名称"min-width="120px" align="center">
              <template slot-scope="{row}">
                <span class="link-type">{{row.accountName}}</span>
              </template>
@@ -154,8 +171,12 @@ export default {
       listLoading: true,
       census:[],
       total: 0,
+      dateTime1: '',
+      dateTimeShow:false,
       listQuery: {
-        periodType:6
+        periodType:6,
+        beginCreateDate: undefined,
+        endCreateDate: undefined
       },
     }
   },
@@ -166,6 +187,21 @@ export default {
     handleChange(val) {
       console.log(val)
       this.dateType = val
+
+      if(val == 7){
+        this.dateTimeShow = true
+      }else{
+        this.dateTime1 = ''
+        this.listQuery.beginCreateDate = undefined
+        this.listQuery.endCreateDate = undefined
+        this.dateTimeShow = false
+        this.fetchData()
+      }
+    },
+    ChangeTime(val){
+        console.log(val)
+        this.listQuery.beginCreateDate = val[0]
+        this.listQuery.endCreateDate = val[1]
       this.fetchData()
     },
     fetchData() {
