@@ -34,6 +34,16 @@
 
         </el-row>
 
+    <el-radio-group v-model="dateType" size="medium" @change="handleChange" style="padding: 10px 0px">
+      <el-radio-button :label="0">全量</el-radio-button>
+      <el-radio-button :label="1">上月</el-radio-button>
+      <el-radio-button :label="2">本月</el-radio-button>
+      <el-radio-button :label="3">上周</el-radio-button>
+      <el-radio-button :label="4">本周</el-radio-button>
+      <el-radio-button :label="5">昨日</el-radio-button>
+      <el-radio-button :label="6">今日</el-radio-button>
+    </el-radio-group>
+
         <el-row style="height: 600px">
           <el-col :span="24">
             <div class="grid-content bg-purple-dark">
