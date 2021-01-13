@@ -67,7 +67,7 @@
            :data="census.productOrderCounts"
            border
            fit
-           highlight-current-row
+           height="300"
            style="width: 50%;"
          >
            <el-table-column type="index" width="70" label="序号" align="center" />
@@ -108,10 +108,10 @@
          <el-table
            :key="tableKey"
            v-loading="listLoading"
-           :data="census.productOrderCounts"
+           :data="census.accountOrderCounts"
            border
            fit
-           highlight-current-row
+           height="300"
            style="width: 70%;"
          >
            <el-table-column type="index" width="70" label="序号" align="center" />
@@ -154,6 +154,7 @@
          </el-table>
        </el-col>
      </el-row>
+     <div style="height: 100px"></div>
    </div>
 </template>
 
