@@ -55,15 +55,12 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        导出数据
-      </el-button>
       <el-button v-show="packageShow" class="filter-item" style="margin-left: 10px;" type="primary" @click="handleResetApply(3)">
         二次分配{{ multipleSelection.length }}
       </el-button>
-      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-      <!--        导出-->
-      <!--      </el-button>-->
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleResetApply(2)">
+        导出数据{{ multipleSelection.length }}
+      </el-button>
     </div>
     <div style="margin-bottom: 15px" />
     <el-table
@@ -472,26 +469,44 @@ export default {
         }
       })
     },
-    handleResetApply(type) { // 1.二次分配  2.手动批量提交
-      if (!this.multipleSelection.length) {
-        Message({
-          message: '请选择订单',
-          type: 'error',
-          duration: 3 * 1000
-        })
-      } else {
-        const excelList = this.copyArr(this.multipleSelection)
-        const ids = [] // 获取选中的applyId
-        for (const item of excelList) {
-          ids.push(item.applyId)
+    handleResetApply(type) { // 3.二次分配  2.导出数据
+      if(type == 3){
+        console.log('进入二次分配')
+        if (!this.multipleSelection.length) {
+          Message({
+            message: '请选择订单',
+            type: 'error',
+            duration: 3 * 1000
+          })
+        } else {
+          const excelList = this.copyArr(this.multipleSelection)
+          const ids = [] // 获取选中的applyId
+          for (const item of excelList) {
+            ids.push(item.applyId)
+          }
+          this.temp.applyIds = ids
+          this.dialogStatus = 'create'
+          this.dialogFormVisible = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+          })
         }
-        this.temp.applyIds = ids
-        this.dialogStatus = 'create'
-        this.dialogFormVisible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
+      }else if(type == 2){
+        console.log('进入导出数据')
+        if (!this.multipleSelection.length) {
+          Message({
+            message: '请选择数据!!!!',
+            type: 'error',
+            duration: 3 * 1000
+          })
+        } else {
+          const excelList = this.copyArr(this.multipleSelection)  //需要导出的数据
+          this.$nextTick(() => {
+            this.handleDownload(excelList)  //调用导出方法
+          })
+        }
       }
+
     },
     copyArr(arr) {
       return arr.map(e => {
@@ -566,18 +581,13 @@ export default {
         this.touchData = response.data // 获取触点码
       })
     },
-    handleDownload() {
-      // const excelList = this.copyArr(this.multipleSelection)
-      // const ids = [] // 获取选中的applyId
-      // let filters = this.$root.$options.filters;
-      // for (const item of excelList) {
-      //   ids.push(item.applyId)
-      // }
+    handleDownload(excelList) {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['系统单号', '运营商订单ID', '申请人姓名', '申请号码', '省份名称', '城市名称', '区县名称', '申请号码省份', '申请号码城市', '触点名称', '运营商名', '渠道账号名', '平台名称', '物流单号', '物流状态', '发货时间', '激活时间', '充值时间','状态']
         const filterVal = ['systemOrderNo', 'operatorOrderNo', 'contactName', 'applyCityName', 'provinceName', 'cityName', 'districtName', 'applyProvinceName', 'applyCityName', 'touchName', 'operatorName', 'accountName', 'platformName', 'logisticsNo', 'logisticsStatus', 'deliveryTime', 'activateTime', 'rechargeTime', 'orderStatus']
-        const data = this.formatJson(filterVal)
+        const data = this.formatJson(filterVal,excelList)
+        console.log(data)
         excel.export_json_to_excel({
           header: tHeader,
           data,
@@ -586,8 +596,8 @@ export default {
         this.downloadLoading = false
       })
     },
-    formatJson(filterVal) {
-      return this.list.map(v => filterVal.map(j => {
+    formatJson(filterVal,excelList) {
+      return excelList.map(v => filterVal.map(j => {
         if (j === 'timestamp') {
           return parseTime(v[j])
         } else {
