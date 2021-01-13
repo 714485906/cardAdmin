@@ -275,10 +275,6 @@ export default {
     }
   },
   created() {
-    if(this.$route.query.accountId){
-      this.listQuery.accountId = this.$route.query.accountId
-      this.listQuery.templateType = undefined
-    }
     this.getList()
   },
   methods: {

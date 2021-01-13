@@ -318,6 +318,13 @@ export const constantRoutes = [
         component: () => import('@/views/statistics/assess-info'),
         meta: { title: '考核报表详情', icon: 'el-icon-coin' },
         hidden: true
+      },
+      {
+        path: '/costCountListInfo',
+        name: 'costCountListInfo',
+        component: () => import('@/views/statistics/components/order-list'),
+        meta: { title: '订单详情', icon: 'el-icon-coin' },
+        hidden: true
       }
     ]
   },

@@ -306,7 +306,7 @@ export default {
       this.getList()
     },
     handleUpdate(row) {
-      this.$router.push({name:'applyLiStselection',query: {accountId:row.accountId}})
+      this.$router.push({name:'costCountListInfo',query: {rowList:row}})
     },
     rollbackCostFun(row) {
       this.$confirm('请确定撤回当前数据吗', '提示', {

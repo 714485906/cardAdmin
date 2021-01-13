@@ -1,67 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-date-picker
-        v-model="dateTime1"
-        type="datetimerange"
-        range-separator="至"
-        start-placeholder="下单开始日期"
-        end-placeholder="下单结束日期"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        style="min-width: 300px"
-      />
-      <el-date-picker
-        v-model="dateTime2"
-        type="datetimerange"
-        range-separator="至"
-        start-placeholder="激活开始日期"
-        end-placeholder="激活结束日期"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        style="min-width: 300px;margin: 5px 5px"
-      />
-      <el-date-picker
-        v-model="dateTime3"
-        type="datetimerange"
-        range-separator="至"
-        start-placeholder="充值开始日期"
-        end-placeholder="充值结束日期"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        style="min-width: 300px;margin: 5px 5px"
-      />
-      <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
-      </el-select>
-      <el-select v-model="listQuery.logisticsStatus" placeholder="物流状态" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in logisticsStatusData" :key="item.logisticsStatus" :label="item.name" :value="item.logisticsStatus" />
-      </el-select>
-      <el-select v-model="listQuery.operatorId" placeholder="运营商" clearable class="filter-item" style="width: 130px;margin:5px 5px">
-        <el-option v-for="item in operatorIdData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />
-      </el-select>
-      <el-select v-model="listQuery.orderStatus" placeholder="订单状态" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in orderStatusData" :key="item.orderStatus" :label="item.name" :value="item.orderStatus" />
-      </el-select>
-      <el-select v-model="listQuery.channelId" placeholder="渠道名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in channelIdData" :key="item.channelId" :label="item.channelName" :value="item.channelId" />
-      </el-select>
-      <el-select v-model="listQuery.platformId" placeholder="平台" clearable class="filter-item" style="width: 130px;margin:5px 5px">
-        <el-option v-for="item in platformIdData" :key="item.platformId" :label="item.platformName" :value="item.platformId" />
-      </el-select>
-      <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin:5px 5px" @change="queryproduct">
-        <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
-      <el-button v-show="packageShow" class="filter-item" style="margin-left: 10px;" type="primary" @click="handleResetApply(3)">
-        二次分配{{ multipleSelection.length }}
-      </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleResetApply(2)">
-        导出数据{{ multipleSelection.length }}
-      </el-button>
-    </div>
     <div style="margin-bottom: 15px" />
     <el-table
       ref="deficiencyTable"
@@ -296,10 +234,10 @@ export default {
       list: [],
       total: 0,
       listLoading: true,
+      queryResData: undefined,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
-        operatorType: 2,
         beginCreateTime: undefined,
         endCreateTime: undefined,
         beginActivateTime: undefined,
@@ -379,20 +317,25 @@ export default {
     }
   },
   created() {
-    if (this.$route.query.tab != undefined) { // 选择当前营业厅
-      this.listQuery.operatorType = this.$route.query.tab
+    if(this.$route.query.rowList){
+      this.queryResData = JSON.stringify(this.$route.query.rowList)
+      console.log(this.queryResData)
+      console.log(JSON.stringify(this.$route.query.rowList.accountId))
+      this.listQuery.accountId = JSON.stringify(this.$route.query.rowList.accountId)
+      let costDateTime = [this.$route.query.rowList.costDate]
+      console.log(costDateTime[0])
+      this.listQuery.beginCreateTime = costDateTime[0]
+      this.listQuery.endCreateTime = costDateTime[0]
+
     }
-    if (this.$route.name == 'orderListErr') { // 监听路由  如果为 orderListErr 进入异常订单
-      this.listQuery.orderStatus = 2
-      this.packageShow = true
-    }
+
     this.getList() // 初始数据
-    this.accountIdDataFun() // 账号名称
-    this.getOperatorListDataFun() // 获取运营商
-    this.getChannelListDataFun() // 获取渠道
-    this.getPlatformListDataFun() // 获取平台
-    this.getProductListDataFun() // 产品名称
-    this.getGetTouchesDataFun() // 触点码
+    // this.accountIdDataFun() // 账号名称
+    // this.getOperatorListDataFun() // 获取运营商
+    // this.getChannelListDataFun() // 获取渠道
+    // this.getPlatformListDataFun() // 获取平台
+    // this.getProductListDataFun() // 产品名称
+    // this.getGetTouchesDataFun() // 触点码
   },
   methods: {
     getList() {
