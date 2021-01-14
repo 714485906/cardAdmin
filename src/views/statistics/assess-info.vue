@@ -92,13 +92,16 @@
           <span>{{ row.accountName }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="营销员" width="120px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{ row.username }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="表单数" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.orderNum }}</span>
         </template>
       </el-table-column>
-
-
       <el-table-column label="投放金额(返前)" min-width="160px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.costFee }}</span>

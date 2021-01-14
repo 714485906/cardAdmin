@@ -17,10 +17,10 @@
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">Close</li>
-      <li @click="closeOthersTags">Close Others</li>
-      <li @click="closeAllTags(selectedTag)">Close All</li>
+      <li @click="refreshSelectedTag(selectedTag)">刷新</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关</li>
+      <li @click="closeOthersTags">关闭其他</li>
+<!--      <li @click="closeAllTags(selectedTag)">关闭所有</li>-->
     </ul>
   </div>
 </template>
@@ -43,10 +43,11 @@ export default {
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
-    },
-    routes() {
-      return this.$store.state.permission.routes
     }
+    // ,
+    // routes() {
+    //   return this.$store.state.permission.routes
+    // }
   },
   watch: {
     $route() {
@@ -74,23 +75,25 @@ export default {
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
-      routes.forEach(route => {
-        if (route.meta && route.meta.affix) {
-          const tagPath = path.resolve(basePath, route.path)
-          tags.push({
-            fullPath: tagPath,
-            path: tagPath,
-            name: route.name,
-            meta: { ...route.meta }
-          })
-        }
-        if (route.children) {
-          const tempTags = this.filterAffixTags(route.children, route.path)
-          if (tempTags.length >= 1) {
-            tags = [...tags, ...tempTags]
+      if(routes){
+        routes.forEach(route => {
+          if (route.meta && route.meta.affix) {
+            const tagPath = path.resolve(basePath, route.path)
+            tags.push({
+              fullPath: tagPath,
+              path: tagPath,
+              name: route.name,
+              meta: { ...route.meta }
+            })
           }
-        }
-      })
+          if (route.children) {
+            const tempTags = this.filterAffixTags(route.children, route.path)
+            if (tempTags.length >= 1) {
+              tags = [...tags, ...tempTags]
+            }
+          }
+        })
+      }
       return tags
     },
     initTags() {
