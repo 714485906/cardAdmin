@@ -1,29 +1,29 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-<!--      <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">-->
-<!--        <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />-->
-<!--      </el-select>-->
-<!--      <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">-->
-<!--        <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />-->
-<!--      </el-select>-->
+      <!--      <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">-->
+      <!--        <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />-->
+      <!--      </el-select>-->
+      <!--      <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">-->
+      <!--        <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />-->
+      <!--      </el-select>-->
       <!--      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">-->
       <!--        <el-option v-for="item in platformStatusData" :key="item.costStatus" :label="item.costStatusName" :value="item.costStatus" />-->
       <!--      </el-select>-->
-<!--      <el-date-picker-->
-<!--        v-model="dateTime1"-->
-<!--        type="datetimerange"-->
-<!--        range-separator="至"-->
-<!--        start-placeholder="下单开始日期"-->
-<!--        end-placeholder="下单结束日期"-->
-<!--        format="yyyy-MM-dd"-->
-<!--        value-format="yyyy-MM-dd"-->
-<!--        style="min-width: 160px"-->
-<!--        @change="dateChange"-->
-<!--      />-->
-<!--      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 10px" @click="handleFilter">-->
-<!--        搜索-->
-<!--      </el-button>-->
+      <!--      <el-date-picker-->
+      <!--        v-model="dateTime1"-->
+      <!--        type="datetimerange"-->
+      <!--        range-separator="至"-->
+      <!--        start-placeholder="下单开始日期"-->
+      <!--        end-placeholder="下单结束日期"-->
+      <!--        format="yyyy-MM-dd"-->
+      <!--        value-format="yyyy-MM-dd"-->
+      <!--        style="min-width: 160px"-->
+      <!--        @change="dateChange"-->
+      <!--      />-->
+      <!--      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 10px" @click="handleFilter">-->
+      <!--        搜索-->
+      <!--      </el-button>-->
       <!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">-->
       <!--        添加-->
       <!--      </el-button>-->
@@ -129,7 +129,7 @@
       </el-table-column>
       <el-table-column label="激活数" min-width="90px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.activateNum}}</span>
+          <span class="link-type">{{ row.activateNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="激活率" min-width="90px" align="center">
@@ -139,7 +139,7 @@
       </el-table-column>
       <el-table-column label="首充数" min-width="90px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.rechargeNum}}</span>
+          <span class="link-type">{{ row.rechargeNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="首充率" min-width="110px" align="center">
@@ -149,7 +149,7 @@
       </el-table-column>
       <el-table-column label="首充大于50(含50)" min-width="140px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge50Num}}</span>
+          <span class="link-type">{{ row.recharge50Num }}</span>
         </template>
       </el-table-column>
       <el-table-column label="首充大于50率" min-width="150px" align="center">
@@ -221,7 +221,7 @@ export default {
         endCostDate: undefined,
         accountId: undefined,
         productId: undefined,
-        assessMonth:undefined,
+        assessMonth: undefined,
         costStatus: 1
       },
       importanceOptions: [1, 2, 3],
@@ -255,7 +255,7 @@ export default {
       data2: [],
       accountIdData: [],
       productIdData: [],
-      queryResData:[]
+      queryResData: []
     }
   },
   computed: {
@@ -269,9 +269,9 @@ export default {
     }
   },
   created() {
-    if(this.$route.query.res){
+    if (this.$route.query.res) {
       this.queryResData = JSON.parse(this.$route.query.res)
-     this.listQuery.accountId = this.queryResData.accountId
+      this.listQuery.accountId = this.queryResData.accountId
       this.listQuery.productId = this.queryResData.productId
       this.listQuery.assessMonth = this.queryResData.assessMonth
     }
@@ -285,7 +285,7 @@ export default {
       getcostList(this.listQuery).then(response => { // 明细
         this.list = response.data
         this.total = response.page.total
-        if(this.total!=0){ //有数据执行 没有数据不执行
+        if (this.total != 0) { // 有数据执行 没有数据不执行
           this.list.forEach(function(val) { // 初始数据时 把投放金额单位 从分转成 元
             val.costFee = val.costFee / 100
           })
@@ -313,7 +313,7 @@ export default {
       this.getList()
     },
     handleUpdate(row) {
-      this.$router.push({name:'applyLiStselection',query: {accountId:row.accountId}})
+      this.$router.push({ name: 'applyLiStselection', query: { accountId: row.accountId }})
     },
     rollbackCostFun(row) {
       this.$confirm('请确定撤回当前数据吗', '提示', {

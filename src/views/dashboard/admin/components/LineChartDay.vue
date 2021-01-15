@@ -33,17 +33,14 @@ export default {
   },
   data() {
     return {
-      chart: null,
-      seriesList: []
+      chart: null
     }
   },
   watch: {
     chartData: {
       deep: true,
-      handler() {
-        this.$nextTick(() => {
-          this.initChart()
-        })
+      handler(val) {
+        this.setOptions(val)
       }
     }
   },
@@ -60,30 +57,14 @@ export default {
     this.chart = null
   },
   methods: {
-
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-      this.seriesListFun()
-      this.setOptions()
+      this.setOptions(this.chartData)
     },
-    seriesListFun(){
-      let that = this
-      this.seriesList = []
-      this.chartData.hourOrderCounts.forEach(function(item,index,arr){
-        that.seriesList.push({
-          name: item.accountName,
-          smooth: true,
-          type: 'line',
-          data: item.clickValue,
-          animationDuration: 3000,
-          animationEasing: 'quadraticOut'
-        })
-      })
-    },
-    setOptions() {
+    setOptions({ successCount, failCount, activateCount } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ["0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"],
+          data: this.chartData.day,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -109,9 +90,58 @@ export default {
           }
         },
         legend: {
-          data: JSON.stringify(this.chartData.accountName)
+          data: ['成功单量', '失败单量', "激活单量"]
         },
-        series: this.seriesList
+        series: [{
+          name: '成功单量', itemStyle: {
+            normal: {
+              color: '#3888fa',
+              lineStyle: {
+                color: '#3888fa',
+                width: 2
+              }
+            }
+          },
+          smooth: true,
+          type: 'line',
+          data: successCount,
+          animationDuration: 2800,
+          animationEasing: 'cubicInOut'
+        },
+        {
+          name: '失败单量',
+          smooth: true,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: '#FF005A',
+              lineStyle: {
+                color: '#FF005A',
+                width: 2
+              }
+            }
+          },
+          data: failCount,
+          animationDuration: 2800,
+          animationEasing: 'quadraticOut'
+        },
+          {
+            name: '激活单量',
+            smooth: true,
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#9368F1',
+                lineStyle: {
+                  color: '#9368F1',
+                  width: 2
+                }
+              }
+            },
+            data: activateCount,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
+          }]
       })
     }
   }

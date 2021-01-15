@@ -20,7 +20,7 @@
       <li @click="refreshSelectedTag(selectedTag)">刷新</li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关</li>
       <li @click="closeOthersTags">关闭其他</li>
-<!--      <li @click="closeAllTags(selectedTag)">关闭所有</li>-->
+      <!--      <li @click="closeAllTags(selectedTag)">关闭所有</li>-->
     </ul>
   </div>
 </template>
@@ -75,7 +75,7 @@ export default {
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
-      if(routes){
+      if (routes) {
         routes.forEach(route => {
           if (route.meta && route.meta.affix) {
             const tagPath = path.resolve(basePath, route.path)

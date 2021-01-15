@@ -192,7 +192,7 @@ export default {
       getcostList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.page.total
-        if(this.total!=0){ //有数据执行 没有数据不执行
+        if (this.total != 0) { // 有数据执行 没有数据不执行
           this.list.forEach(function(val) { // 初始数据时 把投放金额单位 从分转成 元
             val.costFee = val.costFee / 100
           })

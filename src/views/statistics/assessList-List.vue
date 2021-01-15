@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column label="表单数" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span>{{row.orderNum}}</span>
+          <span>{{ row.orderNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="投放金额(返前)" min-width="160px" align="center" show-overflow-tooltip>
@@ -82,7 +82,7 @@
       </el-table-column>
       <el-table-column label="激活数" min-width="90px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.activateNum}}</span>
+          <span class="link-type">{{ row.activateNum }}</span>
         </template>
       </el-table-column>
       <el-table-column label="激活率" min-width="90px" align="center">
@@ -92,7 +92,7 @@
       </el-table-column>
       <el-table-column label="首充大于50(含50)" min-width="140px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge50Num}}</span>
+          <span class="link-type">{{ row.recharge50Num }}</span>
         </template>
       </el-table-column>
       <el-table-column label="首充大于50率" min-width="150px" align="center">
@@ -212,7 +212,7 @@ export default {
       getAssessList(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.page.total
-        if(this.total!=0){ //有数据执行 没有数据不执行
+        if (this.total != 0) { // 有数据执行 没有数据不执行
           this.list.forEach(function(val) { // 初始数据时 把投放金额单位 从分转成 元
             val.costFee = val.costFee / 100
           })
@@ -229,7 +229,7 @@ export default {
       this.getList()
     },
     handleUpdate(row) {
-      this.$router.push({name:'assessInfo',query:{res:JSON.stringify(row)}})
+      this.$router.push({ name: 'assessInfo', query: { res: JSON.stringify(row) }})
     },
     accountIdDataFun() {
       getgetAccounts({

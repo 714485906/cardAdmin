@@ -17,7 +17,7 @@ export function getCostCount(params) {
 }
 export function getAssessList(params) {
   return request({
-    url: 'statistics/assessList', //考核列表
+    url: 'statistics/assessList', // 考核列表
     method: 'get',
     params
   })

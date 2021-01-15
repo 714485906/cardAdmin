@@ -24,19 +24,19 @@ export default {
       type: String,
       default: '300px'
     },
-    accountOrderCountsData:[String, Number,Object,Array]
+    accountOrderCountsData: [String, Number, Object, Array]
   },
   data() {
     return {
       chart: null,
       titleData: undefined,
-      accountOrderCountsData1:this.accountOrderCountsData,
-      list: undefined,
+      accountOrderCountsData1: this.accountOrderCountsData,
+      list: undefined
     }
   },
   watch: {
     accountOrderCountsData: {
-      deep: true,  // 深度监听
+      deep: true, // 深度监听
       handler(newVal) {
         // 监听props 中的accountOrderCountsData 数据变化
         this.accountOrderCountsData1 = newVal
@@ -57,7 +57,7 @@ export default {
     this.chart = null
   },
   created() {
-   this.aaa()
+    this.aaa()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -89,41 +89,39 @@ export default {
         ]
       })
     },
-    aaa(){
-
-      if(this.accountOrderCountsData1!= undefined){
-        if(this.accountOrderCountsData1.length != 0){
-          //有数据
-          let q1 = [];
-          let w1= [];
-          this.accountOrderCountsData.forEach(function (value) {
+    aaa() {
+      if (this.accountOrderCountsData1 != undefined) {
+        if (this.accountOrderCountsData1.length != 0) {
+          // 有数据
+          const q1 = []
+          const w1 = []
+          this.accountOrderCountsData.forEach(function(value) {
             q1.push(value.accountName)
-            w1.push(value.accountSuccessCount+value.accountFailCount)
-          });
+            w1.push(value.accountSuccessCount + value.accountFailCount)
+          })
           this.titleData = q1
-          this.list = q1.map((name,i) => ({name, value: w1[i]})); // Es6数据合并
+          this.list = q1.map((name, i) => ({ name, value: w1[i] })) // Es6数据合并
           this.$nextTick(() => {
             this.initChart()
           })
-        }else{
-          //没有数据
+        } else {
+          // 没有数据
           this.titleData = ['无数据']
-          this.list = [{name:'无数据',value:500}]
+          this.list = [{ name: '无数据', value: 500 }]
           this.$nextTick(() => {
             this.initChart()
           })
         }
-      }else{
-       //没有数据
+      } else {
+        // 没有数据
         this.titleData = ['无数据']
-        this.list = [{name:'无数据',value:500}]
+        this.list = [{ name: '无数据', value: 500 }]
         this.$nextTick(() => {
           this.initChart()
         })
       }
-
     }
-  },
+  }
 
 }
 </script>

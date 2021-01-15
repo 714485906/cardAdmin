@@ -6,10 +6,10 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-<!--        <error-log class="errLog-container right-menu-item hover-effect" />-->
-<!--        <el-tooltip content="Global Size" effect="dark" placement="bottom">-->
-<!--          <size-select id="size-select" class="right-menu-item hover-effect" />-->
-<!--        </el-tooltip>-->
+        <!--        <error-log class="errLog-container right-menu-item hover-effect" />-->
+        <!--        <el-tooltip content="Global Size" effect="dark" placement="bottom">-->
+        <!--          <size-select id="size-select" class="right-menu-item hover-effect" />-->
+        <!--        </el-tooltip>-->
 
       </template>
 

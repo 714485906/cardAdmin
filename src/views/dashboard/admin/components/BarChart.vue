@@ -24,7 +24,7 @@ export default {
       type: String,
       default: '600px'
     },
-    provinceOrderCounts:[String, Number,Object,Array]
+    provinceOrderCounts: [String, Number, Object, Array]
   },
   data() {
     return {
@@ -38,11 +38,11 @@ export default {
   },
   watch: {
     provinceOrderCounts: {
-      deep: true,  // 深度监听
+      deep: true, // 深度监听
       handler(newVal) {
         // 监听props 中的accountOrderCountsData 数据变化
         this.provinceOrderCountsData = newVal
-       this.aaa()
+        this.aaa()
       }
     }
   },
@@ -58,8 +58,8 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
-  created(){
-   this.aaa()
+  created() {
+    this.aaa()
   },
   methods: {
     initChart() {
@@ -116,19 +116,19 @@ export default {
       })
     },
     aaa() {
-      if(this.provinceOrderCountsData!= undefined){
-        if(this.provinceOrderCountsData.length != 0){
-          //有数据
-          let provinceName1 = [];
-          let ydData = [];
-          let ltData = [];
-          let dxData = [];
-          this.provinceOrderCountsData.forEach(function (value,i) {
-            provinceName1.push(value.provinceName)  //城市名称
-            ydData.push(value.provinceYdSuccessCount) //移动数据
-            ltData.push(value.provinceLtSuccessCount)//联通数据
-            dxData.push(value.provinceDxSuccessCount)//电信数据
-          });
+      if (this.provinceOrderCountsData != undefined) {
+        if (this.provinceOrderCountsData.length != 0) {
+          // 有数据
+          const provinceName1 = []
+          const ydData = []
+          const ltData = []
+          const dxData = []
+          this.provinceOrderCountsData.forEach(function(value, i) {
+            provinceName1.push(value.provinceName) // 城市名称
+            ydData.push(value.provinceYdSuccessCount) // 移动数据
+            ltData.push(value.provinceLtSuccessCount)// 联通数据
+            dxData.push(value.provinceDxSuccessCount)// 电信数据
+          })
           this.provinceName1 = provinceName1
           this.ydData = ydData
           this.ltData = ltData
@@ -138,8 +138,8 @@ export default {
             this.initChart()
           })
         }
-      }else{
-        //没有数据
+      } else {
+        // 没有数据
       }
     }
   }

@@ -148,11 +148,11 @@
           <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="商品佣金/(分)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>-->
-<!--        <template slot-scope="{row}">-->
-<!--          <span class="link-type">{{ row.rechargeFee }}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column label="商品佣金/(分)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>-->
+      <!--        <template slot-scope="{row}">-->
+      <!--          <span class="link-type">{{ row.rechargeFee }}</span>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="订单状态" fixed="right" class-name="status-col" width="120" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-tag v-if="row.orderStatus == 0" type="info">待提交</el-tag>
@@ -317,16 +317,15 @@ export default {
     }
   },
   created() {
-    if(this.$route.query.rowList){
+    if (this.$route.query.rowList) {
       this.queryResData = JSON.stringify(this.$route.query.rowList)
       console.log(this.queryResData)
       console.log(JSON.stringify(this.$route.query.rowList.accountId))
       this.listQuery.accountId = JSON.stringify(this.$route.query.rowList.accountId)
-      let costDateTime = [this.$route.query.rowList.costDate]
+      const costDateTime = [this.$route.query.rowList.costDate]
       console.log(costDateTime[0])
       this.listQuery.beginCreateTime = costDateTime[0]
       this.listQuery.endCreateTime = costDateTime[0]
-
     }
 
     this.getList() // 初始数据
@@ -413,7 +412,7 @@ export default {
       })
     },
     handleResetApply(type) { // 3.二次分配  2.导出数据
-      if(type == 3){
+      if (type == 3) {
         console.log('进入二次分配')
         if (!this.multipleSelection.length) {
           Message({
@@ -434,7 +433,7 @@ export default {
             this.$refs['dataForm'].clearValidate()
           })
         }
-      }else if(type == 2){
+      } else if (type == 2) {
         console.log('进入导出数据')
         if (!this.multipleSelection.length) {
           Message({
@@ -443,13 +442,12 @@ export default {
             duration: 3 * 1000
           })
         } else {
-          const excelList = this.copyArr(this.multipleSelection)  //需要导出的数据
+          const excelList = this.copyArr(this.multipleSelection) // 需要导出的数据
           this.$nextTick(() => {
-            this.handleDownload(excelList)  //调用导出方法
+            this.handleDownload(excelList) // 调用导出方法
           })
         }
       }
-
     },
     copyArr(arr) {
       return arr.map(e => {
@@ -527,9 +525,9 @@ export default {
     handleDownload(excelList) {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['系统单号', '运营商订单ID', '申请人姓名', '申请号码', '省份名称', '城市名称', '区县名称', '申请号码省份', '申请号码城市', '触点名称', '运营商名', '渠道账号名', '平台名称', '物流单号', '物流状态', '发货时间', '激活时间', '充值时间','状态']
+        const tHeader = ['系统单号', '运营商订单ID', '申请人姓名', '申请号码', '省份名称', '城市名称', '区县名称', '申请号码省份', '申请号码城市', '触点名称', '运营商名', '渠道账号名', '平台名称', '物流单号', '物流状态', '发货时间', '激活时间', '充值时间', '状态']
         const filterVal = ['systemOrderNo', 'operatorOrderNo', 'contactName', 'applyCityName', 'provinceName', 'cityName', 'districtName', 'applyProvinceName', 'applyCityName', 'touchName', 'operatorName', 'accountName', 'platformName', 'logisticsNo', 'logisticsStatus', 'deliveryTime', 'activateTime', 'rechargeTime', 'orderStatus']
-        const data = this.formatJson(filterVal,excelList)
+        const data = this.formatJson(filterVal, excelList)
         console.log(data)
         excel.export_json_to_excel({
           header: tHeader,
@@ -539,7 +537,7 @@ export default {
         this.downloadLoading = false
       })
     },
-    formatJson(filterVal,excelList) {
+    formatJson(filterVal, excelList) {
       return excelList.map(v => filterVal.map(j => {
         if (j === 'timestamp') {
           return parseTime(v[j])

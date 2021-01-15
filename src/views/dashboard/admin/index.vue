@@ -16,25 +16,20 @@
     <!--渠道账号统计-->
     <account-order-counts :account-order-counts="OrderCountData.accountOrderCounts" />
 
-<!--        <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">-->
-<!--          <line-chart :chart-data="lineChartData" />-->
-<!--        </el-row>-->
-
-        <el-row :gutter="32">
-          <el-col :xs="12" :sm="12" :lg="8">
-            <div class="chart-wrapper">
-              <pie-chart2 :order-count-data="OrderCountData" />
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="12" :lg="8">
-            <div class="chart-wrapper">
-              <pie-chart :account-order-counts-data="OrderCountData.accountOrderCounts" />
-            </div>
-          </el-col>
-
-        </el-row>
-
-    <el-radio-group v-model="dateType" size="medium" @change="handleChange" style="padding: 10px 0px">
+    <el-row :gutter="32">
+      <el-col :xs="12" :sm="12" :lg="8">
+        <div class="chart-wrapper">
+          <pie-chart2 :order-count-data="OrderCountData" />
+        </div>
+      </el-col>
+      <el-col :xs="12" :sm="12" :lg="8">
+        <div class="chart-wrapper">
+          <pie-chart :account-order-counts-data="OrderCountData.accountOrderCounts" />
+        </div>
+      </el-col>
+    </el-row>
+    <!--城市统计-->
+    <el-radio-group v-model="dateType" size="medium" style="padding: 10px 0px" @change="handleChange">
       <el-radio-button :label="0">全量</el-radio-button>
       <el-radio-button :label="1">上月</el-radio-button>
       <el-radio-button :label="2">本月</el-radio-button>
@@ -44,29 +39,45 @@
       <el-radio-button :label="6">今日</el-radio-button>
     </el-radio-group>
 
-        <el-row style="height: 600px">
-          <el-col :span="24">
-            <div class="grid-content bg-purple-dark">
-              <el-col>
-                <div class="chart-wrapper">
-                  <bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
-                </div>
-              </el-col>
+    <el-row style="height: 600px">
+      <el-col :span="24">
+        <div class="grid-content bg-purple-dark">
+          <el-col>
+            <div class="chart-wrapper">
+              <bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
             </div>
           </el-col>
-        </el-row>
+        </div>
+      </el-col>
+    </el-row>
 
-    <!--    <el-row :gutter="8">-->
-    <!--      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">-->
-    <!--        <transaction-table />-->
-    <!--      </el-col>-->
-    <!--      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">-->
-    <!--        <todo-list />-->
-    <!--      </el-col>-->
-    <!--      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">-->
-    <!--        <box-card />-->
-    <!--      </el-col>-->
-    <!--    </el-row>-->
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <h4>时间/总量统计</h4>
+      <el-date-picker
+        v-model="listQuery.createDate"
+        type="date"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        style="width: 150px;margin-left: 20px"
+        @change="ChangeTime"
+      />
+      <el-radio-group v-model="listQuery.operatorType" size="medium" style="padding: 10px 0px;margin-left: 20px" @change="operatorTypeChange">
+        <el-radio-button :label="1">移动</el-radio-button>
+        <el-radio-button :label="2">联通</el-radio-button>
+        <el-radio-button :label="3">电信</el-radio-button>
+      </el-radio-group>
+      <line-chart :chart-data="orderCountourHour" />
+    </el-row>
+
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <h4>时间/总量统计</h4>
+      <line-chart :chart-data="clickCountData" />
+    </el-row>
+
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <h4>时间/平均点击率</h4>
+      <line-chart :chart-data="clickRateData" />
+    </el-row>
   </div>
 </template>
 
@@ -84,25 +95,7 @@ import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
 import AccountOrderCounts from '@/views/dashboard/admin/components/accountOrderCounts'
 
-import { transactionList } from '@/api/remote-search'
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+import { transactionList, getOrderCountByHour } from '@/api/remote-search'
 
 export default {
   name: 'DashboardAdmin',
@@ -121,13 +114,30 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis,
+      listQuery:{
+        accountIds:[],
+        createDate:undefined,
+        operatorType:2
+      },
       OrderCountData: [],
+      orderCountourHour: {
+        accountName:undefined,
+        hourOrderCounts:[],
+      },
+      clickCountData: {
+        accountName:undefined,
+        hourOrderCounts:[],
+      },
+      clickRateData: {
+        accountName:undefined,
+        hourOrderCounts:[],
+      },
       dateType: 6
     }
   },
   created() {
     this.fetchData()
+    this.getOrderCountByHourFun()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -137,11 +147,52 @@ export default {
       this.dateType = val
       this.fetchData()
     },
+    operatorTypeChange(){
+      this.getOrderCountByHourFun()
+    },
+    ChangeTime(){
+     this.getOrderCountByHourFun()
+    },
     fetchData() {
       transactionList({
         periodType: this.dateType
       }).then(response => {
         this.OrderCountData = response.data
+      })
+    },
+    getOrderCountByHourFun() {
+      getOrderCountByHour(this.listQuery).then(response => {
+        this.getOrderCountByHourData = response.data
+        //公共数据
+        let accountNameData = []; //账号名称
+        let orderCountourHour1 = []; // 存储时间总量统计 需要的数据
+        let orderCountourHour2 = []; // 存储时间点击量统计 需要的数据
+        let orderCountourHour3 = []; // 存储时间平均点击率 需要的数据
+        this.getOrderCountByHourData.forEach(function(item,index,arr){
+          accountNameData.push(item.accountName)
+          let person = { accountName:item.accountName, clickValue:[] } //时间总量统计
+          let person2 = { accountName:item.accountName, clickValue:[] } //时间点击量统计
+          let person3 = { accountName:item.accountName, clickValue:[] } //间平均点击率
+          item.hourOrderCounts.forEach(function(item,index,arr){
+            person.clickValue.push(item.orderCount)  //时间总量统计
+            person2.clickValue.push(item.clickCount) //时间点击量统计
+            person3.clickValue.push(item.clickRate) //间平均点击率
+          })
+          orderCountourHour1.push(person)
+          orderCountourHour2.push(person2)
+          orderCountourHour3.push(person3)
+        })
+        //时间总量统计
+        this.orderCountourHour.accountName = accountNameData
+        this.orderCountourHour.hourOrderCounts = orderCountourHour1
+
+        //时间点击量统计
+        this.clickCountData.accountName = accountNameData
+        this.clickCountData.hourOrderCounts = orderCountourHour2
+
+        //时间平均点击率
+        this.clickRateData.accountName = accountNameData
+        this.clickRateData.hourOrderCounts = orderCountourHour3
       })
     }
   }

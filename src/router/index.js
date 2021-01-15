@@ -48,7 +48,6 @@ export const constantRoutes = [
     }]
   },
 
-
   {
     path: '/census',
     component: Layout,
@@ -80,8 +79,6 @@ export const constantRoutes = [
       }
     ]
   },
-
-
 
   {
     path: '/admin',
@@ -306,7 +303,7 @@ export const constantRoutes = [
         name: 'costCountList',
         component: () => import('@/views/statistics/costCount-List'),
         meta: { title: '投放统计', icon: 'el-icon-coin' }
-      },{
+      }, {
         path: '/assessList',
         name: 'assessList',
         component: () => import('@/views/statistics/assessList-List'),

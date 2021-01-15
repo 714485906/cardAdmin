@@ -24,19 +24,19 @@ export default {
       type: String,
       default: '300px'
     },
-    OrderCountData:[String, Number,Object,Array]
+    OrderCountData: [String, Number, Object, Array]
   },
   data() {
     return {
       chart: null,
       titleData: undefined,
-      OrderCountData1:this.OrderCountData,
-      list: undefined,
+      OrderCountData1: this.OrderCountData,
+      list: undefined
     }
   },
   watch: {
     OrderCountData: {
-      deep: true,  // 深度监听
+      deep: true, // 深度监听
       handler(newVal) {
         // 监听props OrderCountData 数据变化
         this.OrderCountData1 = newVal
@@ -57,7 +57,7 @@ export default {
     this.chart = null
   },
   created() {
-   this.aaa()
+    this.aaa()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -89,37 +89,36 @@ export default {
         ]
       })
     },
-    aaa(){
-      if(this.OrderCountData1!= undefined){
-        if(this.OrderCountData1.length != 0){
+    aaa() {
+      if (this.OrderCountData1 != undefined) {
+        if (this.OrderCountData1.length != 0) {
           this.titleData = ['移动', '联通', '电信']
           this.list = [
-              {name:'移动',value:this.OrderCountData1.ydCount},
-              {name:'联通',value:this.OrderCountData1.ltCount},
-              {name:'电信',value:this.OrderCountData1.dxCount}
-            ]
+            { name: '移动', value: this.OrderCountData1.ydCount },
+            { name: '联通', value: this.OrderCountData1.ltCount },
+            { name: '电信', value: this.OrderCountData1.dxCount }
+          ]
           this.$nextTick(() => {
             this.initChart()
           })
-        }else{
-          //没有数据
+        } else {
+          // 没有数据
           this.titleData = ['无数据']
-          this.list = [{name:'无数据',value:500}]
+          this.list = [{ name: '无数据', value: 500 }]
           this.$nextTick(() => {
             this.initChart()
           })
         }
-      }else{
-       //没有数据
+      } else {
+        // 没有数据
         this.titleData = ['无数据']
-        this.list = [{name:'无数据',value:500}]
+        this.list = [{ name: '无数据', value: 500 }]
         this.$nextTick(() => {
           this.initChart()
         })
       }
-
     }
-  },
+  }
 
 }
 </script>

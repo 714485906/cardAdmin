@@ -210,7 +210,7 @@ export default {
         templateType: 1, // 1.自动选号，2.手动选号(非选号)
         applyPhone: undefined,
         contactName: undefined,
-        accountId:undefined,
+        accountId: undefined,
         contactPhone: undefined,
         applyStatus: undefined
       },
