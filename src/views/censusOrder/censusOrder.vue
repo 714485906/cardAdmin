@@ -257,7 +257,7 @@ export default {
         this.getOrderCountByDayData.activateCount = []
         let that = this
         response.data.forEach(function(item){
-          that.getOrderCountByDayData.day.push(item.day)
+          that.getOrderCountByDayData.day.push(item.day+'号')
           that.getOrderCountByDayData.successCount.push(item.successCount)
           that.getOrderCountByDayData.failCount.push(item.failCount)
           that.getOrderCountByDayData.activateCount.push(item.activateCount)
