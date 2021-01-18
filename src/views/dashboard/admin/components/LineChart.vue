@@ -109,7 +109,7 @@ export default {
           }
         },
         legend: {
-          data: JSON.stringify(this.chartData.accountName)
+          data:this.chartData.accountName
         },
         series: this.seriesList
       })

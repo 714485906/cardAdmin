@@ -75,7 +75,28 @@
         </div>
       </el-col>
     </el-row>
-
+    <!--渠道-->
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <el-col :xs="24" :sm="24" :lg="8">
+        <h4>营销员</h4>
+        <div class="chart-wrapper">
+          <account-bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <h4>渠道账号</h4>
+        <div class="chart-wrapper">
+          <account-bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <h4>渠道平台</h4>
+        <div class="chart-wrapper">
+          <account-bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
+        </div>
+      </el-col>
+    </el-row>
+    <!--时间/总量统计-->
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <h4>时间/总量统计</h4>
       <el-date-picker
@@ -107,12 +128,13 @@
       </el-select>
       <line-chart :chart-data="orderCountourHour" />
     </el-row>
-
+    <!--时间/点击量统计-->
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <h4>时间/点击量统计</h4>
       <line-chart :chart-data="clickCountData" />
     </el-row>
 
+    <!--时间/平均点击率-->
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <h4>时间/平均点击率</h4>
       <line-chart :chart-data="clickRateData" />
@@ -129,6 +151,7 @@ import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import PieChart2 from './components/PieChart2'
 import BarChart from './components/BarChart'
+import accountBarChart from './components/accountBarChart'
 import TransactionTable from './components/TransactionTable'
 import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
@@ -148,6 +171,7 @@ export default {
     PieChart,
     PieChart2,
     BarChart,
+    accountBarChart,
     TransactionTable,
     TodoList,
     BoxCard
@@ -215,12 +239,8 @@ export default {
       this.fetchData()
     },
     accountIdsChange(val){
-      console.log(this.accountIdsToString)
-      this.listQuery.accountIds = JSON.stringify(this.accountIdsToString)
-      console.log(this.listQuery.accountIds)
+      this.listQuery.accountIds =this.accountIdsToString.join(',')
       this.getOrderCountByHourFun()
-    //  this.listQuery.accountIds = JSON.stringify(this.listQuery.accountIds)
-
     },
     ChangeTime(){
      this.getOrderCountByHourFun()
