@@ -79,86 +79,102 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
-    path: '/admin',
+    path: '/apply',
     component: Layout,
-    name: 'Admin',
-    meta: {
-      title: '系统管理',
-      icon: 'el-icon-s-help'
-    },
-
-    affix: true,
+    name: 'apply',
+    meta: { title: '表单管理', icon: 'el-icon-receiving' },
+    alwaysShow: true,
     children: [
       {
-        path: '/roleList',
-        name: 'roleList',
-        component: () => import('@/views/admin/admin-roleList'),
-        meta: {
-          title: '角色列表',
-          icon: 'table'
-        }
+        path: '/applyLiStselection',
+        name: 'applyLiStselection',
+        component: () => import('@/views/apply/apply-list-selection'),
+        meta: { title: '选号列表(自动)', icon: 'el-icon-coin' }
       },
       {
-        path: '/Group',
-        name: 'Group',
-        component: () => import('@/views/admin/admin-Group'),
-        meta: {
-          title: '营销组',
-          icon: 'people'
-        }
+        path: '/applyListNoSelection',
+        name: 'applyListNoSelection',
+        component: () => import('@/views/apply/apply-list-NoSelection'),
+        meta: { title: '非选号列表(手动)', icon: 'el-icon-coin' }
       },
       {
-        path: '/userList',
-        name: 'userList',
-        component: () => import('@/views/admin/admin-userList'),
-        meta: { title: '营销员', icon: 'tree' }
+        path: '/packageList',
+        name: 'packageList',
+        component: () => import('@/views/package/package-list'),
+        meta: { title: '打包列表', icon: 'el-icon-coin' }
       },
       {
-        path: '/Grouplist/:groupId(\\d+)',
-        name: 'Grouplist',
-        component: () => import('@/views/admin/Group-list'),
-        meta: { title: '营销组详情', icon: 'people' },
+        path: '/packageSelection/:packageId(\\d+)',
+        name: 'packageSelection',
+        component: () => import('@/views/package/package-list-Selection'),
+        meta: { title: '打包详情', icon: 'el-icon-coin' },
         hidden: true
       }
     ]
   },
   {
-    path: '/Channel',
+    path: '/order',
     component: Layout,
-    name: 'Channel',
-    meta: { title: '渠道管理', icon: 'el-icon-s-unfold' },
+    name: 'order',
+    meta: { title: '订单管理', icon: 'el-icon-receiving' },
+    alwaysShow: true,
     children: [
       {
-        path: '/platform',
-        name: 'platform',
-        component: () => import('@/views/platform/platform-List'),
-        meta: { title: '投放平台', icon: 'el-icon-share' }
+        path: '/orderList',
+        name: 'orderList',
+        component: () => import('@/views/order/index'),
+        meta: { title: '订单列表', icon: 'el-icon-coin' }
       },
       {
-        path: '/channelList',
-        name: 'channelList',
-        component: () => import('@/views/channel/channel-List'),
-        meta: { title: '渠道列表', icon: 'el-icon-attract' }
+        path: '/orderListErr',
+        name: 'orderListErr',
+        component: () => import('@/views/order/index'),
+        meta: { title: '异常订单', icon: 'el-icon-coin' }
+      }
+    ]
+  },
+  {
+    path: '/statistics',
+    component: Layout,
+    name: 'statistics',
+    meta: { title: '统计分析', icon: 'el-icon-receiving' },
+    alwaysShow: true,
+    children: [
+      {
+        path: '/costList',
+        name: 'costList',
+        component: () => import('@/views/statistics/costList-List'),
+        meta: { title: '投放成本', icon: 'el-icon-coin' }
       },
       {
-        path: '/channelAccount/:channelId(\\d+)',
-        name: 'channelAccount',
-        component: () => import('@/views/channel/channel-account'),
-        meta: { title: '渠道账号列表', icon: 'tree' },
+        path: '/costCountList',
+        name: 'costCountList',
+        component: () => import('@/views/statistics/costCount-List'),
+        meta: { title: '投放统计', icon: 'el-icon-coin' }
+      }, {
+        path: '/assessList',
+        name: 'assessList',
+        component: () => import('@/views/statistics/assessList-List'),
+        meta: { title: '考核报表', icon: 'el-icon-coin' }
+      },
+      {
+        path: '/assessInfo',
+        name: 'assessInfo',
+        component: () => import('@/views/statistics/assess-info'),
+        meta: { title: '考核报表详情', icon: 'el-icon-coin' },
         hidden: true
       },
       {
-        path: '/recharge',
-        name: 'recharge',
-        component: () => import('@/views/recharge/recharge-list'),
-        meta: { title: '账号充值', icon: 'tree' },
+        path: '/costCountListInfo',
+        name: 'costCountListInfo',
+        component: () => import('@/views/statistics/components/order-list'),
+        meta: { title: '订单详情', icon: 'el-icon-coin' },
         hidden: true
       }
-
     ]
-  }, {
+  },
+  {
     path: '/operator',
     component: Layout,
     name: 'operator',
@@ -179,7 +195,9 @@ export const constantRoutes = [
         hidden: true
       }
     ]
-  }, {
+  },
+
+  {
     path: '/product',
     component: Layout,
     name: 'product',
@@ -231,96 +249,80 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/apply',
+    path: '/Channel',
     component: Layout,
-    name: 'apply',
-    meta: { title: '表单管理', icon: 'el-icon-receiving' },
-    alwaysShow: true,
+    name: 'Channel',
+    meta: { title: '渠道管理', icon: 'el-icon-s-unfold' },
     children: [
       {
-        path: '/applyLiStselection',
-        name: 'applyLiStselection',
-        component: () => import('@/views/apply/apply-list-selection'),
-        meta: { title: '选号列表(自动)', icon: 'el-icon-coin' }
+        path: '/platform',
+        name: 'platform',
+        component: () => import('@/views/platform/platform-List'),
+        meta: { title: '投放平台', icon: 'el-icon-share' }
       },
       {
-        path: '/applyListNoSelection',
-        name: 'applyListNoSelection',
-        component: () => import('@/views/apply/apply-list-NoSelection'),
-        meta: { title: '非选号列表(手动)', icon: 'el-icon-coin' }
+        path: '/channelList',
+        name: 'channelList',
+        component: () => import('@/views/channel/channel-List'),
+        meta: { title: '渠道列表', icon: 'el-icon-attract' }
       },
       {
-        path: '/packageList',
-        name: 'packageList',
-        component: () => import('@/views/package/package-list'),
-        meta: { title: '打包列表', icon: 'el-icon-coin' }
-      },
-      {
-        path: '/packageSelection/:packageId(\\d+)',
-        name: 'packageSelection',
-        component: () => import('@/views/package/package-list-Selection'),
-        meta: { title: '打包详情', icon: 'el-icon-coin' },
-        hidden: true
-      }
-    ]
-  },
-  {
-    path: '/order',
-    component: Layout,
-    name: 'order',
-    meta: { title: '订单服务', icon: 'el-icon-receiving' },
-    alwaysShow: true,
-    children: [
-      {
-        path: '/orderList',
-        name: 'orderList',
-        component: () => import('@/views/order/index'),
-        meta: { title: '订单列表', icon: 'el-icon-coin' }
-      },
-      {
-        path: '/orderListErr',
-        name: 'orderListErr',
-        component: () => import('@/views/order/index'),
-        meta: { title: '异常订单', icon: 'el-icon-coin' }
-      }
-    ]
-  },
-  {
-    path: '/statistics',
-    component: Layout,
-    name: 'statistics',
-    meta: { title: '统计服务', icon: 'el-icon-receiving' },
-    alwaysShow: true,
-    children: [
-      {
-        path: '/costList',
-        name: 'costList',
-        component: () => import('@/views/statistics/costList-List'),
-        meta: { title: '投放成本', icon: 'el-icon-coin' }
-      },
-      {
-        path: '/costCountList',
-        name: 'costCountList',
-        component: () => import('@/views/statistics/costCount-List'),
-        meta: { title: '投放统计', icon: 'el-icon-coin' }
-      }, {
-        path: '/assessList',
-        name: 'assessList',
-        component: () => import('@/views/statistics/assessList-List'),
-        meta: { title: '考核报表', icon: 'el-icon-coin' }
-      },
-      {
-        path: '/assessInfo',
-        name: 'assessInfo',
-        component: () => import('@/views/statistics/assess-info'),
-        meta: { title: '考核报表详情', icon: 'el-icon-coin' },
+        path: '/channelAccount/:channelId(\\d+)',
+        name: 'channelAccount',
+        component: () => import('@/views/channel/channel-account'),
+        meta: { title: '渠道账号列表', icon: 'tree' },
         hidden: true
       },
       {
-        path: '/costCountListInfo',
-        name: 'costCountListInfo',
-        component: () => import('@/views/statistics/components/order-list'),
-        meta: { title: '订单详情', icon: 'el-icon-coin' },
+        path: '/recharge',
+        name: 'recharge',
+        component: () => import('@/views/recharge/recharge-list'),
+        meta: { title: '账号充值', icon: 'tree' },
+        hidden: true
+      }
+
+    ]
+  },
+  {
+    path: '/admin',
+    component: Layout,
+    name: 'Admin',
+    meta: {
+      title: '系统管理',
+      icon: 'el-icon-s-help'
+    },
+
+    affix: true,
+    children: [
+      {
+        path: '/roleList',
+        name: 'roleList',
+        component: () => import('@/views/admin/admin-roleList'),
+        meta: {
+          title: '角色列表',
+          icon: 'table'
+        }
+      },
+      {
+        path: '/Group',
+        name: 'Group',
+        component: () => import('@/views/admin/admin-Group'),
+        meta: {
+          title: '营销组',
+          icon: 'people'
+        }
+      },
+      {
+        path: '/userList',
+        name: 'userList',
+        component: () => import('@/views/admin/admin-userList'),
+        meta: { title: '营销员', icon: 'tree' }
+      },
+      {
+        path: '/Grouplist/:groupId(\\d+)',
+        name: 'Grouplist',
+        component: () => import('@/views/admin/Group-list'),
+        meta: { title: '营销组详情', icon: 'people' },
         hidden: true
       }
     ]

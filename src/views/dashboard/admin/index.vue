@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
     <!--    <github-corner class="github-corner" />-->
-    <el-radio-group v-model="dateType" size="medium" @change="handleChange">
+    <el-radio-group v-model="transactionlistQuery.periodType" size="medium" @change="handleChange">
       <el-radio-button :label="0">全量</el-radio-button>
       <el-radio-button :label="1">上月</el-radio-button>
       <el-radio-button :label="2">本月</el-radio-button>
@@ -9,7 +9,20 @@
       <el-radio-button :label="4">本周</el-radio-button>
       <el-radio-button :label="5">昨日</el-radio-button>
       <el-radio-button :label="6">今日</el-radio-button>
+      <el-radio-button :label="7">自定义</el-radio-button>
     </el-radio-group>
+    <el-date-picker
+      v-if="dateTimeShow"
+      v-model="dateTime1"
+      type="datetimerange"
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束时间"
+      format="yyyy-MM-dd"
+      value-format="yyyy-MM-dd"
+      style="width: 260px;margin-left: 20px"
+      @change="ChangeTimeDateType7"
+    />
     <!--总量统计-->
     <panel-group :order-count-data="OrderCountData" />
 
@@ -29,7 +42,7 @@
       </el-col>
     </el-row>
     <!--城市统计-->
-    <el-radio-group v-model="dateType" size="medium" style="padding: 10px 0px" @change="handleChange">
+    <el-radio-group v-model="transactionlistQuery.periodType" size="medium" style="padding: 10px 0px" @change="handleChange">
       <el-radio-button :label="0">全量</el-radio-button>
       <el-radio-button :label="1">上月</el-radio-button>
       <el-radio-button :label="2">本月</el-radio-button>
@@ -37,8 +50,20 @@
       <el-radio-button :label="4">本周</el-radio-button>
       <el-radio-button :label="5">昨日</el-radio-button>
       <el-radio-button :label="6">今日</el-radio-button>
+      <el-radio-button :label="7">自定义</el-radio-button>
     </el-radio-group>
-
+    <el-date-picker
+      v-if="dateTimeShow"
+      v-model="dateTime1"
+      type="datetimerange"
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束时间"
+      format="yyyy-MM-dd"
+      value-format="yyyy-MM-dd"
+      style="width: 260px;margin-left: 20px"
+      @change="ChangeTimeDateType7"
+    />
     <el-row style="height: 600px">
       <el-col :span="24">
         <div class="grid-content bg-purple-dark">
@@ -66,11 +91,25 @@
         <el-radio-button :label="2">联通</el-radio-button>
         <el-radio-button :label="3">电信</el-radio-button>
       </el-radio-group>
+      <el-select
+        v-model="accountIdsToString"
+        multiple
+        collapse-tags
+        style="margin-left: 20px;"
+        @change="accountIdsChange"
+        placeholder="请选择">
+        <el-option
+          v-for="item in AccountData"
+          :key="item.accountId"
+          :label="item.username"
+          :value="item.accountId">
+        </el-option>
+      </el-select>
       <line-chart :chart-data="orderCountourHour" />
     </el-row>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <h4>时间/总量统计</h4>
+      <h4>时间/点击量统计</h4>
       <line-chart :chart-data="clickCountData" />
     </el-row>
 
@@ -96,6 +135,7 @@ import BoxCard from './components/BoxCard'
 import AccountOrderCounts from '@/views/dashboard/admin/components/accountOrderCounts'
 
 import { transactionList, getOrderCountByHour } from '@/api/remote-search'
+import { getgetAccounts } from '@/api/channel'
 
 export default {
   name: 'DashboardAdmin',
@@ -114,8 +154,16 @@ export default {
   },
   data() {
     return {
+      transactionlistQuery:{
+        periodType: 6,
+        beginCreateDate: undefined,
+        endCreateDate: undefined
+      },
+      dateTime1: '',
+      dateTimeShow: false,
+      accountIdsToString:undefined,
       listQuery:{
-        accountIds:[],
+        accountIds:undefined,
         createDate:undefined,
         operatorType:2
       },
@@ -132,12 +180,14 @@ export default {
         accountName:undefined,
         hourOrderCounts:[],
       },
-      dateType: 6
+      AccountData:undefined
+
     }
   },
   created() {
     this.fetchData()
     this.getOrderCountByHourFun()
+    this.getgetAccountsFun()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -145,22 +195,43 @@ export default {
     },
     handleChange(val) {
       this.dateType = val
-      this.fetchData()
+      if (val == 7) {
+        this.dateTimeShow = true
+      } else {
+        this.dateTime1 = ''
+        this.transactionlistQuery.beginCreateDate = undefined
+        this.transactionlistQuery.endCreateDate = undefined
+        this.dateTimeShow = false
+        this.fetchData()
+      }
     },
     operatorTypeChange(){
       this.getOrderCountByHourFun()
     },
+    ChangeTimeDateType7(val){
+      console.log(val)
+      this.transactionlistQuery.beginCreateDate = val[0]
+      this.transactionlistQuery.endCreateDate = val[1]
+      this.fetchData()
+    },
+    accountIdsChange(val){
+      console.log(this.accountIdsToString)
+      this.listQuery.accountIds = JSON.stringify(this.accountIdsToString)
+      console.log(this.listQuery.accountIds)
+      this.getOrderCountByHourFun()
+    //  this.listQuery.accountIds = JSON.stringify(this.listQuery.accountIds)
+
+    },
     ChangeTime(){
      this.getOrderCountByHourFun()
     },
-    fetchData() {
-      transactionList({
-        periodType: this.dateType
-      }).then(response => {
+    fetchData() { //初始单量统计
+      transactionList(this.transactionlistQuery).then(response => {
         this.OrderCountData = response.data
       })
     },
-    getOrderCountByHourFun() {
+    getOrderCountByHourFun() { //初始按小时统计单量
+
       getOrderCountByHour(this.listQuery).then(response => {
         this.getOrderCountByHourData = response.data
         //公共数据
@@ -194,7 +265,15 @@ export default {
         this.clickRateData.accountName = accountNameData
         this.clickRateData.hourOrderCounts = orderCountourHour3
       })
-    }
+    },
+    getgetAccountsFun() { //初始渠道账号数据
+      getgetAccounts({
+        pageNo:1,
+        pageSize:1000
+      }).then(response => {
+        this.AccountData = response.data
+      })
+    },
   }
 }
 </script>
