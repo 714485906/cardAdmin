@@ -76,23 +76,45 @@
       </el-col>
     </el-row>
     <!--渠道-->
+    <el-radio-group v-model="transactionlistQuery.periodType" size="medium" style="padding: 10px 0px" @change="handleChange">
+      <el-radio-button :label="0">全量</el-radio-button>
+      <el-radio-button :label="1">上月</el-radio-button>
+      <el-radio-button :label="2">本月</el-radio-button>
+      <el-radio-button :label="3">上周</el-radio-button>
+      <el-radio-button :label="4">本周</el-radio-button>
+      <el-radio-button :label="5">昨日</el-radio-button>
+      <el-radio-button :label="6">今日</el-radio-button>
+      <el-radio-button :label="7">自定义</el-radio-button>
+    </el-radio-group>
+    <el-date-picker
+      v-if="dateTimeShow"
+      v-model="dateTime1"
+      type="datetimerange"
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束时间"
+      format="yyyy-MM-dd"
+      value-format="yyyy-MM-dd"
+      style="width: 260px;margin-left: 20px"
+      @change="ChangeTimeDateType7"
+    />
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <el-col :xs="24" :sm="24" :lg="8">
         <h4>营销员</h4>
         <div class="chart-wrapper">
-          <account-bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
+          <account-bar-chart :order-counts="userOrderCountsData" />
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
         <h4>渠道账号</h4>
         <div class="chart-wrapper">
-          <account-bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
+          <account-bar-chart :order-counts="accountOrderCountsData" />
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
         <h4>渠道平台</h4>
         <div class="chart-wrapper">
-          <account-bar-chart :province-order-counts="OrderCountData.provinceOrderCounts" />
+          <account-bar-chart :order-counts="channelOrderCountsData" />
         </div>
       </el-col>
     </el-row>
@@ -204,7 +226,19 @@ export default {
         accountName:undefined,
         hourOrderCounts:[],
       },
-      AccountData:undefined
+      AccountData:undefined,
+      userOrderCountsData:{
+        name: undefined,
+        value: undefined
+      },
+      accountOrderCountsData:{
+        name: undefined,
+        value: undefined
+      },
+      channelOrderCountsData:{
+        name: undefined,
+        value: undefined
+      }
 
     }
   },
@@ -247,7 +281,32 @@ export default {
     },
     fetchData() { //初始单量统计
       transactionList(this.transactionlistQuery).then(response => {
+        let that = this;
         this.OrderCountData = response.data
+          this.userOrderCountsData.name = [] // 每一次调用清空
+          this.userOrderCountsData.value = []// 每一次调用清空
+          this.accountOrderCountsData.name = [] // 每一次调用清空
+          this.accountOrderCountsData.value = []// 每一次调用清空
+          this.channelOrderCountsData.name = [] // 每一次调用清空
+          this.channelOrderCountsData.value = []// 每一次调用清空
+
+        /*用户总单量*/
+        response.data.userOrderCounts.forEach(function(item){
+          that.userOrderCountsData.name.push(item.username) //用户名称
+          that.userOrderCountsData.value.push(item.userTotalCount) //用户总单量
+        })
+        //渠道账号
+        response.data.accountOrderCounts.forEach(function(item){
+          that.accountOrderCountsData.name.push(item.accountName+"("+item.username+")") //渠道账号名称
+          that.accountOrderCountsData.value.push(item.accountSuccessCount) //渠道账号成功单量
+        })
+
+        //渠道账号
+        response.data.channelOrderCounts.forEach(function(item){
+          that.channelOrderCountsData.name.push(item.channelName) //渠道名称
+          that.channelOrderCountsData.value.push(item.channelTotalCount) //渠道总单量
+        })
+
       })
     },
     getOrderCountByHourFun() { //初始按小时统计单量

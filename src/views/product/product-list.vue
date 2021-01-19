@@ -75,7 +75,7 @@
         </el-form-item>
         <el-form-item label="主图链接" prop="imgUrl">
           <el-upload
-            action="http://47.99.37.96:8070/upload"
+            action="/upload"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"

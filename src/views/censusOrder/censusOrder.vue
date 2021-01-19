@@ -1,5 +1,32 @@
 <template>
   <div>
+    <el-row>
+      <el-col :span="24">
+        <div class="grid-content bg-purple-dark">
+          <el-upload
+            style="margin:20px"
+            ref="uploadExcel"
+            action="/order/importOrders"
+            :auto-upload="true"
+            accept=".xlsx, .xls"
+            :before-upload="beforeUploadFile"
+            :on-change="fileChange"
+            :on-exceed="exceedFile"
+            :on-success="handleSuccess"
+            :on-error="handleError"
+            :data="{
+            operatorId:1
+          }"
+            :headers="token"
+          >
+            <el-button size="small" plain>导入数据</el-button>
+            <div slot="tip" class="el-upload__tip">
+              只能上传xlsx,xls文件，且不超过10M
+            </div>
+          </el-upload>
+        </div>
+      </el-col>
+    </el-row>
     <el-row :gutter="20">
       <el-col :span="24" style="margin: 15px 20px">
         <div class="grid-content bg-purple-dark">
@@ -26,7 +53,6 @@
             @change="ChangeTime"
           />
         </div>
-
       </el-col>
     </el-row>
     <el-row type="flex" class="row-bg" :gutter="20">
@@ -180,6 +206,7 @@
 import CountTo from 'vue-count-to'
 import { transactionList, getOrderCountByDay } from '@/api/remote-search'
 import LineChartDay from '@/views/dashboard/admin/components/LineChartDay'
+import { getToken } from '@/utils/auth'
 export default {
   name: 'CensusOrder',
   components: {
@@ -193,7 +220,13 @@ export default {
       census: [],
       total: 0,
       dateTime1: '',
+      fileList:[],
+      limitNum:'1',
+      operatorId:'1',
       dateTimeShow: false,
+      token:{
+        'Authorization':getToken()
+      },
       listQuery: {
         periodType: 6,
         beginCreateDate: undefined,
@@ -264,6 +297,62 @@ export default {
         })
         console.log(this.getOrderCountByDayData)
       })
+    },
+    // 上传文件之前的钩子, 参数为上传的文件,若返回 false 或者返回 Promise 且被 reject，则停止上传
+    beforeUploadFile(file) {
+      // console.log(file)
+      const extension = file.name.substring(file.name.lastIndexOf('.') + 1)
+      const size = file.size / 1024 / 1024
+      if (extension == 'xlsx' || extension == 'xls') {
+
+      }else{
+        this.$notify.warning({
+          title: '警告',
+          message: `只能上传Excel（即后缀是.xlsx）的文件`
+        })
+      }
+      if (size > 10) {
+        this.$notify.warning({
+          title: '警告',
+          message: `文件大小不得超过10M`
+        })
+      }
+    },
+    // 文件状态改变时的钩子
+    fileChange(file, fileList) {
+      // console.log(file)
+      // console.log(fileList)
+    },
+    // 文件超出个数限制时的钩子
+    exceedFile(files, fileList) {
+      this.$notify.warning({
+        title: '警告',
+        message: `只能选择 ${
+          this.limitNum
+        } 个文件，当前共选择了 ${files.length + fileList.length} 个`
+      })
+    },
+    // 文件上传成功时的钩子
+    handleSuccess(res, file, fileList) {
+      console.log(res)
+    //  this.formData.url = res.data  //服务器返回的文件地址
+      if(res.code == 200){
+        this.$message({
+          message: '文件上传成功',
+          type: 'success'
+        })
+        this.$refs.uploadExcel.clearFiles()// 清楚上次上传记录
+      }else {
+        this.$message({
+          message: res.message,
+          type: 'warning'
+        })
+      }
+
+    },
+    // 文件上传失败时的钩子
+    handleError(err, file, fileList) {
+      this.$message.error(err.msg)
     }
   }
 }

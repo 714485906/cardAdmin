@@ -24,12 +24,12 @@ export default {
       type: String,
       default: '300px'
     },
-    provinceOrderCounts: [String, Number, Object, Array]
+    orderCounts: [String, Number, Object, Array]
   },
   data() {
     return {
       chart: null,
-      provinceOrderCountsData: this.provinceOrderCounts,
+      orderCountsData: this.orderCounts,
       provinceName1: Array,
       ydData: Array,
       ltData: Array,
@@ -37,11 +37,11 @@ export default {
     }
   },
   watch: {
-    provinceOrderCounts: {
+    orderCounts: {
       deep: true, // 深度监听
       handler(newVal) {
         // 监听props 中的accountOrderCountsData 数据变化
-        this.provinceOrderCountsData = newVal
+        this.orderCountsData = newVal
         this.aaa()
       }
     }
@@ -80,7 +80,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: this.provinceName1,
+          data: this.orderCountsData.name,
           axisTick: {
             alignWithLabel: true
           }
@@ -92,48 +92,18 @@ export default {
           }
         }],
         series: [{
-          name: '移动',
+          name: '总单量',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: this.ydData,
-          animationDuration
-        }, {
-          name: '联通',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: this.ltData,
-          animationDuration
-        }, {
-          name: '电信',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: this.dxData,
+          data: this.orderCountsData.value,
           animationDuration
         }]
       })
     },
     aaa() {
-      if (this.provinceOrderCountsData != undefined) {
-        if (this.provinceOrderCountsData.length != 0) {
-          // 有数据
-          const provinceName1 = []
-          const ydData = []
-          const ltData = []
-          const dxData = []
-          this.provinceOrderCountsData.forEach(function(value, i) {
-            provinceName1.push(value.provinceName) // 城市名称
-            ydData.push(value.provinceYdSuccessCount) // 移动数据
-            ltData.push(value.provinceLtSuccessCount)// 联通数据
-            dxData.push(value.provinceDxSuccessCount)// 电信数据
-          })
-          this.provinceName1 = provinceName1
-          this.ydData = ydData
-          this.ltData = ltData
-          this.dxData = dxData
-
+      if (this.orderCountsData != undefined) {
+        if (this.orderCountsData.length != 0) {
           this.$nextTick(() => {
             this.initChart()
           })
