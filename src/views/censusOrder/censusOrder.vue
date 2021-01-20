@@ -3,10 +3,23 @@
     <el-row>
       <el-col :span="24">
         <div class="grid-content bg-purple-dark">
+          <el-select
+            v-model="operatorId"
+            @change="operatorChange"
+            style="margin: 20px;float: left"
+            placeholder="请选择">
+            <el-option
+              v-for="item in getOperatorListData"
+              :key="item.operatorId"
+              :label="item.operatorName"
+              :value="item.operatorId">
+            </el-option>
+          </el-select>
           <el-upload
-            style="margin:20px"
+            :disabled="disabledType"
+            style="margin:20px;float:left;"
             ref="uploadExcel"
-            action="/order/importOrders"
+            :action="uploadUrl+'/order/importOrders'"
             :auto-upload="true"
             accept=".xlsx, .xls"
             :before-upload="beforeUploadFile"
@@ -15,11 +28,11 @@
             :on-success="handleSuccess"
             :on-error="handleError"
             :data="{
-            operatorId:1
+            operatorId:this.operatorId
           }"
             :headers="token"
           >
-            <el-button size="small" plain>导入数据</el-button>
+            <el-button size="small" plain :disabled="disabledType">导入数据</el-button>
             <div slot="tip" class="el-upload__tip">
               只能上传xlsx,xls文件，且不超过10M
             </div>
@@ -207,6 +220,8 @@ import CountTo from 'vue-count-to'
 import { transactionList, getOrderCountByDay } from '@/api/remote-search'
 import LineChartDay from '@/views/dashboard/admin/components/LineChartDay'
 import { getToken } from '@/utils/auth'
+import { getgetAccounts } from '@/api/channel'
+import { getOperatorList } from '@/api/operator'
 export default {
   name: 'CensusOrder',
   components: {
@@ -222,8 +237,11 @@ export default {
       dateTime1: '',
       fileList:[],
       limitNum:'1',
-      operatorId:'1',
       dateTimeShow: false,
+      getOperatorListData:undefined,
+      operatorId:undefined,
+      disabledType:true,
+      uploadUrl:process.env.VUE_APP_BASE_API,
       token:{
         'Authorization':getToken()
       },
@@ -245,8 +263,10 @@ export default {
     }
   },
   created() {
+    console.log(this.uploadUrl)
     this.fetchData()
     this.getOrderCountByDayFun()
+    this.operatorListFun()
   },
   methods: {
     handleChange(val) {
@@ -262,6 +282,11 @@ export default {
         this.dateTimeShow = false
         this.fetchData()
       }
+    },
+    operatorChange(val){
+     if(val){
+      this.disabledType = false
+     }
     },
     handleChange2(){
       this.getOrderCountByDayFun()
@@ -353,6 +378,14 @@ export default {
     // 文件上传失败时的钩子
     handleError(err, file, fileList) {
       this.$message.error(err.msg)
+    },
+    operatorListFun() { //初始渠道账号数据
+      getOperatorList({
+        pageNo:1,
+        pageSize:1000
+      }).then(response => {
+        this.getOperatorListData = response.data
+      })
     }
   }
 }

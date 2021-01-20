@@ -3,7 +3,7 @@
     <el-aside width="40%">
       <img v-model="temp.imgUrl" width="50%" style="display: block;margin: 20px auto" :src="temp.imgUrl" alt="">
       <el-upload
-        action="http://47.99.37.96:8070/upload"
+        :action="uploadUrl+'/upload'"
         list-type="picture-card"
         :on-preview="handlePictureCardPreview"
         :on-remove="handleRemove"
@@ -132,6 +132,7 @@ export default {
   },
   data() {
     return {
+      uploadUrl:process.env.VUE_APP_BASE_API,
       temp: undefined,
       dialogVisible: false,
       operatorData: undefined

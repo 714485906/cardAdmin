@@ -75,7 +75,7 @@
         </el-form-item>
         <el-form-item label="主图链接" prop="imgUrl">
           <el-upload
-            action="/upload"
+            :action="uploadUrl+'/upload'"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
@@ -196,6 +196,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      uploadUrl:process.env.VUE_APP_BASE_API,
       listQuery: {
         pageNo: 1,
         pageSize: 8,

@@ -144,7 +144,7 @@
         <el-option
           v-for="item in AccountData"
           :key="item.accountId"
-          :label="item.username"
+          :label="item.accountName+'-('+item.username+')'"
           :value="item.accountId">
         </el-option>
       </el-select>
