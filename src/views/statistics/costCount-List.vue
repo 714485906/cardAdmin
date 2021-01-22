@@ -7,6 +7,9 @@
       <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
+      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in userIdData" :key="item.userId" :label="item.username" :value="item.userId" />
+      </el-select>
       <!--      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">-->
       <!--        <el-option v-for="item in platformStatusData" :key="item.costStatus" :label="item.costStatusName" :value="item.costStatus" />-->
       <!--      </el-select>-->
@@ -18,7 +21,7 @@
         end-placeholder="下单结束日期"
         format="yyyy-MM-dd"
         value-format="yyyy-MM-dd"
-        style="min-width: 160px"
+        style="min-width: 160px;margin-left: 10px"
         @change="dateChange"
       />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 10px" @click="handleFilter">
@@ -182,7 +185,8 @@ import { getProductList } from '@/api/product'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
-import { getgetAccounts } from '@/api/channel' // secondary package based on el-pagination
+import { getgetAccounts } from '@/api/channel'
+import { getUserList } from '@/api/admin' // secondary package based on el-pagination
 
 // arr to obj, such as { CN : "China", US : "USA" }
 const platformStatusData = [
@@ -209,6 +213,7 @@ export default {
       getCostCountData: [],
       total: 0,
       listLoading: true,
+      userIdData: undefined,
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -217,7 +222,8 @@ export default {
         accountId: undefined,
         productId: undefined,
         assessMonth: undefined,
-        costStatus: 1
+        costStatus: 1,
+        userId:undefined
       },
       importanceOptions: [1, 2, 3],
       Rolelist: '',
@@ -273,6 +279,7 @@ export default {
     this.getList()
     this.accountIdDataFun() // 初始账号id
     this.getProductListFun() // 初始商品
+    this.getUserListFun() //用户
   },
   methods: {
     getList() {
@@ -347,6 +354,14 @@ export default {
         pageSize: 10000
       }).then(response => {
         this.productIdData = response.data // 获取账号
+      })
+    },
+    getUserListFun(){
+      getUserList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.userIdData = response.data // 用户
       })
     }
   }

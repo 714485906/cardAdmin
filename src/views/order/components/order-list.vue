@@ -97,12 +97,12 @@
           <span class="link-type">{{ row.systemOrderNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="运营商订单ID" min-width="140px" align="center" show-overflow-tooltip>
+      <el-table-column label="运营商订单" min-width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.operatorOrderNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请人姓名" min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="申请人" min-width="100px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.contactName }}</span>
         </template>
@@ -112,32 +112,32 @@
           <span class="link-type">{{ row.applyPhone }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="省份名称" min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="省份" min-width="90px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.provinceName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="城市名称" min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="城市" min-width="90px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.cityName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="区县名称" width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="区县" width="90px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.districtName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请号码省份" width="120px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.applyProvinceName }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="申请号码省份" width="120px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.applyProvinceName }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 
-      <el-table-column label="申请号码城市" width="120px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.applyCityName }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="申请号码城市" width="120px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.applyCityName }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="触点名称" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.touchName }}</span>
@@ -190,17 +190,17 @@
           <el-tag v-if="row.logisticsStatus == 2" type="success">已签收</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="发货时间" width="260px" align="center" show-overflow-tooltip>
+      <el-table-column label="发货时间" width="230px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.deliveryTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="激活时间" width="260px" align="center" show-overflow-tooltip>
+      <el-table-column label="激活时间" width="230px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.activateTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="充值时间" width="260px" align="center" show-overflow-tooltip>
+      <el-table-column label="充值时间" width="230px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.rechargeTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -210,11 +210,16 @@
           <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
-      <!--      <el-table-column label="商品佣金/(分)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>-->
-      <!--        <template slot-scope="{row}">-->
-      <!--          <span class="link-type">{{ row.rechargeFee }}</span>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
+      <el-table-column v-if="packageShow" label="失败原因" width="180px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{ row.orderMessage }}</span>
+        </template>
+      </el-table-column>
+            <el-table-column label="充值金额/(元)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>
+              <template slot-scope="{row}">
+                <span class="link-type">{{ row.rechargeFee * 100 }}</span>
+              </template>
+            </el-table-column>
       <el-table-column label="订单状态" fixed="right" class-name="status-col" width="120" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-tag v-if="row.orderStatus == 0" type="info">待提交</el-tag>
@@ -379,6 +384,7 @@ export default {
     }
   },
   created() {
+
     if (this.$route.query.tab != undefined) { // 选择当前营业厅
       this.listQuery.operatorType = this.$route.query.tab
     }
@@ -393,6 +399,15 @@ export default {
     this.getPlatformListDataFun() // 获取平台
     this.getProductListDataFun() // 产品名称
     this.getGetTouchesDataFun() // 触点码
+  },
+  watch:{
+    $route:{
+      handler(val,oldval){
+
+      },
+      // 深度观察监听
+      deep: true
+    }
   },
   methods: {
     getList() {

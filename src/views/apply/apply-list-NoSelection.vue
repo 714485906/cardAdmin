@@ -4,12 +4,26 @@
       <el-input v-model="listQuery.applyPhone" placeholder="申请号码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.contactName" placeholder="申请人姓名" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.contactPhone" placeholder="申请人联系电话" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.applyStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">
+      <el-input v-model="listQuery.applyNo" placeholder="系统单号查询" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.applyStatus" placeholder="订单状态" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in applyStatusData" :key="item.applyStatus" :label="item.applyStatusName" :value="item.applyStatus" />
       </el-select>
-      <el-select v-model="listQuery.productId" placeholder="产品名称" clearable class="filter-item" style="width: 130px " @change="queryproduct">
+      <el-select v-model="listQuery.productId" placeholder="商品名称" clearable class="filter-item" style="width: 130px " @change="queryproduct">
         <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
+      <el-select v-model="listQuery.channelId" placeholder="渠道名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
+        <el-option v-for="item in channelIdData" :key="item.channelId" :label="item.channelName" :value="item.channelId" />
+      </el-select>
+      <el-date-picker
+        v-model="dateTime1"
+        type="datetimerange"
+        range-separator="至"
+        start-placeholder="下单开始日期"
+        end-placeholder="下单结束日期"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        style="min-width: 300px"
+      />
       <el-button v-waves class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -45,7 +59,7 @@
         :selectable="checkSelectable"
         fixed="left"
       />
-      <el-table-column label="系统唯一标识" align="center" width="120" show-overflow-tooltip>
+      <el-table-column label="系统单号" align="center" width="120" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.applyNo }}</span>
         </template>
@@ -70,17 +84,17 @@
           <span class="link-type">{{ row.contactPhone }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="省份名称" width="140px" align="center" show-overflow-tooltip>
+      <el-table-column label="省份" width="100px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.provinceName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="城市名称" width="140px" align="center" show-overflow-tooltip>
+      <el-table-column label="城市" width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.cityName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="区县名称" width="140px" align="center" show-overflow-tooltip>
+      <el-table-column label="区县" width="140px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.districtName }}</span>
         </template>
@@ -95,7 +109,7 @@
       <!--          <span class="link-type">{{ row.applyCityName }}</span>-->
       <!--        </template>-->
       <!--      </el-table-column>-->
-      <el-table-column label="收件详细地址" min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="收件详细地址" min-width="170px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.address }}</span>
         </template>
@@ -115,7 +129,7 @@
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="产品名称" min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="商品名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.productName }}</span>
         </template>
@@ -200,8 +214,9 @@
 
 <script>
 import { getapplyList, PostResetApply, PostsubmitApply } from '@/api/apply'
+import { getorderList } from '@/api/order'
 import { getProductList } from '@/api/product'
-import { getgetAccounts, PostcreateChannel } from '@/api/channel'
+import { getChannelList, getgetAccounts, PostcreateChannel } from '@/api/channel'
 import { getGetTouches } from '@/api/operator'
 import { PostCreatePackage } from '@/api/package'
 import waves from '@/directive/waves' // waves directive
@@ -238,7 +253,11 @@ export default {
         contactName: undefined,
         contactPhone: undefined,
         productId: undefined,
-        applyStatus: undefined
+        applyStatus: undefined,
+        applyNo:undefined,
+        channelId:undefined,
+        beginCreateTime: undefined,
+        endCreateTime: undefined
       },
       multipleSelection: [],
       importanceOptions: [1, 2, 3],
@@ -256,6 +275,7 @@ export default {
       platformData: '',
       Rolelist: '',
       groupList: '',
+      dateTime1: '',
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
@@ -299,6 +319,7 @@ export default {
       currentIndex: 0,
       accountsData: '',
       getProductData: '',
+      channelIdData: '',
       touchData: '',
       queryList: {
         productId: undefined,
@@ -311,6 +332,7 @@ export default {
     this.getgetAccountsDataFun()
     this.getProductListDataFun()
     this.getGetTouchesDataFun()
+    this. getChannelListDataFun()
   },
   methods: {
     getList() {
@@ -325,6 +347,8 @@ export default {
       })
     },
     handleFilter() {
+      this.listQuery.beginCreateTime = this.dateTime1[0]
+      this.listQuery.endCreateTime = this.dateTime1[1]
       this.listQuery.pageNo = 1
       this.getList()
     },
@@ -500,6 +524,14 @@ export default {
         }
       })
     },
+    getChannelListDataFun() {
+      getChannelList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.channelIdData = response.data // 渠道
+      })
+    },
     getgetAccountsDataFun() {
       getgetAccounts({
         pageNo: 1,
@@ -533,5 +565,8 @@ export default {
 <style scoped>
 .active{
   color: red;;
+}
+.filter-item{
+  margin-left: 10px;
 }
 </style>

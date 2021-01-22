@@ -2,7 +2,36 @@
   <div>
     <el-row>
       <el-col :span="24">
-        <div class="grid-content bg-purple-dark">
+
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="24" style="margin: 15px 20px">
+        <div class="grid-content bg-purple-dark" style="float: left">
+          <el-radio-group v-model="listQuery.periodType" size="medium" @change="handleChange">
+            <el-radio-button :label="0">全量</el-radio-button>
+            <el-radio-button :label="1">上月</el-radio-button>
+            <el-radio-button :label="2">本月</el-radio-button>
+            <el-radio-button :label="3">上周</el-radio-button>
+            <el-radio-button :label="4">本周</el-radio-button>
+            <el-radio-button :label="5">昨日</el-radio-button>
+            <el-radio-button :label="6">今日</el-radio-button>
+            <el-radio-button :label="7">自定义</el-radio-button>
+          </el-radio-group>
+          <el-date-picker
+            v-if="dateTimeShow"
+            v-model="dateTime1"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束时间"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            style="width: 260px;margin-left: 20px"
+            @change="ChangeTime"
+          />
+        </div>
+        <div class="grid-content bg-purple-dark" style="float: right">
           <el-select
             v-model="operatorId"
             @change="operatorChange"
@@ -37,34 +66,6 @@
               只能上传xlsx,xls文件，且不超过10M
             </div>
           </el-upload>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="24" style="margin: 15px 20px">
-        <div class="grid-content bg-purple-dark">
-          <el-radio-group v-model="listQuery.periodType" size="medium" @change="handleChange">
-            <el-radio-button :label="0">全量</el-radio-button>
-            <el-radio-button :label="1">上月</el-radio-button>
-            <el-radio-button :label="2">本月</el-radio-button>
-            <el-radio-button :label="3">上周</el-radio-button>
-            <el-radio-button :label="4">本周</el-radio-button>
-            <el-radio-button :label="5">昨日</el-radio-button>
-            <el-radio-button :label="6">今日</el-radio-button>
-            <el-radio-button :label="7">自定义</el-radio-button>
-          </el-radio-group>
-          <el-date-picker
-            v-if="dateTimeShow"
-            v-model="dateTime1"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束时间"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
-            style="width: 260px;margin-left: 20px"
-            @change="ChangeTime"
-          />
         </div>
       </el-col>
     </el-row>
@@ -116,14 +117,14 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="正常订单" min-width="100px" align="center">
+          <el-table-column label="正常订单"  min-width="100px" align="center">
             <template slot-scope="{row}">
-              <span class="link-type">{{ row.productSuccessCount }}</span>
+              <span class="link-type" style="color: #2A70FF">{{ row.productSuccessCount }}</span>
             </template>
           </el-table-column>
           <el-table-column label="异常订单" width="100px" align="center">
             <template slot-scope="{row}">
-              <span>{{ row.productFailCount }}</span>
+              <span style="color: #F16869">{{ row.productFailCount }}</span>
             </template>
           </el-table-column>
           <el-table-column label="已发货" width="90px" align="center">
@@ -133,7 +134,7 @@
           </el-table-column>
           <el-table-column label="已激活" min-width="90px" align="center">
             <template slot-scope="{row}">
-              <span class="link-type">{{ row.productActivateCount }}</span>
+              <span class="link-type" style="color: #BEA5F7">{{ row.productActivateCount }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -167,7 +168,7 @@
           </el-table-column>
           <el-table-column label="异常订单" width="100px" align="center">
             <template slot-scope="{row}">
-              <span>{{ row.accountFailCount }}</span>
+              <span style="color: red">{{ row.accountFailCount }}</span>
             </template>
           </el-table-column>
           <el-table-column label="已激活" min-width="90px" align="center">
@@ -175,19 +176,19 @@
               <span class="link-type">{{ row.accountActivateCount }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="首冲量" width="90px" align="center">
+          <el-table-column label="首充量" width="90px" align="center">
             <template slot-scope="{row}">
               <span>{{ row.accountRechargeCount }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="首冲比率" width="90px" align="center">
+          <el-table-column label="首充比率" width="90px" align="center">
             <template slot-scope="{row}">
-              <span>{{ row.productDeliveryCount }}</span>
+              <span style="color: #9C74F2">{{ row.accountRechargeRate }}%</span>
             </template>
           </el-table-column>
           <el-table-column label="激活比率" width="90px" align="center">
             <template slot-scope="{row}">
-              <span>{{ row.accountRechargeRate }}</span>
+              <span style="color: #9C74F2">{{ row.accountActivateRate }}%</span>
             </template>
           </el-table-column>
         </el-table>
@@ -196,7 +197,7 @@
     <div style="height: 100px" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <h4>时间/平均点击率</h4>
+      <h4>月度转化统计</h4>
       <el-radio-group v-model="listQuery2.operatorType" size="medium" @change="handleChange2">
         <el-radio-button :label="1">移动</el-radio-button>
         <el-radio-button :label="2">联通</el-radio-button>
@@ -204,9 +205,9 @@
       </el-radio-group>
       <el-date-picker
         v-model="listQuery2.createMonth"
-        type="date"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
+        type="month"
+        format="yyyy-MM"
+        value-format="yyyy-MM"
         style="width: 150px;margin-left: 20px"
         @change="ChangeTime2"
       />

@@ -314,14 +314,18 @@ export default {
       getOrderCountByHour(this.listQuery).then(response => {
         this.getOrderCountByHourData = response.data
         //公共数据
-        let accountNameData = []; //账号名称
+        let accountNameData = []; //账号名称 和订单总数量
+        let accountNameData1 = []; //账号名称 和点击总数量
+        let accountNameData2 = []; //账号名称
         let orderCountourHour1 = []; // 存储时间总量统计 需要的数据
         let orderCountourHour2 = []; // 存储时间点击量统计 需要的数据
         let orderCountourHour3 = []; // 存储时间平均点击率 需要的数据
         this.getOrderCountByHourData.forEach(function(item,index,arr){
-          accountNameData.push(item.accountName)
-          let person = { accountName:item.accountName, clickValue:[] } //时间总量统计
-          let person2 = { accountName:item.accountName, clickValue:[] } //时间点击量统计
+          accountNameData.push(item.accountName+'(总计:'+item.orderCount+')')
+          accountNameData1.push(item.accountName+'(总计:'+item.clickCount+')')
+          accountNameData2.push(item.accountName)
+          let person = { accountName:item.accountName+'(总计:'+item.orderCount+')', clickValue:[] } //时间总量统计
+          let person2 = { accountName:item.accountName+'(总计:'+item.clickCount+')', clickValue:[] } //时间点击量统计
           let person3 = { accountName:item.accountName, clickValue:[] } //间平均点击率
           item.hourOrderCounts.forEach(function(item,index,arr){
             person.clickValue.push(item.orderCount)  //时间总量统计
@@ -337,12 +341,14 @@ export default {
         this.orderCountourHour.hourOrderCounts = orderCountourHour1
 
         //时间点击量统计
-        this.clickCountData.accountName = accountNameData
+        this.clickCountData.accountName = accountNameData1
         this.clickCountData.hourOrderCounts = orderCountourHour2
 
         //时间平均点击率
-        this.clickRateData.accountName = accountNameData
+        this.clickRateData.accountName = accountNameData2
         this.clickRateData.hourOrderCounts = orderCountourHour3
+
+        console.log(this.orderCountourHour)
       })
     },
     getgetAccountsFun() { //初始渠道账号数据

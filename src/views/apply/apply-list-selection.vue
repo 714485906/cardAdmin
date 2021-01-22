@@ -4,9 +4,26 @@
       <el-input v-model="listQuery.applyPhone" placeholder="申请号码" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.contactName" placeholder="申请人姓名" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.contactPhone" placeholder="申请人联系电话" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.applyStatus" placeholder="渠道状态" clearable class="filter-item" style="width: 130px">
+      <el-input v-model="listQuery.applyNo" placeholder="系统单号查询" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.applyStatus" placeholder="订单状态" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in applyStatusData" :key="item.applyStatus" :label="item.applyStatusName" :value="item.applyStatus" />
       </el-select>
+      <el-select v-model="listQuery.productId" placeholder="商品名称" clearable class="filter-item" style="width: 130px ">
+        <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
+      </el-select>
+      <el-select v-model="listQuery.channelId" placeholder="渠道名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
+        <el-option v-for="item in channelIdData" :key="item.channelId" :label="item.channelName" :value="item.channelId" />
+      </el-select>
+      <el-date-picker
+        v-model="dateTime1"
+        type="datetimerange"
+        range-separator="至"
+        start-placeholder="下单开始日期"
+        end-placeholder="下单结束日期"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        style="min-width: 300px"
+      />
       <el-button v-waves class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -31,7 +48,7 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" :reserve-selection="true" width="45" align="center" fixed="left" />
-      <el-table-column label="系统唯一标识" align="center" width="120" show-overflow-tooltip>
+      <el-table-column label="系统单号" align="center" width="120" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.applyNo }}</span>
         </template>
@@ -101,7 +118,7 @@
           <span class="link-type">{{ row.accountName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="产品名称" min-width="120px" align="center" show-overflow-tooltip>
+      <el-table-column label="商品名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.productName }}</span>
         </template>
@@ -181,7 +198,9 @@ import { getPlatformList } from '@/api/platform'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
-import { Message } from 'element-ui' // secondary package based on el-pagination
+import { Message } from 'element-ui'
+import { getChannelList } from '@/api/channel'
+import { getProductList } from '@/api/product' // secondary package based on el-pagination
 
 // arr to obj, such as { CN : "China", US : "USA" }
 // const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
@@ -204,6 +223,7 @@ export default {
       list: [],
       total: 0,
       listLoading: true,
+      dateTime1:'',
       listQuery: {
         pageNo: 1,
         pageSize: 10,
@@ -212,7 +232,12 @@ export default {
         contactName: undefined,
         accountId: undefined,
         contactPhone: undefined,
-        applyStatus: undefined
+        applyStatus: undefined,
+        productId: undefined,
+        channelId:undefined,
+        applyNo:undefined,
+        beginCreateTime: undefined,
+        endCreateTime: undefined
       },
       multipleSelection: [],
       importanceOptions: [1, 2, 3],
@@ -271,11 +296,15 @@ export default {
         applyId: undefined,
         applyPhone: undefined
       },
+      getProductData: '',
+      channelIdData: '',
       currentIndex: 0
     }
   },
   created() {
     this.getList()
+    this.getProductListDataFun()
+    this.getChannelListDataFun()
   },
   methods: {
     getList() {
@@ -290,6 +319,8 @@ export default {
       })
     },
     handleFilter() {
+      this.listQuery.beginCreateTime = this.dateTime1[0]
+      this.listQuery.endCreateTime = this.dateTime1[1]
       this.listQuery.pageNo = 1
       this.getList()
     },
@@ -431,13 +462,31 @@ export default {
     ChangeNumber() { // 请求预选号码池
       alert('模拟请求-' + '请求页数' + this.ChangeNumberlistQuery.pageNo)
       this.ChangeNumberlistQuery.pageNo++
+    },
+    getChannelListDataFun() {
+      getChannelList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.channelIdData = response.data // 渠道
+      })
+    },
+    getProductListDataFun() {
+      getProductList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.getProductData = response.data // 获取产品
+      })
     }
-
   }
 }
 </script>
 <style scoped>
 .active{
   color: red;;
+}
+.filter-item{
+  margin-left: 10px;
 }
 </style>

@@ -54,7 +54,7 @@ export const constantRoutes = [
     name: 'census',
     meta: {
       title: '数据中心',
-      icon: 'el-icon-s-help'
+      icon: 'el-icon-data-board'
     },
 
     affix: true,
@@ -65,7 +65,7 @@ export const constantRoutes = [
         component: () => import('@/views/dashboard/index'),
         meta: {
           title: '收单概览',
-          icon: 'table'
+          icon: 'el-icon-pie-chart'
         }
       },
       {
@@ -74,7 +74,7 @@ export const constantRoutes = [
         component: () => import('@/views/censusOrder/censusOrder'),
         meta: {
           title: '订单概览',
-          icon: 'people'
+          icon: 'el-icon-s-platform'
         }
       }
     ]
@@ -90,25 +90,25 @@ export const constantRoutes = [
         path: '/applyLiStselection',
         name: 'applyLiStselection',
         component: () => import('@/views/apply/apply-list-selection'),
-        meta: { title: '选号列表(自动)', icon: 'el-icon-coin' }
+        meta: { title: '选号表单', icon: 'el-icon-s-promotion' }
       },
       {
         path: '/applyListNoSelection',
         name: 'applyListNoSelection',
         component: () => import('@/views/apply/apply-list-NoSelection'),
-        meta: { title: '非选号列表(手动)', icon: 'el-icon-coin' }
+        meta: { title: '非选号表单', icon: 'el-icon-thumb' }
       },
       {
         path: '/packageList',
         name: 'packageList',
         component: () => import('@/views/package/package-list'),
-        meta: { title: '打包列表', icon: 'el-icon-coin' }
+        meta: { title: '集合同步', icon: 'el-icon-folder-opened' }
       },
       {
         path: '/packageSelection/:packageId(\\d+)',
         name: 'packageSelection',
         component: () => import('@/views/package/package-list-Selection'),
-        meta: { title: '打包详情', icon: 'el-icon-coin' },
+        meta: { title: '同步详情', icon: 'el-icon-reading' },
         hidden: true
       }
     ]
@@ -117,20 +117,20 @@ export const constantRoutes = [
     path: '/order',
     component: Layout,
     name: 'order',
-    meta: { title: '订单管理', icon: 'el-icon-receiving' },
+    meta: { title: '订单管理', icon: 'el-icon-files' },
     alwaysShow: true,
     children: [
       {
         path: '/orderList',
         name: 'orderList',
         component: () => import('@/views/order/index'),
-        meta: { title: '订单列表', icon: 'el-icon-coin' }
+        meta: { title: '订单列表', icon: 'el-icon-notebook-1'  }
       },
       {
         path: '/orderListErr',
         name: 'orderListErr',
-        component: () => import('@/views/order/index'),
-        meta: { title: '异常订单', icon: 'el-icon-coin' }
+        component: () => import('@/views/order/orderListErr'),
+        meta: { title: '异常订单', icon: 'el-icon-first-aid-kit'}
       }
     ]
   },
@@ -138,38 +138,38 @@ export const constantRoutes = [
     path: '/statistics',
     component: Layout,
     name: 'statistics',
-    meta: { title: '统计分析', icon: 'el-icon-receiving' },
+    meta: { title: '统计分析', icon: 'el-icon-s-data' },
     alwaysShow: true,
     children: [
       {
         path: '/costList',
         name: 'costList',
         component: () => import('@/views/statistics/costList-List'),
-        meta: { title: '投放成本', icon: 'el-icon-coin' }
+        meta: { title: '投放成本', icon: 'el-icon-discount' }
       },
       {
         path: '/costCountList',
         name: 'costCountList',
         component: () => import('@/views/statistics/costCount-List'),
-        meta: { title: '投放统计', icon: 'el-icon-coin' }
+        meta: { title: '投放统计', icon: 'el-icon-aim' }
       }, {
         path: '/assessList',
         name: 'assessList',
         component: () => import('@/views/statistics/assessList-List'),
-        meta: { title: '考核报表', icon: 'el-icon-coin' }
+        meta: { title: '考核报表', icon: 'el-icon-discover' }
       },
       {
         path: '/assessInfo',
         name: 'assessInfo',
         component: () => import('@/views/statistics/assess-info'),
-        meta: { title: '考核报表详情', icon: 'el-icon-coin' },
+        meta: { title: '考核报表详情', icon: 'el-icon-collection-tag' },
         hidden: true
       },
       {
         path: '/costCountListInfo',
         name: 'costCountListInfo',
         component: () => import('@/views/statistics/components/order-list'),
-        meta: { title: '订单详情', icon: 'el-icon-coin' },
+        meta: { title: '订单详情', icon: 'el-icon-c-scale-to-original' },
         hidden: true
       }
     ]
@@ -230,20 +230,20 @@ export const constantRoutes = [
     path: '/landing',
     component: Layout,
     name: 'landing',
-    meta: { title: '落地页', icon: 'el-icon-receiving' },
+    meta: { title: '落地页', icon: 'el-icon-monitor' },
     alwaysShow: true,
     children: [
       {
         path: '/landinglist',
         name: 'landinglist',
         component: () => import('@/views/landing/landing-list'),
-        meta: { title: '落地页列表', icon: 'el-icon-coin' }
+        meta: { title: '落地页列表', icon: 'el-icon-mouse' }
       },
       {
         path: '/landingEdit',
         name: 'landingEdit',
         component: () => import('@/views/landing/landing-edit'),
-        meta: { title: '编辑落地页信息', icon: 'el-icon-coin' },
+        meta: { title: '编辑落地页信息', icon: 'el-icon-brush' },
         hidden: true
       }
     ]
