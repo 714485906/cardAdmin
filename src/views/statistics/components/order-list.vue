@@ -12,6 +12,7 @@
       style="width: 100%;"
       :row-key="getRowKeys"
       @selection-change="handleSelectionChange"
+      :header-cell-style="{background:'#eee',color:'#000'}"
     >
 
       <el-table-column

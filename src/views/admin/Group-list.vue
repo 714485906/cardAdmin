@@ -16,6 +16,7 @@
       border
       fit
       highlight-current-row
+      :header-cell-style="{background:'#eee',color:'#000'}"
       style="width: 100%;"
     >
       <el-table-column label="userId" prop="id" sortable="custom" align="center" width="100">

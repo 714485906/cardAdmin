@@ -124,7 +124,7 @@ export const constantRoutes = [
         path: '/orderList',
         name: 'orderList',
         component: () => import('@/views/order/index'),
-        meta: { title: '订单列表', icon: 'el-icon-notebook-1'  }
+        meta: { title: '正常订单', icon: 'el-icon-notebook-1'  }
       },
       {
         path: '/orderListErr',

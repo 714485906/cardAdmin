@@ -5,14 +5,17 @@
       <el-input v-model="listQuery.contactName" placeholder="申请人姓名" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.contactPhone" placeholder="申请人联系电话" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.applyNo" placeholder="系统单号查询" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.applyStatus" placeholder="订单状态" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in applyStatusData" :key="item.applyStatus" :label="item.applyStatusName" :value="item.applyStatus" />
+      <el-select v-model="listQuery.userId" placeholder="营销员" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in userIdData" :key="item.userId" :label="item.username" :value="item.userId" />
       </el-select>
       <el-select v-model="listQuery.productId" placeholder="商品名称" clearable class="filter-item" style="width: 130px " @change="queryproduct">
         <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
       <el-select v-model="listQuery.channelId" placeholder="渠道名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in channelIdData" :key="item.channelId" :label="item.channelName" :value="item.channelId" />
+      </el-select>
+      <el-select v-model="listQuery.applyStatus" placeholder="订单状态" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in applyStatusData" :key="item.applyStatus" :label="item.applyStatusName" :value="item.applyStatus" />
       </el-select>
       <el-date-picker
         v-model="dateTime1"
@@ -34,7 +37,7 @@
       <!--        手动批量提交 {{multipleSelection.length}}-->
       <!--      </el-button>-->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleResetApply(3)">
-        打包{{ multipleSelection.length }}
+        同步打包{{ multipleSelection.length }}
       </el-button>
 
     </div>
@@ -50,6 +53,7 @@
       style="width: 100%;"
       :row-key="getRowKeys"
       @selection-change="handleSelectionChange"
+      :header-cell-style="{background:'#eee',color:'#000'}"
     >
       <el-table-column
         type="selection"
@@ -141,7 +145,8 @@
       </el-table-column>
       <el-table-column label="触点码名称" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.touchName }}</span>
+          <span class="link-type" v-if="row.touchName != ''">-- --</span>
+          <span class="link-type" v-else="row.touchName">{{ row.touchName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="营销组" min-width="120px" align="center" show-overflow-tooltip>
@@ -159,7 +164,7 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请状态" fixed="right" class-name="status-col" width="120" align="center">
+      <el-table-column label="提交状态" fixed="right" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag v-if="row.applyStatus == 0" type="info">待提交</el-tag>
           <el-tag v-else-if="row.applyStatus == 1" type="success">已提交</el-tag>
@@ -216,6 +221,7 @@
 import { getapplyList, PostResetApply, PostsubmitApply } from '@/api/apply'
 import { getorderList } from '@/api/order'
 import { getProductList } from '@/api/product'
+import { getUserList } from '@/api/admin'
 import { getChannelList, getgetAccounts, PostcreateChannel } from '@/api/channel'
 import { getGetTouches } from '@/api/operator'
 import { PostCreatePackage } from '@/api/package'
@@ -257,7 +263,8 @@ export default {
         applyNo:undefined,
         channelId:undefined,
         beginCreateTime: undefined,
-        endCreateTime: undefined
+        endCreateTime: undefined,
+        userId:undefined,
       },
       multipleSelection: [],
       importanceOptions: [1, 2, 3],
@@ -320,6 +327,7 @@ export default {
       accountsData: '',
       getProductData: '',
       channelIdData: '',
+      userIdData:'',
       touchData: '',
       queryList: {
         productId: undefined,
@@ -333,6 +341,7 @@ export default {
     this.getProductListDataFun()
     this.getGetTouchesDataFun()
     this. getChannelListDataFun()
+    this.getUserListFun()
   },
   methods: {
     getList() {
@@ -540,7 +549,14 @@ export default {
         this.accountsData = response.data // 获取账号
       })
     },
-
+    getUserListFun() {
+      getUserList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.userIdData = response.data // 获取营销员
+      })
+    },
     getProductListDataFun() {
       getProductList({
         pageNo: 1,

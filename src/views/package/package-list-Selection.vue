@@ -26,6 +26,7 @@
       highlight-current-row
       style="width: 100%;"
       :row-key="getRowKeys"
+      :header-cell-style="{background:'#eee',color:'#000'}"
       @selection-change="handleSelectionChange"
     >
       <el-table-column
@@ -103,11 +104,11 @@
           <span class="link-type">{{ row.platformName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="渠道标识" min-width="120px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.channelName }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="渠道标识" min-width="120px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.channelName }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="账号标识" min-width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.accountName }}</span>

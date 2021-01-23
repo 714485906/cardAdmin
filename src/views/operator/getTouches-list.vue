@@ -18,6 +18,7 @@
       highlight-current-row
       style="width: 100%;"
       @sort-change="sortChange"
+      :header-cell-style="{background:'#eee',color:'#000'}"
     >
       <el-table-column type="index" width="70" label="序号" align="center" />
       <!--      <el-table-column label="touchId" prop="id" sortable="custom" align="center" width="120">-->

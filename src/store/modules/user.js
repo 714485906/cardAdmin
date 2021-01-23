@@ -61,6 +61,7 @@ const actions = {
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         console.log('name:' + name + ' roles:' + roles)
+        localStorage.setItem('name',name);
         //  commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {

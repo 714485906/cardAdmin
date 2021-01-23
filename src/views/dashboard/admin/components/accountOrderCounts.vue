@@ -68,6 +68,7 @@ export default {
 
   .card-panel-col {
     margin-bottom: 32px;
+
   }
 
   .card-panel {

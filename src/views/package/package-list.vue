@@ -28,6 +28,7 @@
       highlight-current-row
       style="width: 100%;"
       :row-key="getRowKeys"
+      :header-cell-style="{background:'#eee',color:'#000'}"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" :reserve-selection="true" width="45" align="center" fixed="left" />
@@ -36,7 +37,7 @@
       <!--          <span>{{ row.applyId }}</span>-->
       <!--        </template>-->
       <!--      </el-table-column>-->
-      <el-table-column label="包名" width="160px" align="center" show-overflow-tooltip>
+      <el-table-column label="集合同步名称" width="160px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span class="link-type">{{ row.packageName }}</span>
         </template>

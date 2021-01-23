@@ -5,6 +5,9 @@
       <el-input v-model="listQuery.contactName" placeholder="申请人姓名" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.contactPhone" placeholder="申请人联系电话" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-input v-model="listQuery.applyNo" placeholder="系统单号查询" style="width: 130px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.userId" placeholder="营销员" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in userIdData" :key="item.userId" :label="item.username" :value="item.userId" />
+      </el-select>
       <el-select v-model="listQuery.applyStatus" placeholder="订单状态" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in applyStatusData" :key="item.applyStatus" :label="item.applyStatusName" :value="item.applyStatus" />
       </el-select>
@@ -45,6 +48,7 @@
       highlight-current-row
       style="width: 100%;"
       :row-key="getRowKeys"
+      :header-cell-style="{background:'#eee',color:'#000'}"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" :reserve-selection="true" width="45" align="center" fixed="left" />
@@ -148,7 +152,7 @@
           <span>{{ row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请状态" fixed="right" class-name="status-col" width="120" align="center">
+      <el-table-column label="提交状态" fixed="right" class-name="status-col" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag v-if="row.applyStatus == 0" type="info">待提交</el-tag>
           <el-tag v-else-if="row.applyStatus == 1" type="success">已提交</el-tag>
@@ -298,6 +302,7 @@ export default {
       },
       getProductData: '',
       channelIdData: '',
+      userIdData:'',
       currentIndex: 0
     }
   },
@@ -305,6 +310,7 @@ export default {
     this.getList()
     this.getProductListDataFun()
     this.getChannelListDataFun()
+    this.getUserListFun()
   },
   methods: {
     getList() {
@@ -469,6 +475,14 @@ export default {
         pageSize: 10000
       }).then(response => {
         this.channelIdData = response.data // 渠道
+      })
+    },
+    getUserListFun() {
+      getUserList({
+        pageNo: 1,
+        pageSize: 10000
+      }).then(response => {
+        this.userIdData = response.data // 获取营销员
       })
     },
     getProductListDataFun() {

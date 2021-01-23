@@ -31,27 +31,29 @@
         value-format="yyyy-MM-dd"
         style="min-width: 300px;margin: 5px 5px"
       />
-      <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
-      </el-select>
-      <el-select v-model="listQuery.logisticsStatus" placeholder="物流状态" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in logisticsStatusData" :key="item.logisticsStatus" :label="item.name" :value="item.logisticsStatus" />
-      </el-select>
-      <el-select v-model="listQuery.operatorId" placeholder="运营商" clearable class="filter-item" style="width: 130px;margin:5px 5px">
-        <el-option v-for="item in operatorIdData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />
-      </el-select>
-      <el-select v-model="listQuery.orderStatus" placeholder="订单状态" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
-        <el-option v-for="item in orderStatusData" :key="item.orderStatus" :label="item.name" :value="item.orderStatus" />
+      <el-select v-model="listQuery.platformId" placeholder="平台" clearable class="filter-item" style="width: 130px;margin:5px 5px">
+        <el-option v-for="item in platformIdData" :key="item.platformId" :label="item.platformName" :value="item.platformId" />
       </el-select>
       <el-select v-model="listQuery.channelId" placeholder="渠道名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in channelIdData" :key="item.channelId" :label="item.channelName" :value="item.channelId" />
       </el-select>
-      <el-select v-model="listQuery.platformId" placeholder="平台" clearable class="filter-item" style="width: 130px;margin:5px 5px">
-        <el-option v-for="item in platformIdData" :key="item.platformId" :label="item.platformName" :value="item.platformId" />
+      <el-select v-model="listQuery.accountId" placeholder="账号名称" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
+        <el-option v-for="item in accountIdData" :key="item.accountId" :label="item.accountName" :value="item.accountId" />
+      </el-select>
+
+      <el-select v-model="listQuery.operatorId" placeholder="运营商" clearable class="filter-item" style="width: 130px;margin:5px 5px">
+        <el-option v-for="item in operatorIdData" :key="item.operatorId" :label="item.operatorName" :value="item.operatorId" />
       </el-select>
       <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin:5px 5px" @change="queryproduct">
         <el-option v-for="item in getProductData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
+      <el-select v-model="listQuery.logisticsStatus" placeholder="物流状态" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
+        <el-option v-for="item in logisticsStatusData" :key="item.logisticsStatus" :label="item.name" :value="item.logisticsStatus" />
+      </el-select>
+      <el-select v-model="listQuery.orderStatus" placeholder="订单状态" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
+        <el-option v-for="item in orderStatusData" :key="item.orderStatus" :label="item.name" :value="item.orderStatus" />
+      </el-select>
+
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -74,6 +76,7 @@
       style="width: 100%;"
       :row-key="getRowKeys"
       @selection-change="handleSelectionChange"
+      :header-cell-style="{background:'#eee',color:'#000'}"
     >
 
       <el-table-column
@@ -210,9 +213,9 @@
           <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="packageShow" label="失败原因" width="180px" align="center" show-overflow-tooltip>
+      <el-table-column v-if="packageShow" label="失败原因" width="300px" align="center" >
         <template slot-scope="{row}">
-          <span>{{ row.orderMessage }}</span>
+          <span class="orderMessage">{{ row.orderMessage }}</span>
         </template>
       </el-table-column>
             <el-table-column label="充值金额/(元)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>
@@ -222,8 +225,8 @@
             </el-table-column>
       <el-table-column label="订单状态" fixed="right" class-name="status-col" width="120" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <el-tag v-if="row.orderStatus == 0" type="info">待提交</el-tag>
-          <el-tag v-if="row.orderStatus == 1">已提交</el-tag>
+          <el-tag v-if="row.orderStatus == 0" type="info">待回调</el-tag>
+          <el-tag v-if="row.orderStatus == 1">已回调</el-tag>
           <el-tag v-if="row.orderStatus == 2" type="danger" @click="orderErrFun(row.orderId)">提交失败</el-tag>
           <el-tag v-if="row.orderStatus == 3" type="success">已激活</el-tag>
           <el-tag v-if="row.orderStatus == 4" type="warning">已充值</el-tag>
@@ -361,8 +364,8 @@ export default {
         { logisticsStatus: 2, name: '已签收' }
       ],
       orderStatusData: [
-        { orderStatus: 0, name: '待提交' },
-        { orderStatus: 1, name: '已提交' },
+        { orderStatus: 0, name: '待回调' },
+        { orderStatus: 1, name: '已回调' },
         { orderStatus: 2, name: '提交失败' },
         { orderStatus: 3, name: '已激活' },
         { orderStatus: 4, name: '已充值' },
@@ -622,3 +625,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+.orderMessage{
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+</style>

@@ -84,7 +84,7 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <div class="grid-content bg-purple">
+        <div class="grid-content bg-purple" >
           <div class="card-panel-icon-wrapper icon-people" align="center" style="padding-top: 8px">
             <svg-icon icon-class="failOrder" class-name="card-panel-icon" style="font-size: 60px" />
           </div>
@@ -106,9 +106,11 @@
           v-loading="listLoading"
           :data="census.productOrderCounts"
           border
+          stripe
           fit
           height="300"
           style="width: 50%;"
+          :header-cell-style="{background:'#eee',color:'#000'}"
         >
           <el-table-column type="index" width="70" label="序号" align="center" />
           <el-table-column label="商品"min-width="120px" align="center">
@@ -117,8 +119,8 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="正常订单"  min-width="100px" align="center">
-            <template slot-scope="{row}">
+          <el-table-column label="正常订单"   min-width="100px" align="center">
+            <template slot-scope="{row}" >
               <span class="link-type" style="color: #2A70FF">{{ row.productSuccessCount }}</span>
             </template>
           </el-table-column>
@@ -153,6 +155,7 @@
           fit
           height="300"
           style="width: 70%;"
+          :header-cell-style="{background:'#eee',color:'#000'}"
         >
           <el-table-column type="index" width="70" label="序号" align="center" />
           <el-table-column label="渠道名称"min-width="120px" align="center">
@@ -395,7 +398,7 @@ export default {
 <style scoped>
 
 .bg-purple {
-  background: #fff;
+  background: #e5e9f2;
 }
 bg-purple-dark{
   padding: 10px 10px;

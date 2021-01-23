@@ -32,6 +32,7 @@
       border
       fit
       highlight-current-row
+      :header-cell-style="{background:'#eee',color:'#000'}"
       style="width: 100%;"
       @sort-change="sortChange"
     >

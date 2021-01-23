@@ -14,10 +14,12 @@
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <img src="https://mobilecard.chinawjhs.com/userimg.gif" class="user-avatar">
+        <div class="avatar-wrapper" style="">
+<!--          <img src="https://mobilecard.chinawjhs.com/userimg.gif" title="123132132132132" class="user-avatar">-->
+          <div class="user-avatar">{{name}}</div>
           <i class="el-icon-caret-bottom" />
         </div>
+
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
             <el-dropdown-item>首页</el-dropdown-item>
@@ -48,6 +50,11 @@ export default {
     Screenfull,
     SizeSelect,
     Search
+  },
+  data(){
+    return{
+      name:localStorage.getItem('name'),
+    }
   },
   computed: {
     ...mapGetters([
@@ -134,9 +141,9 @@ export default {
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
+          width: 100px;
           border-radius: 10px;
+          text-align: right;
         }
 
         .el-icon-caret-bottom {

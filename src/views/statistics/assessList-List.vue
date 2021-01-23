@@ -7,7 +7,7 @@
       <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
-      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">
+      <el-select v-model="listQuery.userId" placeholder="营销员" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in userIdData" :key="item.userId" :label="item.username" :value="item.userId" />
       </el-select>
       <!--      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">-->
@@ -34,6 +34,7 @@
       border
       fit
       highlight-current-row
+      :header-cell-style="{background:'#eee',color:'#000'}"
       style="width: 100%;"
     >
       <el-table-column type="index" width="70" label="序号" align="center" />

@@ -7,7 +7,7 @@
       <el-select v-model="listQuery.productId" placeholder="商品" clearable class="filter-item" style="width: 130px;margin: 5px 5px">
         <el-option v-for="item in productIdData" :key="item.productId" :label="item.productName" :value="item.productId" />
       </el-select>
-      <el-select v-model="listQuery.userId" placeholder="用户" clearable class="filter-item" style="width: 130px">
+      <el-select v-model="listQuery.userId" placeholder="营销员" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in userIdData" :key="item.userId" :label="item.username" :value="item.userId" />
       </el-select>
       <!--      <el-select v-model="listQuery.costStatus" placeholder="平台状态" clearable class="filter-item" style="width: 130px;margin:0px 10px">-->
@@ -69,6 +69,7 @@
       :data="list"
       border
       fit
+      :header-cell-style="{background:'#eee',color:'#000'}"
       highlight-current-row
       style="width: 100%;"
     >
@@ -130,6 +131,11 @@
           <span class="link-type">{{ row.actualCostPrice /100 }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="首充成本" min-width="90px" align="center">
+        <template slot-scope="{row}">
+          <span class="link-type">{{ row.recharge50Price }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="激活数" min-width="90px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.activateNum }}</span>
@@ -150,12 +156,12 @@
           <span class="link-type">{{ row.rechargeRate /100 }}%</span>
         </template>
       </el-table-column>
-      <el-table-column label="首充大于50(含50)" min-width="140px" align="center">
+      <el-table-column label="首充50(含50)" min-width="140px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.recharge50Num }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="首充大于50率" min-width="150px" align="center">
+      <el-table-column label="首充50率" min-width="150px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.recharge50Rate /100 }}%</span>
         </template>
