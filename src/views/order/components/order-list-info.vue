@@ -8,14 +8,14 @@
           <p><span>下单时间:</span>{{tableData.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</p>
           <p><span>订单来源:</span>{{tableData.touchName}}</p>
           <p><span>开卡人姓名:</span>{{tableData.contactName}}</p>
-          <p><span>身份证号:</span> 无无无</p>
+          <p><span>身份证号:</span> {{tableData.idNumber}}</p>
 
         </div>
       </el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple">
-          <p><span>联系电话:</span> 无</p>
-          <p><span>收货地址:</span>无</p>
+          <p><span>联系电话:</span> {{tableData.contactPhone}}</p>
+          <p><span>收货地址:</span>{{tableData.provinceName}}-{{tableData.cityName}}-{{tableData.districtName}}({{tableData.address}})</p>
           <p><span>收货人:</span> {{tableData.contactName}}</p>
           <p><span>投放渠道名称:</span>{{tableData.accountName}}</p>
         </div>
@@ -27,19 +27,24 @@
       <el-col :span="24">
         <div class="grid-content bg-purple-dark">
           <el-table
-            :data="tableData"
-            height="250"
+            :data="[tableData]"
+            style="width: 100%;"
             border
-            style="width: 100%">
-            <el-table-column
-              prop="productId"
-              label="商品ID"
-              width="180">
+            fit
+            highlight-current-row
+            :header-cell-style="{background:'#eee',color:'#000'}"
+          >
+            <el-table-column label="商品ID" min-width="190px" align="center">
+              <template slot-scope="{row}">
+                <span class="link-type">{{ row.productId }}</span>
+              </template>
             </el-table-column>
-            <el-table-column
-              prop="productName"
-              label="商品名称">
+            <el-table-column label="商品名称" min-width="190px" align="center">
+              <template slot-scope="{row}">
+                <span class="link-type">{{ row.productName }}</span>
+              </template>
             </el-table-column>
+
           </el-table>
         </div>
       </el-col>
@@ -49,7 +54,69 @@
     <el-row>
       <el-col :span="24">
         <div class="grid-content bg-purple-dark">
-
+          <el-table
+            :data="[tableData]"
+            style="width: 100%;"
+            border
+            fit
+            highlight-current-row
+            :header-cell-style="{background:'#eee',color:'#000'}"
+          >
+            <el-table-column label="物流状态" min-width="120px" align="center">
+              <template slot-scope="{row}">
+                <el-tag v-if="row.logisticsStatus == 0" type="info">待发货</el-tag>
+                <el-tag v-if="row.logisticsStatus == 1" type="warning">已发货</el-tag>
+                <el-tag v-if="row.logisticsStatus == 2" type="success">已签收</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="物流公司" min-width="120px" align="center">
+              <template slot-scope="{row}">
+                <span class="link-type">{{ row.logisticsCompany }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="物流单号" min-width="120px" align="center">
+              <template slot-scope="{row}">
+                <span class="link-type">{{ row.logisticsNo }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="发货时间" min-width="120px" align="center">
+              <template slot-scope="{row}">
+                <span class="link-type">{{ row.deliveryTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+              </template>
+            </el-table-column><el-table-column label="开启手机号" min-width="120px" align="center">
+            <template slot-scope="{row}">
+              <span class="link-type">{{ row.applyPhone }}</span>
+            </template>
+          </el-table-column><el-table-column label="iccid" min-width="120px" align="center">
+            <template slot-scope="{row}">
+              <span class="link-type">无</span>
+            </template>
+          </el-table-column>
+            <el-table-column label="订单状态" min-width="120px" align="center">
+            <template slot-scope="{row}">
+              <el-tag v-if="row.orderStatus == 0" type="info">待回调</el-tag>
+              <el-tag v-if="row.orderStatus == 1">已回调</el-tag>
+              <el-tag v-if="row.orderStatus == 2" type="danger" @click="orderErrFun(row.orderId)">提交失败</el-tag>
+              <el-tag v-if="row.orderStatus == 3" type="success">已激活</el-tag>
+              <el-tag v-if="row.orderStatus == 4" type="warning">已充值</el-tag>
+            </template>
+          </el-table-column>
+           <el-table-column label="激活时间" min-width="120px" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.activateTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+            </template>
+          </el-table-column>
+            <el-table-column label="首充时间" min-width="120px" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.rechargeTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+            </template>
+          </el-table-column>
+            <el-table-column label="首充金额" min-width="120px" align="center">
+            <template slot-scope="{row}">
+              <span class="link-type">{{ row.rechargeFee / 100 }}</span>
+            </template>
+          </el-table-column>
+          </el-table>
         </div>
       </el-col>
     </el-row>
@@ -65,9 +132,13 @@
 
 <script>
 import { getOrder } from '@/api/order'
+import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination'
 export default {
   name: "order-list-info",
+  components: { Pagination },
+  directives: { waves },
   filters: {
     parseTime(time, cFormat) {
       return parseTime(time, cFormat)
@@ -76,7 +147,7 @@ export default {
   data(){
     return{
       orderId: undefined,
-      tableData: undefined
+      tableData: []
     }
   },
   created() {
@@ -88,7 +159,7 @@ export default {
       getOrder({
         orderId : this.orderId
       }).then(response => {
-        this.tableData = response.data // 获取触点码
+        this.tableData = response.data // 获取单条数据表单
       })
     },
 

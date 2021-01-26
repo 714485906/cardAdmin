@@ -176,43 +176,43 @@
       <!--          <span class="link-type">{{ row.operatorOrderNo }}</span>-->
       <!--        </template>-->
       <!--      </el-table-column>-->
-      <el-table-column label="物流单号" min-width="120px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.logisticsNo }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="物流公司" min-width="120px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.logisticsCompany }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="物流状态" class-name="status-col" width="120" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <el-tag v-if="row.logisticsStatus == 0" type="info">待发货</el-tag>
-          <el-tag v-if="row.logisticsStatus == 1" type="warning">已发货</el-tag>
-          <el-tag v-if="row.logisticsStatus == 2" type="success">已签收</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="发货时间" width="230px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span>{{ row.deliveryTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="激活时间" width="230px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span>{{ row.activateTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="充值时间" width="230px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span>{{ row.rechargeTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="备注" width="180px" align="center" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span>{{ row.remark }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="物流单号" min-width="120px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.logisticsNo }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="物流公司" min-width="120px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span class="link-type">{{ row.logisticsCompany }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="物流状态" class-name="status-col" width="120" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <el-tag v-if="row.logisticsStatus == 0" type="info">待发货</el-tag>-->
+<!--          <el-tag v-if="row.logisticsStatus == 1" type="warning">已发货</el-tag>-->
+<!--          <el-tag v-if="row.logisticsStatus == 2" type="success">已签收</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="发货时间" width="230px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.deliveryTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="激活时间" width="230px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.activateTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="充值时间" width="230px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.rechargeTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="备注" width="180px" align="center" show-overflow-tooltip>-->
+<!--        <template slot-scope="{row}">-->
+<!--          <span>{{ row.remark }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column v-if="packageShow" label="失败原因" width="300px" align="center" >
         <template slot-scope="{row}">
           <span class="orderMessage">{{ row.orderMessage }}</span>
@@ -223,7 +223,7 @@
                 <span class="link-type">{{ row.rechargeFee / 100 }}</span>
               </template>
             </el-table-column>
-      <el-table-column label="订单状态" fixed="right" class-name="status-col" width="160" align="center" show-overflow-tooltip>
+      <el-table-column label="订单状态" fixed="right" class-name="status-col" width="170" align="center">
         <template slot-scope="{row}">
           <el-tag v-if="row.orderStatus == 0" type="info">待回调</el-tag>
           <el-tag v-if="row.orderStatus == 1">已回调</el-tag>

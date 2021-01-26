@@ -29,34 +29,34 @@
       <!--      </el-button>-->
     </div>
     <!--总数据-->
-    <div style="margin-bottom: 15px" />
-    <el-row :gutter="20" class="row-bg">
-      <el-col :span="3" class="bg-purple">
-        <div class="grid-title" align="center">表单数</div>
-        <div class="grid-content" align="center">{{ getCostCountData.orderNum }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple-light">
-        <div class="grid-title" align="center">投放金额(返前)</div>
-        <div class="grid-content" align="center">{{ getCostCountData.costFee /100 }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple">
-        <div class="grid-title" align="center">表单价(返前)</div>
-        <div class="grid-content" align="center">{{ getCostCountData.costPrice /100 }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple-light">
-        <div class="grid-title" align="center">返点</div>
-        <div class="grid-content" align="center">{{ getCostCountData.accountRechargeRate /100 }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple">
-        <div class="grid-title" align="center">投放金额(返后)</div>
-        <div class="grid-content" align="center">{{ getCostCountData.actualCostFee / 100 }}</div>
-      </el-col>
-      <el-col :span="3" class="bg-purple-light">
-        <div class="grid-title" align="center">表单价(返后)</div>
-        <div class="grid-content" align="center">{{ getCostCountData.actualCostPrice / 100 }}</div>
-      </el-col>
+<!--    <div style="margin-bottom: 15px" />-->
+<!--    <el-row :gutter="20" class="row-bg">-->
+<!--      <el-col :span="3" class="bg-purple">-->
+<!--        <div class="grid-title" align="center">表单数</div>-->
+<!--        <div class="grid-content" align="center">{{ getCostCountData.orderNum }}</div>-->
+<!--      </el-col>-->
+<!--      <el-col :span="3" class="bg-purple-light">-->
+<!--        <div class="grid-title" align="center">投放金额(返前)</div>-->
+<!--        <div class="grid-content" align="center">{{ getCostCountData.costFee /100 }}</div>-->
+<!--      </el-col>-->
+<!--      <el-col :span="3" class="bg-purple">-->
+<!--        <div class="grid-title" align="center">表单价(返前)</div>-->
+<!--        <div class="grid-content" align="center">{{ getCostCountData.costPrice /100 }}</div>-->
+<!--      </el-col>-->
+<!--      <el-col :span="3" class="bg-purple-light">-->
+<!--        <div class="grid-title" align="center">返点</div>-->
+<!--        <div class="grid-content" align="center">{{ getCostCountData.accountRechargeRate /100 }}</div>-->
+<!--      </el-col>-->
+<!--      <el-col :span="3" class="bg-purple">-->
+<!--        <div class="grid-title" align="center">投放金额(返后)</div>-->
+<!--        <div class="grid-content" align="center">{{ getCostCountData.actualCostFee / 100 }}</div>-->
+<!--      </el-col>-->
+<!--      <el-col :span="3" class="bg-purple-light">-->
+<!--        <div class="grid-title" align="center">表单价(返后)</div>-->
+<!--        <div class="grid-content" align="center">{{ getCostCountData.actualCostPrice / 100 }}</div>-->
+<!--      </el-col>-->
 
-    </el-row>
+<!--    </el-row>-->
 
     <!--明细-->
     <div style="margin-bottom: 15px" />
@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import { getcostList, PostSubmitCost, getRollbackCost, getCostCount } from '@/api/statistics'
+import { getcostList, getAssessList, getRollbackCost, getCostCount } from '@/api/statistics'
 import { getProductList } from '@/api/product'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
@@ -223,7 +223,8 @@ export default {
         accountId: undefined,
         productId: undefined,
         assessMonth: undefined,
-        costStatus: 1
+        costStatus: 1,
+        userId:undefined
       },
       importanceOptions: [1, 2, 3],
       Rolelist: '',
@@ -272,13 +273,15 @@ export default {
   created() {
     if (this.$route.query.res) {
       this.queryResData = JSON.parse(this.$route.query.res)
-      this.listQuery.accountId = this.queryResData.accountId
+      console.log(this.queryResData)
+     // this.listQuery.accountId = this.queryResData.accountId
       this.listQuery.productId = this.queryResData.productId
+      this.listQuery.userId = this.queryResData.userId
       this.listQuery.assessMonth = this.queryResData.assessMonth
     }
     this.getList()
-    this.accountIdDataFun() // 初始账号id
-    this.getProductListFun() // 初始商品
+   // this.accountIdDataFun() // 初始账号id
+   // this.getProductListFun() // 初始商品
   },
   methods: {
     getList() {
