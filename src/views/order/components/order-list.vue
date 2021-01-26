@@ -220,16 +220,19 @@
       </el-table-column>
             <el-table-column label="充值金额/(元)" fixed="right" min-width="120px" align="center" show-overflow-tooltip>
               <template slot-scope="{row}">
-                <span class="link-type">{{ row.rechargeFee * 100 }}</span>
+                <span class="link-type">{{ row.rechargeFee / 100 }}</span>
               </template>
             </el-table-column>
-      <el-table-column label="订单状态" fixed="right" class-name="status-col" width="120" align="center" show-overflow-tooltip>
+      <el-table-column label="订单状态" fixed="right" class-name="status-col" width="160" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <el-tag v-if="row.orderStatus == 0" type="info">待回调</el-tag>
           <el-tag v-if="row.orderStatus == 1">已回调</el-tag>
           <el-tag v-if="row.orderStatus == 2" type="danger" @click="orderErrFun(row.orderId)">提交失败</el-tag>
           <el-tag v-if="row.orderStatus == 3" type="success">已激活</el-tag>
           <el-tag v-if="row.orderStatus == 4" type="warning">已充值</el-tag>
+          <span style="margin-left: 10px" class="link-type" @click="orderInfo(row)">
+            <a style="color: #1890ff">查看详情</a>
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -429,7 +432,9 @@ export default {
         }, 1 * 1000)
       })
     },
-
+    orderInfo(row){
+      this.$router.push({name:'orderListInfo',params: {orderId:row.orderId}})
+    },
     orderErrFun(orderId) {
       this.ErrInfoShow = true
       getOrderDetails({

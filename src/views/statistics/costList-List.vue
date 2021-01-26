@@ -65,6 +65,11 @@
           <span>{{ row.accountName }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="媒体ID(第三方)" width="180px" align="center" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>{{ row.accountRemark }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="营销员" width="120px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.username }}</span>

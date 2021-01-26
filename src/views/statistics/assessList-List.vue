@@ -91,7 +91,7 @@
       </el-table-column>
       <el-table-column label="激活率" min-width="90px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.activateRate /100 }}%</span>
+          <span class="link-type">{{ row.activateRate  }}%</span>
         </template>
       </el-table-column>
       <el-table-column label="首充大于50(含50)" min-width="140px" align="center">
@@ -101,7 +101,7 @@
       </el-table-column>
       <el-table-column label="首充大于50率" min-width="150px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.recharge50Rate /100 }}%</span>
+          <span class="link-type">{{ row.recharge50Rate  }}%</span>
         </template>
       </el-table-column>
       <el-table-column label="首充转化成本" min-width="150px" align="center">

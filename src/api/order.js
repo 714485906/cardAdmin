@@ -15,3 +15,11 @@ export function getOrderDetails(params) {
     params
   })
 }
+
+export function getOrder(params) {
+  return request({
+    url: 'order/getOrder', // 查询单个订单
+    method: 'get',
+    params
+  })
+}

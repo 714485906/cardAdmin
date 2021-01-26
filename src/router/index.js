@@ -127,6 +127,13 @@ export const constantRoutes = [
         meta: { title: '正常订单', icon: 'el-icon-notebook-1'  }
       },
       {
+        path: '/orderListInfo/:orderId(\\d+)',
+        name: 'orderListInfo',
+        component: () => import('@/views/order/components/order-list-info'),
+        meta: { title: '订单详情', icon: 'el-icon-notebook-1'  },
+        hidden: true
+      },
+      {
         path: '/orderListErr',
         name: 'orderListErr',
         component: () => import('@/views/order/orderListErr'),
