@@ -79,7 +79,7 @@
 
       <el-table-column label="日期" width="220px" align="center" show-overflow-tooltip>
         <template slot-scope="{row}">
-          <span>{{ row.costDate }}</span>
+          <span>{{ row.assessMonth }}</span>
         </template>
       </el-table-column>
 
@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import { getcostList, getAssessList, getRollbackCost, getCostCount } from '@/api/statistics'
+import { getAssessDetailList } from '@/api/statistics'
 import { getProductList } from '@/api/product'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
@@ -286,7 +286,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getcostList(this.listQuery).then(response => { // 明细
+      getAssessDetailList(this.listQuery).then(response => { // 明细
         this.list = response.data
         this.total = response.page.total
         if (this.total != 0) { // 有数据执行 没有数据不执行

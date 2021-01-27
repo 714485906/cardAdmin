@@ -47,3 +47,10 @@ export function getRollbackCost(params) {
   })
 }
 
+export function getAssessDetailList(params) {
+  return request({
+    url: 'statistics/assessDetailList', // 考核详情列表
+    method: 'get',
+    params
+  })
+}

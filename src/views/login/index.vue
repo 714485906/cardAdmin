@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">联露后台管理系统</h3>
       </div>
@@ -49,6 +49,24 @@
       <!--      </div>-->
 
     </el-form>
+    <vue-particles
+      color="#fff"
+      :particleOpacity="0.7"
+      :particlesNumber="100"
+      shapeType="circle"
+      :particleSize="4"
+      linesColor="#fff"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="5"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push"
+      class="particles"
+    ></vue-particles>
   </div>
 </template>
 
@@ -60,14 +78,14 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入正确的用户名'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码不能少于6位'))
       } else {
         callback()
       }
@@ -185,6 +203,7 @@ $light_gray:#eee;
 
   .login-form {
     position: relative;
+    z-index: 99;
     width: 520px;
     max-width: 100%;
     padding: 160px 35px 0;
@@ -233,5 +252,11 @@ $light_gray:#eee;
     cursor: pointer;
     user-select: none;
   }
+}
+.particles{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
 }
 </style>
